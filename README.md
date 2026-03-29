@@ -1,0 +1,1 @@
+# series-library-manager
