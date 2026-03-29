@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>723</width>
+    <height>559</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add series</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QFrame" name="engine_select_frame">
+        <property name="frameShape">
+         <enum>QFrame::Shape::StyledPanel</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Shadow::Raised</enum>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QRadioButton" name="TVDB_radioButton">
+           <property name="text">
+            <string>TVDB</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="TMDB_radioButton">
+           <property name="text">
+            <string>TMDB</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="AniList_radioButton">
+           <property name="text">
+            <string>AniList</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="MAL_radioButton">
+           <property name="text">
+            <string>MAL</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <widget class="QWidget" name="scan_tab">
+         <attribute name="title">
+          <string>Scan</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QFrame" name="scan_frame">
+            <property name="frameShape">
+             <enum>QFrame::Shape::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="scan_label">
+               <property name="text">
+                <string>Scan folder</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="select_folder_frame">
+               <property name="frameShape">
+                <enum>QFrame::Shape::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QLineEdit" name="scan_folder_lineEdit"/>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="scan_folder_browse_pushButton">
+                  <property name="text">
+                   <string>Browse</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="scan_start_pushButton">
+               <property name="text">
+                <string>Start scan</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="confirm_series_label">
+               <property name="text">
+                <string>Confirm series to search</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QListWidget" name="scan_results_listWidget">
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::MultiSelection</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="scan_add_pushButton">
+               <property name="text">
+                <string>Add selected</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="search_tab">
+         <attribute name="title">
+          <string>Search</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QFrame" name="frame_4">
+            <property name="frameShape">
+             <enum>QFrame::Shape::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <widget class="QLabel" name="search_label">
+               <property name="text">
+                <string>Search</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="search_frame">
+               <property name="frameShape">
+                <enum>QFrame::Shape::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLineEdit" name="search_lineEdit"/>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="search_pushButton">
+                  <property name="text">
+                   <string>Search</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTreeWidget" name="search_treeWidget">
+               <column>
+                <property name="text">
+                 <string notr="true">Results</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="search_add_pushButton">
+               <property name="text">
+                <string>Add selected</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDialogButtonBox" name="buttonBox">
+        <property name="standardButtons">
+         <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
