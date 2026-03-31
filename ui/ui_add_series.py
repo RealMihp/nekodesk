@@ -21,14 +21,14 @@ from PySide6.QtWidgets import (QAbstractButton, QAbstractItemView, QApplication,
     QPushButton, QRadioButton, QSizePolicy, QTabWidget,
     QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(723, 559)
-        self.verticalLayout_3 = QVBoxLayout(Dialog)
+class Ui_AddSeriesWindow(object):
+    def setupUi(self, AddSeriesWindow):
+        if not AddSeriesWindow.objectName():
+            AddSeriesWindow.setObjectName(u"AddSeriesWindow")
+        AddSeriesWindow.resize(723, 559)
+        self.verticalLayout_3 = QVBoxLayout(AddSeriesWindow)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.frame = QFrame(Dialog)
+        self.frame = QFrame(AddSeriesWindow)
         self.frame.setObjectName(u"frame")
         self.frame.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame.setFrameShadow(QFrame.Shadow.Raised)
@@ -42,21 +42,25 @@ class Ui_Dialog(object):
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.TVDB_radioButton = QRadioButton(self.engine_select_frame)
         self.TVDB_radioButton.setObjectName(u"TVDB_radioButton")
+        self.TVDB_radioButton.setEnabled(False)
 
         self.horizontalLayout.addWidget(self.TVDB_radioButton)
 
         self.TMDB_radioButton = QRadioButton(self.engine_select_frame)
         self.TMDB_radioButton.setObjectName(u"TMDB_radioButton")
+        self.TMDB_radioButton.setEnabled(False)
 
         self.horizontalLayout.addWidget(self.TMDB_radioButton)
 
         self.AniList_radioButton = QRadioButton(self.engine_select_frame)
         self.AniList_radioButton.setObjectName(u"AniList_radioButton")
+        self.AniList_radioButton.setEnabled(False)
 
         self.horizontalLayout.addWidget(self.AniList_radioButton)
 
         self.MAL_radioButton = QRadioButton(self.engine_select_frame)
         self.MAL_radioButton.setObjectName(u"MAL_radioButton")
+        self.MAL_radioButton.setEnabled(False)
 
         self.horizontalLayout.addWidget(self.MAL_radioButton)
 
@@ -93,6 +97,7 @@ class Ui_Dialog(object):
 
         self.scan_folder_browse_pushButton = QPushButton(self.select_folder_frame)
         self.scan_folder_browse_pushButton.setObjectName(u"scan_folder_browse_pushButton")
+        self.scan_folder_browse_pushButton.setEnabled(True)
 
         self.horizontalLayout_3.addWidget(self.scan_folder_browse_pushButton)
 
@@ -101,6 +106,7 @@ class Ui_Dialog(object):
 
         self.scan_start_pushButton = QPushButton(self.scan_frame)
         self.scan_start_pushButton.setObjectName(u"scan_start_pushButton")
+        self.scan_start_pushButton.setEnabled(False)
 
         self.verticalLayout_4.addWidget(self.scan_start_pushButton)
 
@@ -117,6 +123,7 @@ class Ui_Dialog(object):
 
         self.scan_add_pushButton = QPushButton(self.scan_frame)
         self.scan_add_pushButton.setObjectName(u"scan_add_pushButton")
+        self.scan_add_pushButton.setEnabled(False)
 
         self.verticalLayout_4.addWidget(self.scan_add_pushButton)
 
@@ -152,6 +159,7 @@ class Ui_Dialog(object):
 
         self.search_pushButton = QPushButton(self.search_frame)
         self.search_pushButton.setObjectName(u"search_pushButton")
+        self.search_pushButton.setEnabled(False)
 
         self.horizontalLayout_2.addWidget(self.search_pushButton)
 
@@ -168,6 +176,7 @@ class Ui_Dialog(object):
 
         self.search_add_pushButton = QPushButton(self.frame_4)
         self.search_add_pushButton.setObjectName(u"search_add_pushButton")
+        self.search_add_pushButton.setEnabled(False)
 
         self.verticalLayout.addWidget(self.search_add_pushButton)
 
@@ -188,29 +197,29 @@ class Ui_Dialog(object):
         self.verticalLayout_3.addWidget(self.frame)
 
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(AddSeriesWindow)
 
         self.tabWidget.setCurrentIndex(1)
 
 
-        QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(AddSeriesWindow)
     # setupUi
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Add series", None))
-        self.TVDB_radioButton.setText(QCoreApplication.translate("Dialog", u"TVDB", None))
-        self.TMDB_radioButton.setText(QCoreApplication.translate("Dialog", u"TMDB", None))
-        self.AniList_radioButton.setText(QCoreApplication.translate("Dialog", u"AniList", None))
-        self.MAL_radioButton.setText(QCoreApplication.translate("Dialog", u"MAL", None))
-        self.scan_label.setText(QCoreApplication.translate("Dialog", u"Scan folder", None))
-        self.scan_folder_browse_pushButton.setText(QCoreApplication.translate("Dialog", u"Browse", None))
-        self.scan_start_pushButton.setText(QCoreApplication.translate("Dialog", u"Start scan", None))
-        self.confirm_series_label.setText(QCoreApplication.translate("Dialog", u"Confirm series to search", None))
-        self.scan_add_pushButton.setText(QCoreApplication.translate("Dialog", u"Add selected", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.scan_tab), QCoreApplication.translate("Dialog", u"Scan", None))
-        self.search_label.setText(QCoreApplication.translate("Dialog", u"Search", None))
-        self.search_pushButton.setText(QCoreApplication.translate("Dialog", u"Search", None))
-        self.search_add_pushButton.setText(QCoreApplication.translate("Dialog", u"Add selected", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.search_tab), QCoreApplication.translate("Dialog", u"Search", None))
+    def retranslateUi(self, AddSeriesWindow):
+        AddSeriesWindow.setWindowTitle(QCoreApplication.translate("AddSeriesWindow", u"Add series", None))
+        self.TVDB_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"TVDB", None))
+        self.TMDB_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"TMDB", None))
+        self.AniList_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"AniList", None))
+        self.MAL_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"MAL", None))
+        self.scan_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Scan folder", None))
+        self.scan_folder_browse_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Browse", None))
+        self.scan_start_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Start scan", None))
+        self.confirm_series_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Confirm series to search", None))
+        self.scan_add_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Add selected", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.scan_tab), QCoreApplication.translate("AddSeriesWindow", u"Scan", None))
+        self.search_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
+        self.search_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
+        self.search_add_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Add selected", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.search_tab), QCoreApplication.translate("AddSeriesWindow", u"Search", None))
     # retranslateUi
 

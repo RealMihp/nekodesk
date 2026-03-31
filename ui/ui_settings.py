@@ -18,14 +18,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
     QSizePolicy, QTabWidget, QVBoxLayout, QWidget)
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(400, 300)
-        self.verticalLayout = QVBoxLayout(Dialog)
+class Ui_SettingsWindow(object):
+    def setupUi(self, SettingsWindow):
+        if not SettingsWindow.objectName():
+            SettingsWindow.setObjectName(u"SettingsWindow")
+        SettingsWindow.resize(400, 300)
+        self.verticalLayout = QVBoxLayout(SettingsWindow)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.tabWidget = QTabWidget(Dialog)
+        self.tabWidget = QTabWidget(SettingsWindow)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tab = QWidget()
         self.tab.setObjectName(u"tab")
@@ -36,7 +36,7 @@ class Ui_Dialog(object):
 
         self.verticalLayout.addWidget(self.tabWidget)
 
-        self.buttonBox = QDialogButtonBox(Dialog)
+        self.buttonBox = QDialogButtonBox(SettingsWindow)
         self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setOrientation(Qt.Orientation.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
@@ -44,19 +44,19 @@ class Ui_Dialog(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
 
-        self.retranslateUi(Dialog)
-        self.buttonBox.accepted.connect(Dialog.accept)
-        self.buttonBox.rejected.connect(Dialog.reject)
+        self.retranslateUi(SettingsWindow)
+        self.buttonBox.accepted.connect(SettingsWindow.accept)
+        self.buttonBox.rejected.connect(SettingsWindow.reject)
 
         self.tabWidget.setCurrentIndex(0)
 
 
-        QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(SettingsWindow)
     # setupUi
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("Dialog", u"Tab 1", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("Dialog", u"Tab 2", None))
+    def retranslateUi(self, SettingsWindow):
+        SettingsWindow.setWindowTitle(QCoreApplication.translate("SettingsWindow", u"Settings", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("SettingsWindow", u"Tab 1", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QCoreApplication.translate("SettingsWindow", u"Tab 2", None))
     # retranslateUi
 

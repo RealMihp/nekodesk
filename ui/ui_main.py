@@ -36,6 +36,12 @@ class Ui_MainWindow(object):
         self.actionSettings.setObjectName(u"actionSettings")
         self.actionSelect_folder = QAction(MainWindow)
         self.actionSelect_folder.setObjectName(u"actionSelect_folder")
+        self.actionClose_folder = QAction(MainWindow)
+        self.actionClose_folder.setObjectName(u"actionClose_folder")
+        self.actionAbout = QAction(MainWindow)
+        self.actionAbout.setObjectName(u"actionAbout")
+        self.actionCheck_for_updates = QAction(MainWindow)
+        self.actionCheck_for_updates.setObjectName(u"actionCheck_for_updates")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -65,16 +71,19 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.back_pushButton = QPushButton(self.btn_frame)
         self.back_pushButton.setObjectName(u"back_pushButton")
+        self.back_pushButton.setEnabled(False)
 
         self.horizontalLayout_2.addWidget(self.back_pushButton)
 
         self.forward_pushButton = QPushButton(self.btn_frame)
         self.forward_pushButton.setObjectName(u"forward_pushButton")
+        self.forward_pushButton.setEnabled(False)
 
         self.horizontalLayout_2.addWidget(self.forward_pushButton)
 
         self.refresh_pushButton = QPushButton(self.btn_frame)
         self.refresh_pushButton.setObjectName(u"refresh_pushButton")
+        self.refresh_pushButton.setEnabled(False)
 
         self.horizontalLayout_2.addWidget(self.refresh_pushButton)
 
@@ -98,10 +107,10 @@ class Ui_MainWindow(object):
         self.right_frame.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.right_frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.pushButton = QPushButton(self.right_frame)
-        self.pushButton.setObjectName(u"pushButton")
+        self.addSeries_pushButton = QPushButton(self.right_frame)
+        self.addSeries_pushButton.setObjectName(u"addSeries_pushButton")
 
-        self.verticalLayout_2.addWidget(self.pushButton)
+        self.verticalLayout_2.addWidget(self.addSeries_pushButton)
 
         self.library_treeWidget = QTreeWidget(self.right_frame)
         self.library_treeWidget.setObjectName(u"library_treeWidget")
@@ -131,8 +140,12 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
         self.menuLibrary.addSeparator()
         self.menuLibrary.addAction(self.actionSelect_folder)
+        self.menuLibrary.addAction(self.actionClose_folder)
         self.menuLibrary.addAction(self.actionExit)
         self.menuTools.addAction(self.actionSettings)
+        self.menuHelp.addAction(self.actionAbout)
+        self.menuHelp.addSeparator()
+        self.menuHelp.addAction(self.actionCheck_for_updates)
 
         self.retranslateUi(MainWindow)
 
@@ -140,19 +153,28 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Series Library Manager", None))
         self.action1.setText(QCoreApplication.translate("MainWindow", u"1.", None))
         self.actionAdd_new_folder.setText(QCoreApplication.translate("MainWindow", u"Add new folder...", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.actionSettings.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
         self.actionSelect_folder.setText(QCoreApplication.translate("MainWindow", u"Select folder", None))
+#if QT_CONFIG(shortcut)
+        self.actionSelect_folder.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+O", None))
+#endif // QT_CONFIG(shortcut)
+        self.actionClose_folder.setText(QCoreApplication.translate("MainWindow", u"Close folder", None))
+#if QT_CONFIG(shortcut)
+        self.actionClose_folder.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+W", None))
+#endif // QT_CONFIG(shortcut)
+        self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About", None))
+        self.actionCheck_for_updates.setText(QCoreApplication.translate("MainWindow", u"Check for updates", None))
         self.path_lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Path", None))
         self.back_pushButton.setText(QCoreApplication.translate("MainWindow", u"\u2b60", None))
         self.forward_pushButton.setText(QCoreApplication.translate("MainWindow", u"\u2b62", None))
         self.refresh_pushButton.setText(QCoreApplication.translate("MainWindow", u"\u27f3", None))
         ___qtreewidgetitem = self.files_treeWidget.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Folder", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Add anime", None))
+        self.addSeries_pushButton.setText(QCoreApplication.translate("MainWindow", u"Add series", None))
         ___qtreewidgetitem1 = self.library_treeWidget.headerItem()
         ___qtreewidgetitem1.setText(0, QCoreApplication.translate("MainWindow", u"Library", None))
         self.menuLibrary.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
