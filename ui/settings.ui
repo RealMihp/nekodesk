@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>468</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,24 +15,189 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QTabWidget" name="tabWidget">
+    <widget class="QTabWidget" name="settings_tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="appearance_tab">
       <attribute name="title">
-       <string>Tab 1</string>
+       <string>Appearance</string>
       </attribute>
      </widget>
-     <widget class="QWidget" name="tab_2">
+     <widget class="QWidget" name="general_tab">
       <attribute name="title">
-       <string>Tab 2</string>
+       <string>General</string>
       </attribute>
+     </widget>
+     <widget class="QWidget" name="services_tab">
+      <attribute name="title">
+       <string>Services</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <widget class="QFrame" name="serviceTVDB_frame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QLabel" name="serviceTVDB_label">
+            <property name="text">
+             <string>TVDB API Key</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="serviceTVDB_lineEdit">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::EchoMode::Password</enum>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="serviceTMDB_frame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLabel" name="serviceTMDB_label">
+            <property name="text">
+             <string>TMDB API Key</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="serviceTMDB_lineEdit">
+            <property name="text">
+             <string/>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::EchoMode::Password</enum>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="serviceAniList_frame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
+          <item>
+           <layout class="QVBoxLayout" name="serviceAniList_verticalLayout">
+            <item>
+             <widget class="QLabel" name="serviceAniList_label">
+              <property name="text">
+               <string>AniList API Key</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="serviceAniList_horizontalLayout">
+              <item>
+               <widget class="QLineEdit" name="serviceAniList_lineEdit">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="echoMode">
+                 <enum>QLineEdit::EchoMode::Password</enum>
+                </property>
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="serviceAniLis_Auth_pushButton">
+                <property name="text">
+                 <string>Auth</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="serviceMAL_frame">
+         <property name="frameShape">
+          <enum>QFrame::Shape::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Shadow::Raised</enum>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <layout class="QVBoxLayout" name="serviceMAL_verticalLayout">
+            <item>
+             <widget class="QLabel" name="serviceMAL_label">
+              <property name="text">
+               <string>MAL API Key</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="serviceMAL_horizontalLayout">
+              <item>
+               <widget class="QLineEdit" name="serviceMAL_lineEdit">
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="echoMode">
+                 <enum>QLineEdit::EchoMode::Password</enum>
+                </property>
+                <property name="clearButtonEnabled">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="serviceMAL_Auth_pushButton">
+                <property name="text">
+                 <string>Auth</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
+    <widget class="QDialogButtonBox" name="settings_buttonBox">
      <property name="orientation">
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
@@ -46,7 +211,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>settings_buttonBox</sender>
    <signal>accepted()</signal>
    <receiver>SettingsWindow</receiver>
    <slot>accept()</slot>
@@ -62,7 +227,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>settings_buttonBox</sender>
    <signal>rejected()</signal>
    <receiver>SettingsWindow</receiver>
    <slot>reject()</slot>

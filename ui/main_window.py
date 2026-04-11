@@ -9,6 +9,7 @@ import sys, os
 from PySide6.QtWidgets import *
 from ui.ui_main import *
 from ui.add_series_window import *
+from ui.settings_window import *
 from ui.ui_settings import *
 
 
@@ -33,15 +34,24 @@ class MainWindow(QMainWindow):
         self.ui.refresh_pushButton.pressed.connect(self.refresh)
         self.ui.forward_pushButton.pressed.connect(self.forward)
         self.ui.addSeries_pushButton.pressed.connect(self.show_addseries)
+        self.ui.actionSettings.triggered.connect(self.show_settings)
         
     def show_addseries(self):
         dialog = AddSeriesWindow(self)
         
         if dialog.exec(): 
-            print(f"Adding series")
+            print(f"Added series")
            
         else:
             print("Canceled adding series")
+
+    def show_settings(self):
+        dialog = SettingsWindow(self)
+
+        if dialog.exec():
+            print("Changed settings")
+        else:
+            print("Canceled changing settings")
 
     def populate_tree(self, folder_path):
         items = FileScanner.get_items(folder_path)
