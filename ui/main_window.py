@@ -49,6 +49,12 @@ class MainWindow(QMainWindow):
         dialog = SettingsWindow(self)
 
         if dialog.exec():
+            db = SettingsDB()
+            db.set("tvdb_key", dialog.ui.serviceTVDB_lineEdit.text())
+            db.set("tmdb_key", dialog.ui.serviceTMDB_lineEdit.text())
+            db.set("anilist_token", dialog.ui.serviceAniList_lineEdit.text())
+            db.set("mal_token", dialog.ui.serviceMAL_lineEdit.text())
+            
             print("Changed settings")
         else:
             print("Canceled changing settings")
