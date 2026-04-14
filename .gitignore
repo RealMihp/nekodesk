@@ -1,3 +1,6 @@
 venv/
 __pycache__
 data
+test.py
+test.json
+test?.json

@@ -42,14 +42,31 @@ class TVDBClient:
         
         response = requests.get(url, headers=headers, params=params)
         return response.json() if response.status_code == 200 else None
-    
-    
-if __name__ == "__main__":
-        db = SettingsDB()
-        saved_key = db.get("tvdb_key")
 
-        # Create client and search
-        client = TVDBClient(saved_key)
-        if client.authenticate():
-            results = client.search("Sakurasou")
-            print(results)
+    def series(self, tvdb_id: str) -> dict | None:
+        """
+        Get series data
+        """
+        if not self.token:
+            return None
+            
+        url = f"{self.base_url}/series/{tvdb_id}"
+        headers = {"Authorization": f"Bearer {self.token}"}
+        params = {}
+        
+        response = requests.get(url, headers=headers, params=params)
+        return response.json() if response.status_code == 200 else None
+    
+    def ext_series(self, tvdb_id: str) -> dict | None:
+        """
+        Get extended series data
+        """
+        if not self.token:
+            return None
+            
+        url = f"{self.base_url}/series/{tvdb_id}/extended"
+        headers = {"Authorization": f"Bearer {self.token}"}
+        params = {}
+        
+        response = requests.get(url, headers=headers, params=params)
+        return response.json() if response.status_code == 200 else None
