@@ -40,6 +40,18 @@ class Ui_AddSeriesWindow(object):
         self.engine_select_frame.setFrameShadow(QFrame.Shadow.Raised)
         self.horizontalLayout = QHBoxLayout(self.engine_select_frame)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.AniList_radioButton = QRadioButton(self.engine_select_frame)
+        self.AniList_radioButton.setObjectName(u"AniList_radioButton")
+        self.AniList_radioButton.setEnabled(True)
+
+        self.horizontalLayout.addWidget(self.AniList_radioButton)
+
+        self.MAL_radioButton = QRadioButton(self.engine_select_frame)
+        self.MAL_radioButton.setObjectName(u"MAL_radioButton")
+        self.MAL_radioButton.setEnabled(True)
+
+        self.horizontalLayout.addWidget(self.MAL_radioButton)
+
         self.TVDB_radioButton = QRadioButton(self.engine_select_frame)
         self.TVDB_radioButton.setObjectName(u"TVDB_radioButton")
         self.TVDB_radioButton.setEnabled(False)
@@ -51,18 +63,6 @@ class Ui_AddSeriesWindow(object):
         self.TMDB_radioButton.setEnabled(False)
 
         self.horizontalLayout.addWidget(self.TMDB_radioButton)
-
-        self.AniList_radioButton = QRadioButton(self.engine_select_frame)
-        self.AniList_radioButton.setObjectName(u"AniList_radioButton")
-        self.AniList_radioButton.setEnabled(False)
-
-        self.horizontalLayout.addWidget(self.AniList_radioButton)
-
-        self.MAL_radioButton = QRadioButton(self.engine_select_frame)
-        self.MAL_radioButton.setObjectName(u"MAL_radioButton")
-        self.MAL_radioButton.setEnabled(False)
-
-        self.horizontalLayout.addWidget(self.MAL_radioButton)
 
 
         self.verticalLayout_2.addWidget(self.engine_select_frame)
@@ -207,10 +207,10 @@ class Ui_AddSeriesWindow(object):
 
     def retranslateUi(self, AddSeriesWindow):
         AddSeriesWindow.setWindowTitle(QCoreApplication.translate("AddSeriesWindow", u"Add series", None))
-        self.TVDB_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"TVDB", None))
-        self.TMDB_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"TMDB", None))
         self.AniList_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"AniList", None))
         self.MAL_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"MAL", None))
+        self.TVDB_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"TVDB", None))
+        self.TMDB_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"TMDB", None))
         self.scan_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Scan folder", None))
         self.scan_folder_browse_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Browse", None))
         self.scan_start_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Start scan", None))

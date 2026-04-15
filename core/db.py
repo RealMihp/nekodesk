@@ -44,56 +44,77 @@ class LibraryDB:
             conn.execute('''
                 CREATE TABLE IF NOT EXISTS library (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    tvdb_id TEXT,
-                    tmdb_id TEXT,
-                    anilist_id TEXT,
-                    mal_id TEXT,
-                    type TEXT,          -- Movie, Series, OVA, etc.
-                    titles TEXT,        -- JSON: {"en": "...", "ru": "...", "jp": "..."}
-                    descriptions TEXT,  -- JSON: {"en": "...", "ru": "...", "jp": "..."}
-                    year INTEGER,
+                    anilist_id TEXT UNIQUE,
+                    mal_id TEXT UNIQUE,
+                    title_romaji TEXT,
+                    title_english TEXT,
+                    title_native TEXT,
+                    desc TEXT,
+                    format TEXT,
                     status TEXT,
+                    origin_country TEXT,
+                    season TEXT,
+                    season_year INTEGER,
+                    episodes INTEGER,
+                    duration INTEGER,
+                    genres TEXT,
+                    synonyms TEXT,
                     score INTEGER,
-                    seasons INTEGER,
-                    avg_runtime INTEGER,
-                    genres TEXT,        -- Store as comma-separated or JSON
-                    source TEXT,        -- Manga, Light Novel, Original
-                    original_country TEXT,
-                    original_language TEXT,
-                    has_local_path BOOLEAN DEFAULT 0,
-                    local_path TEXT,
-                    poster_link TEXT,
-                    poster_path TEXT
+                    is_adult BOOLEAN,
+                    poster_color TEXT,
+                    poster_small_link TEXT,
+                    poster_large_link TEXT,
+                    poster_small_path TEXT,
+                    poster_large_path TEXT,
+                    banner_link TEXT,
+                    banner_path TEXT,
+                    studio TEXT
                 )
             ''')
-            conn.execute('''
-                CREATE TABLE IF NOT EXISTS episodes (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    series_id INTEGER,
-                    season_number INTEGER,
-                    episode_number INTEGER,
-                    titles TEXT,    -- JSON: {"en": "...", "ru": "...", "jp": "..."}
-                    descriptions TEXT,  -- JSON: {"en": "...", "ru": "...", "jp": "..."}
-                    air_date TEXT,
-                    runtime INTEGER,
-                    FOREIGN KEY (series_id) REFERENCES library (id) ON DELETE CASCADE
-                )
-            ''')
+            
     
-    def add_series(self, title_data):
+    def add_title(self, title_data):
         """
         Saves metadata to the library table.
         title_data: A dictionary containing all the info from API.
         """
-        title_data = title_data.get("data")
+        title_data = title_data[0]
+        d = title_data
+
         with sqlite3.connect(self.db_path) as conn:
             query = '''
-                INSERT INTO library (
-                    tvdb_id) VALUES (?)
+                INSERT OR REPLACE INTO library (anilist_id, mal_id, title_romaji, title_english, title_native, desc, format, status, origin_country, season,
+                season_year, episodes, duration, genres, synonyms, score, is_adult, poster_color, poster_small_link, poster_large_link, poster_small_path, poster_large_path,
+                banner_link, banner_path, studio
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             '''
             
             values = (
-                title_data.get('id'),
+                d.get('id'),
+                d.get('idMal'),
+                d.get('title', {}).get('romaji'),
+                d.get('title', {}).get('english'),
+                d.get('title', {}).get('native'),
+                d.get('description'),
+                d.get('format'),
+                d.get('status'),
+                d.get('countryOfOrigin'),
+                d.get('season'),
+                d.get('seasonYear'),
+                d.get('episodes'),
+                d.get('duration'),
+                ', '.join(d.get('genres')),
+                ', '.join(d.get('synonyms')),
+                d.get('averageScore'),
+                d.get('isAdult'),
+                d.get('coverImage', {}).get('color'),
+                d.get('coverImage', {}).get('medium'),
+                d.get('coverImage', {}).get('extraLarge'),
+                None,
+                None,
+                d.get('bannerImage'),
+                None,
+                d.get('studios', {}).get('nodes', {})[0].get('name'),
             )
             
             cursor = conn.execute(query, values)

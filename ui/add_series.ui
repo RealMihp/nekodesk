@@ -33,6 +33,26 @@
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
+          <widget class="QRadioButton" name="AniList_radioButton">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>AniList</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="MAL_radioButton">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>MAL</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QRadioButton" name="TVDB_radioButton">
            <property name="enabled">
             <bool>false</bool>
@@ -49,26 +69,6 @@
            </property>
            <property name="text">
             <string>TMDB</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="AniList_radioButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>AniList</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="MAL_radioButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>MAL</string>
            </property>
           </widget>
          </item>
