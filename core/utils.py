@@ -19,10 +19,10 @@ class ImageManager:
         try:
             # Extract filename and ID from the URL (TVDB style)
             file_name = link.split("/")[-1]
-            tvdb_id = file_name.split("-")[0]
+            
             
             # Create a subfolder for each series to keep things organized
-            folder_path = os.path.join(self.posters_path, tvdb_id)
+            folder_path = os.path.join(self.posters_path)
             file_path = os.path.join(folder_path, file_name)
 
             os.makedirs(folder_path, exist_ok=True)
