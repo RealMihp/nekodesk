@@ -1,6 +1,6 @@
 import os
 import requests
-from PySide6.QtGui import QPixmap
+from PySide6.QtGui import QColor, QIcon, QPixmap
 
 class ImageManager:
     def __init__(self, posters_path="data/posters"):
@@ -17,11 +17,9 @@ class ImageManager:
         :return: QPixmap object or None if failed
         """
         try:
-            # Extract filename and ID from the URL (TVDB style)
             file_name = link.split("/")[-1]
             
-            
-            # Create a subfolder for each series to keep things organized
+
             folder_path = os.path.join(self.posters_path)
             file_path = os.path.join(folder_path, file_name)
 
@@ -52,3 +50,50 @@ class ImageManager:
         except Exception as e:
             print(f"Error processing poster link: {e}")
             return None
+        
+
+    def get_posters(self, links, session=None) -> dict | None:
+        posters_path = self.posters_path
+        s = session or requests.Session()
+        posters_data = {}
+        
+        os.makedirs(posters_path, exist_ok=True)
+
+        for link in links:
+            if not link: continue
+            
+            file_name = link.split("/")[-1]
+            file_path = os.path.join(posters_path, file_name)
+            pixmap = QPixmap()
+
+            try:
+                # 1. Check if the file already exists locally
+                if os.path.exists(file_path):
+                    if pixmap.load(file_path):
+                        posters_data[link] = pixmap
+                        continue
+
+                # 2. If not, download it
+                response = s.get(link, timeout=10)
+                if response.status_code == 200:
+                    with open(file_path, "wb") as f:
+                        f.write(response.content)
+                    if pixmap.loadFromData(response.content):
+                        posters_data[link] = pixmap
+                else:
+                    posters_data[link] = None
+
+            except Exception as e:
+                print(f"Error {link}: {e}")
+                posters_data[link] = None
+
+        return posters_data
+
+    def get_color_icon(self, hex_color: str, width=64, height=96):
+        pixmap = QPixmap(width, height)
+        
+        color = QColor(hex_color) if hex_color else QColor("#cccccc")
+
+        pixmap.fill(color)
+        
+        return QIcon(pixmap)

@@ -3,6 +3,7 @@ import requests
 class AniListClient:
     def __init__(self):
         self.url = 'https://graphql.anilist.co'
+        self.session = requests.Session()
         self.query = '''
         query ($id: Int, $search: String, $isMain: Boolean) {
             Page (page: 1, perPage: 5) {
@@ -55,7 +56,7 @@ class AniListClient:
         variables = {'search': search_query, "isMain": True}
         
         try:
-            response = requests.post(self.url, json={'query': self.query, 'variables': variables})
+            response = self.session.post(self.url, json={'query': self.query, 'variables': variables})
             if response.status_code == 200:
                 res_json = response.json()
                 page_data = res_json.get('data', {}).get('Page', {})
@@ -63,10 +64,10 @@ class AniListClient:
                 
                 return media_list 
             else:
-                print(f"Ошибка API: {response.status_code}")
+                print(f"API error: {response.status_code}")
                 return None
         except Exception as e:
-            print(f"Ошибка запроса: {e}")
+            print(f"Request error: {e}")
             return None
         
     def get_title(self, anilist_id: int):
@@ -77,10 +78,9 @@ class AniListClient:
             'isMain': True
         }
         
-        response = requests.post(self.url, json={'query': query, 'variables': variables})
         
         try:
-            response = requests.post(self.url, json={'query': self.query, 'variables': variables})
+            response = self.session.post(self.url, json={'query': self.query, 'variables': variables})
             if response.status_code == 200:
                 res_json = response.json()
                 page_data = res_json.get('data', {}).get('Page', {})
@@ -88,8 +88,8 @@ class AniListClient:
                 
                 return media_list
             else:
-                print(f"Ошибка API: {response.status_code}")
+                print(f"API error: {response.status_code}")
                 return None
         except Exception as e:
-            print(f"Ошибка запроса: {e}")
+            print(f"Request error: {e}")
             return None

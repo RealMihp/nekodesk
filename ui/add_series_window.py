@@ -20,7 +20,7 @@ class AddSeriesWindow(QDialog):
         super().__init__(parent)
         self.ui = Ui_AddSeriesWindow()
         self.ui.setupUi(self)
-
+        
         self.ui.AniList_radioButton.setChecked(True)
         self.ui.search_pushButton.pressed.connect(self.populate_search_tree)
         self.ui.search_pushButton.setEnabled(True)
@@ -39,17 +39,35 @@ class AddSeriesWindow(QDialog):
         self.ui.search_treeWidget.setIconSize(QSize(64, 96))
 
         if self.ui.AniList_radioButton.isChecked():
-            Client = AniListClient()
-            results = Client.search_title(query)
+            client = AniListClient()
+            results = client.search_title(query)
+            
+            if not results:
+                return
+
+
+            links = [r.get('coverImage', {}).get('extraLarge') for r in results if r.get('coverImage')]
+            
+            imgm = ImageManager()
+            posters_map = imgm.get_posters(links, session=client.session)
 
             for result in results:
                 title = result.get('title', {}).get('romaji') or "Unknown Title"
                 year = str(result.get('seasonYear') or "N/A")
                 status = result.get('status') or "Unknown"
                 anime_id = str(result.get('id'))
-                poster = imgm.get_poster(result.get('coverImage', {}).get('extraLarge'))
+                
+                link = result.get('coverImage', {}).get('extraLarge')
+                color = result.get('coverImage', {}).get('color')
+                pixmap = posters_map.get(link)
+                
                 item = QTreeWidgetItem([title, year, status])
-                item.setIcon(0, poster)
+                
+                if pixmap and not pixmap.isNull():
+                    item.setIcon(0, QIcon(pixmap))
+                else:
+                    pixmap = imgm.get_color_icon(color)
+                    item.setIcon(0, QIcon(pixmap))
+                
                 item.setData(0, ID_ROLE, anime_id)
-
                 self.ui.search_treeWidget.addTopLevelItem(item)
