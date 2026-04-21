@@ -3,7 +3,6 @@ import os
 class FileScanner:
     @staticmethod
     def get_items(folder_path):
-        """Возвращает список объектов с данными о файлах и папках."""
         try:
             folder_path = folder_path.replace('\\', '/')
             raw_items = os.listdir(folder_path)

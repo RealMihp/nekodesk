@@ -6,7 +6,7 @@ class AniListClient:
         self.session = requests.Session()
         self.query = '''
         query ($id: Int, $search: String, $isMain: Boolean) {
-            Page (page: 1, perPage: 5) {
+            Page (page: 1, perPage: 10) {
                 pageInfo {
                 total
                 hasNextPage

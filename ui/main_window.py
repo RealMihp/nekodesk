@@ -1,7 +1,7 @@
 import PySide6
-from PySide6.QtWidgets import QTreeWidgetItem
+from PySide6.QtWidgets import QTreeWidgetItem, QMenu
 from core.logic import FileScanner
-from PySide6.QtGui import QDesktopServices
+from PySide6.QtGui import QDesktopServices, QAction
 from PySide6.QtCore import QUrl
 
 import sys, os
@@ -23,10 +23,14 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.history = []
         self.forward_stack = []
+        self.ldbclient = LibraryDB()
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.ui.library_treeWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+
+        self.ui.library_treeWidget.customContextMenuRequested.connect(self.show_library_context_menu)
         self.ui.actionSelect_folder.triggered.connect(self.select_folder)
         self.ui.actionClose_folder.triggered.connect(self.close_folder)
         self.ui.files_treeWidget.itemDoubleClicked.connect(self.open_item)
@@ -35,7 +39,29 @@ class MainWindow(QMainWindow):
         self.ui.forward_pushButton.pressed.connect(self.forward)
         self.ui.addSeries_pushButton.pressed.connect(self.show_addseries)
         self.ui.actionSettings.triggered.connect(self.show_settings)
+
+        self.refresh_library()
         
+    def show_library_context_menu(self, pos):
+        item = self.ui.library_treeWidget.itemAt(pos)
+
+        menu = QMenu(self)
+        open_action = QAction('Details', self)
+        remove_action = QAction('Remove from library', self)
+
+        anilist_id = item.data(0, Qt.ItemDataRole.UserRole)
+        remove_action.triggered.connect(lambda: self.remove_title(anilist_id))
+
+        menu.addAction(open_action)
+        menu.addSeparator()
+        menu.addAction(remove_action)
+
+        menu.exec(self.ui.library_treeWidget.mapToGlobal(pos))
+
+    def remove_title(self, anilist_id: str):
+        self.ldbclient.remove_title_by_id(anilist_id)
+        self.refresh_library()
+
     def show_addseries(self):
         dialog = AddSeriesWindow(self)
         
@@ -44,6 +70,7 @@ class MainWindow(QMainWindow):
            
         else:
             print("Canceled adding series")
+        self.refresh_library()
 
     def show_settings(self):
         dialog = SettingsWindow(self)
@@ -141,5 +168,30 @@ class MainWindow(QMainWindow):
             next_folder = self.forward_stack.pop()
             self.populate_tree(next_folder)
 
+    def refresh_library(self):
+        widget = self.ui.library_treeWidget
+        widget.clear()
+        widget.setIconSize(QSize(64, 96))
 
+        titles = self.ldbclient.get_all_titles()
+
+        for title in titles:
+            name = title.get('title_romaji') or "Unknown"
+            status = title.get('status') or "N/A"
+            episodes = str(title.get('episodes') or "?")
             
+            item = QTreeWidgetItem([name, status, episodes])
+
+            path = title.get('poster_small_path')
+            if path and os.path.exists(path):
+                item.setIcon(0, QIcon(path))
+            else:
+                color = title.get('poster_color')
+                if color:
+                    pix = QPixmap(40, 60)
+                    pix.fill(QColor(color))
+                    item.setIcon(0, QIcon(pix))
+
+            item.setData(0, Qt.ItemDataRole.UserRole, title.get('anilist_id'))
+
+            widget.addTopLevelItem(item)

@@ -1,12 +1,14 @@
 import sqlite3
 import os
 import json
+from core.utils import *
 
 class SettingsDB:
     def __init__(self, db_path='data/settings.db'):
         os.makedirs(os.path.dirname(db_path), exist_ok=True)
         self.db_path = db_path
         self._create_table()
+        
 
     def _create_table(self):
         with sqlite3.connect(self.db_path) as conn:
@@ -38,13 +40,13 @@ class LibraryDB:
     def __init__(self, db_path='data/library.db'):
         self.db_path = db_path
         self._create_tables()
+        self.utilsClient = ImageManager()
     
     def _create_tables(self):
         with sqlite3.connect(self.db_path) as conn:
             conn.execute('''
                 CREATE TABLE IF NOT EXISTS library (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    anilist_id TEXT UNIQUE,
+                    anilist_id TEXT PRIMARY KEY UNIQUE,
                     mal_id TEXT UNIQUE,
                     title_romaji TEXT,
                     title_english TEXT,
@@ -76,9 +78,9 @@ class LibraryDB:
     def add_title(self, title_data):
         """
         Saves metadata to the library table.
-        title_data: A dictionary containing all the info from API.
+        title_data: A list containing all the info from API.
         """
-        title_data = title_data[0]
+        #title_data = title_data[number]
         d = title_data
 
         with sqlite3.connect(self.db_path) as conn:
@@ -88,6 +90,17 @@ class LibraryDB:
                 banner_link, banner_path, studio
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             '''
+            
+            medium = d.get('coverImage', {}).get('medium')
+            extraLarge = d.get('coverImage', {}).get('extraLarge')
+            banner = d.get('bannerImage')
+            links = [medium, extraLarge, banner]
+
+            paths = self.utilsClient.get_posters(links)
+            path_small = paths.get(medium, (None, None))[1]
+            path_extraLarge = paths.get(extraLarge, (None, None))[1]
+            path_banner = paths.get(banner, (None, None))[1]
+
             
             values = (
                 d.get('id'),
@@ -108,15 +121,28 @@ class LibraryDB:
                 d.get('averageScore'),
                 d.get('isAdult'),
                 d.get('coverImage', {}).get('color'),
-                d.get('coverImage', {}).get('medium'),
-                d.get('coverImage', {}).get('extraLarge'),
-                None,
-                None,
-                d.get('bannerImage'),
-                None,
-                d.get('studios', {}).get('nodes', {})[0].get('name'),
+                medium,
+                extraLarge,
+                path_small,
+                path_extraLarge,
+                banner,
+                path_banner,
+                (d.get('studios', {}).get('nodes', []) or [{}])[0].get('name', 'Unknown'),
             )
             
             cursor = conn.execute(query, values)
             return cursor.lastrowid  # Returns the ID of the title
         
+    def get_all_titles(self):
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.execute('SELECT * FROM library')
+            return [dict(row) for row in cursor.fetchall()]
+        
+    def remove_title_by_id(self, anilist_id):
+        query = "DELETE FROM library WHERE anilist_id = ?"
+        with sqlite3.connect(self.db_path) as conn:
+            c = conn.execute(query, (anilist_id,))
+            return c.rowcount > 0
+            
+            

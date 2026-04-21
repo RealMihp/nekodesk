@@ -20,11 +20,16 @@ class AddSeriesWindow(QDialog):
         super().__init__(parent)
         self.ui = Ui_AddSeriesWindow()
         self.ui.setupUi(self)
-        
+        self.ldbclient = LibraryDB()
+        self.search_data_cache = []
+
         self.ui.AniList_radioButton.setChecked(True)
         self.ui.search_pushButton.pressed.connect(self.populate_search_tree)
         self.ui.search_pushButton.setEnabled(True)
 
+        self.ui.search_treeWidget.itemSelectionChanged.connect(lambda: self.ui.search_add_pushButton.setEnabled(True))
+
+        self.ui.search_add_pushButton.pressed.connect(self.handle_add_series)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
 
@@ -36,6 +41,7 @@ class AddSeriesWindow(QDialog):
         imgm = ImageManager()
 
         self.ui.search_treeWidget.clear()
+        self.search_data_cache = []
         self.ui.search_treeWidget.setIconSize(QSize(64, 96))
 
         if self.ui.AniList_radioButton.isChecked():
@@ -44,7 +50,8 @@ class AddSeriesWindow(QDialog):
             
             if not results:
                 return
-
+            
+            self.search_data_cache = results
 
             links = [r.get('coverImage', {}).get('extraLarge') for r in results if r.get('coverImage')]
             
@@ -59,7 +66,7 @@ class AddSeriesWindow(QDialog):
                 
                 link = result.get('coverImage', {}).get('extraLarge')
                 color = result.get('coverImage', {}).get('color')
-                pixmap = posters_map.get(link)
+                pixmap = posters_map.get(link, (None, None))[0]
                 
                 item = QTreeWidgetItem([title, year, status])
                 
@@ -71,3 +78,15 @@ class AddSeriesWindow(QDialog):
                 
                 item.setData(0, ID_ROLE, anime_id)
                 self.ui.search_treeWidget.addTopLevelItem(item)
+
+    def handle_add_series(self):
+        selected_items = self.ui.search_treeWidget.selectedItems()
+        if not selected_items:
+            return
+
+        item = selected_items[0]
+        
+        index = self.ui.search_treeWidget.indexOfTopLevelItem(item)
+        
+        if 0 <= index < len(self.search_data_cache):
+            self.ldbclient.add_title(self.search_data_cache[index])

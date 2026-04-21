@@ -21,7 +21,7 @@ class ImageManager:
             
 
             folder_path = os.path.join(self.posters_path)
-            file_path = os.path.join(folder_path, file_name)
+            file_path = os.path.join(folder_path, file_name).replace('\\', '/')
 
             os.makedirs(folder_path, exist_ok=True)
 
@@ -63,14 +63,14 @@ class ImageManager:
             if not link: continue
             
             file_name = link.split("/")[-1]
-            file_path = os.path.join(posters_path, file_name)
+            file_path = os.path.join(posters_path, file_name).replace('\\', '/')
             pixmap = QPixmap()
 
             try:
                 # 1. Check if the file already exists locally
                 if os.path.exists(file_path):
                     if pixmap.load(file_path):
-                        posters_data[link] = pixmap
+                        posters_data[link] = (pixmap, file_path)
                         continue
 
                 # 2. If not, download it
@@ -79,7 +79,7 @@ class ImageManager:
                     with open(file_path, "wb") as f:
                         f.write(response.content)
                     if pixmap.loadFromData(response.content):
-                        posters_data[link] = pixmap
+                        posters_data[link] = (pixmap, file_path)
                 else:
                     posters_data[link] = None
 
