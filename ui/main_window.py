@@ -7,6 +7,7 @@ from PySide6.QtCore import QUrl
 import sys, os
 
 from PySide6.QtWidgets import *
+from ui.title_details_window import Title_detailsWindow
 from ui.ui_main import *
 from ui.add_series_window import *
 from ui.settings_window import *
@@ -41,6 +42,10 @@ class MainWindow(QMainWindow):
         self.ui.actionSettings.triggered.connect(self.show_settings)
 
         self.refresh_library()
+
+    def show_details(self):
+        self.details_window = Title_detailsWindow(self) 
+        self.details_window.show()
         
     def show_library_context_menu(self, pos):
         item = self.ui.library_treeWidget.itemAt(pos)
@@ -50,6 +55,7 @@ class MainWindow(QMainWindow):
         remove_action = QAction('Remove from library', self)
 
         anilist_id = item.data(0, Qt.ItemDataRole.UserRole)
+        open_action.triggered.connect(self.show_details)
         remove_action.triggered.connect(lambda: self.remove_title(anilist_id))
 
         menu.addAction(open_action)

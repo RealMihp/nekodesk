@@ -19,211 +19,220 @@ from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialogButtonBox, 
     QHBoxLayout, QLabel, QSizePolicy, QSpacerItem,
     QTabWidget, QVBoxLayout, QWidget)
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        if not Form.objectName():
-            Form.setObjectName(u"Form")
-        Form.resize(727, 586)
-        self.buttonBox = QDialogButtonBox(Form)
-        self.buttonBox.setObjectName(u"buttonBox")
-        self.buttonBox.setGeometry(QRect(540, 550, 168, 26))
-        self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
-        self.widget = QWidget(Form)
-        self.widget.setObjectName(u"widget")
-        self.widget.setGeometry(QRect(0, 10, 721, 531))
-        self.verticalLayout_7 = QVBoxLayout(self.widget)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_7.setContentsMargins(0, 0, 0, 0)
-        self.label_14 = QLabel(self.widget)
-        self.label_14.setObjectName(u"label_14")
-        self.label_14.setFrameShape(QFrame.Shape.StyledPanel)
-        self.label_14.setAlignment(Qt.AlignmentFlag.AlignCenter)
+class Ui_details_widget(object):
+    def setupUi(self, details_widget):
+        if not details_widget.objectName():
+            details_widget.setObjectName(u"details_widget")
+        details_widget.resize(745, 640)
+        self.verticalLayout_8 = QVBoxLayout(details_widget)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.main_verticalLayout = QVBoxLayout()
+        self.main_verticalLayout.setObjectName(u"main_verticalLayout")
+        self.banner_label = QLabel(details_widget)
+        self.banner_label.setObjectName(u"banner_label")
+        self.banner_label.setFrameShape(QFrame.Shape.StyledPanel)
+        self.banner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.verticalLayout_7.addWidget(self.label_14)
+        self.main_verticalLayout.addWidget(self.banner_label)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.frame = QFrame(self.widget)
-        self.frame.setObjectName(u"frame")
-        self.frame.setFrameShape(QFrame.Shape.NoFrame)
-        self.frame.setFrameShadow(QFrame.Shadow.Raised)
-        self.verticalLayout_5 = QVBoxLayout(self.frame)
+        self.info_horizontalLayout = QHBoxLayout()
+        self.info_horizontalLayout.setObjectName(u"info_horizontalLayout")
+        self.poster_frame = QFrame(details_widget)
+        self.poster_frame.setObjectName(u"poster_frame")
+        self.poster_frame.setFrameShape(QFrame.Shape.NoFrame)
+        self.poster_frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.poster_frame)
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.label = QLabel(self.frame)
-        self.label.setObjectName(u"label")
-        self.label.setFrameShape(QFrame.Shape.StyledPanel)
-        self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setOpenExternalLinks(True)
+        self.poster_label = QLabel(self.poster_frame)
+        self.poster_label.setObjectName(u"poster_label")
+        self.poster_label.setFrameShape(QFrame.Shape.StyledPanel)
+        self.poster_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.poster_label.setOpenExternalLinks(True)
 
-        self.verticalLayout_5.addWidget(self.label)
+        self.verticalLayout_5.addWidget(self.poster_label)
 
-        self.verticalSpacer = QSpacerItem(20, 119, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.poster_verticalSpacer = QSpacerItem(20, 119, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.verticalLayout_5.addItem(self.verticalSpacer)
+        self.verticalLayout_5.addItem(self.poster_verticalSpacer)
 
         self.verticalLayout_5.setStretch(0, 2)
         self.verticalLayout_5.setStretch(1, 1)
 
-        self.horizontalLayout.addWidget(self.frame)
+        self.info_horizontalLayout.addWidget(self.poster_frame)
 
-        self.verticalLayout_6 = QVBoxLayout()
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.label_2 = QLabel(self.widget)
-        self.label_2.setObjectName(u"label_2")
+        self.main_info_verticalLayout = QVBoxLayout()
+        self.main_info_verticalLayout.setObjectName(u"main_info_verticalLayout")
+        self.title_label = QLabel(details_widget)
+        self.title_label.setObjectName(u"title_label")
 
-        self.verticalLayout_6.addWidget(self.label_2)
+        self.main_info_verticalLayout.addWidget(self.title_label)
 
-        self.tabWidget = QTabWidget(self.widget)
+        self.tabWidget = QTabWidget(details_widget)
         self.tabWidget.setObjectName(u"tabWidget")
         self.tabWidget.setTabBarAutoHide(True)
-        self.tab_1 = QWidget()
-        self.tab_1.setObjectName(u"tab_1")
-        self.verticalLayout_4 = QVBoxLayout(self.tab_1)
+        self.main_info_tab = QWidget()
+        self.main_info_tab.setObjectName(u"main_info_tab")
+        self.verticalLayout_4 = QVBoxLayout(self.main_info_tab)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.label_3 = QLabel(self.tab_1)
-        self.label_3.setObjectName(u"label_3")
+        self.synonyms_verticalLayout = QVBoxLayout()
+        self.synonyms_verticalLayout.setObjectName(u"synonyms_verticalLayout")
+        self.synonyms_header_label = QLabel(self.main_info_tab)
+        self.synonyms_header_label.setObjectName(u"synonyms_header_label")
         font = QFont()
         font.setBold(True)
         font.setUnderline(False)
-        self.label_3.setFont(font)
+        self.synonyms_header_label.setFont(font)
 
-        self.verticalLayout.addWidget(self.label_3)
+        self.synonyms_verticalLayout.addWidget(self.synonyms_header_label)
 
-        self.line = QFrame(self.tab_1)
-        self.line.setObjectName(u"line")
-        self.line.setFrameShape(QFrame.Shape.HLine)
-        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+        self.synonyms_line = QFrame(self.main_info_tab)
+        self.synonyms_line.setObjectName(u"synonyms_line")
+        self.synonyms_line.setFrameShape(QFrame.Shape.HLine)
+        self.synonyms_line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout.addWidget(self.line)
+        self.synonyms_verticalLayout.addWidget(self.synonyms_line)
 
-        self.label_4 = QLabel(self.tab_1)
-        self.label_4.setObjectName(u"label_4")
+        self.synonyms_label = QLabel(self.main_info_tab)
+        self.synonyms_label.setObjectName(u"synonyms_label")
 
-        self.verticalLayout.addWidget(self.label_4)
+        self.synonyms_verticalLayout.addWidget(self.synonyms_label)
 
 
-        self.verticalLayout_4.addLayout(self.verticalLayout)
+        self.verticalLayout_4.addLayout(self.synonyms_verticalLayout)
 
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.label_5 = QLabel(self.tab_1)
-        self.label_5.setObjectName(u"label_5")
+        self.details_verticalLayout = QVBoxLayout()
+        self.details_verticalLayout.setObjectName(u"details_verticalLayout")
+        self.details_header_label = QLabel(self.main_info_tab)
+        self.details_header_label.setObjectName(u"details_header_label")
         font1 = QFont()
         font1.setBold(True)
-        self.label_5.setFont(font1)
+        self.details_header_label.setFont(font1)
 
-        self.verticalLayout_2.addWidget(self.label_5)
+        self.details_verticalLayout.addWidget(self.details_header_label)
 
-        self.line_2 = QFrame(self.tab_1)
-        self.line_2.setObjectName(u"line_2")
-        self.line_2.setFrameShape(QFrame.Shape.HLine)
-        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
+        self.details_header_line = QFrame(self.main_info_tab)
+        self.details_header_line.setObjectName(u"details_header_line")
+        self.details_header_line.setFrameShape(QFrame.Shape.HLine)
+        self.details_header_line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_2.addWidget(self.line_2)
+        self.details_verticalLayout.addWidget(self.details_header_line)
 
-        self.label_6 = QLabel(self.tab_1)
-        self.label_6.setObjectName(u"label_6")
+        self.type_label = QLabel(self.main_info_tab)
+        self.type_label.setObjectName(u"type_label")
 
-        self.verticalLayout_2.addWidget(self.label_6)
+        self.details_verticalLayout.addWidget(self.type_label)
 
-        self.label_7 = QLabel(self.tab_1)
-        self.label_7.setObjectName(u"label_7")
+        self.episodes_label = QLabel(self.main_info_tab)
+        self.episodes_label.setObjectName(u"episodes_label")
 
-        self.verticalLayout_2.addWidget(self.label_7)
+        self.details_verticalLayout.addWidget(self.episodes_label)
 
-        self.label_8 = QLabel(self.tab_1)
-        self.label_8.setObjectName(u"label_8")
+        self.status_label = QLabel(self.main_info_tab)
+        self.status_label.setObjectName(u"status_label")
 
-        self.verticalLayout_2.addWidget(self.label_8)
+        self.details_verticalLayout.addWidget(self.status_label)
 
-        self.label_9 = QLabel(self.tab_1)
-        self.label_9.setObjectName(u"label_9")
+        self.score_label = QLabel(self.main_info_tab)
+        self.score_label.setObjectName(u"score_label")
 
-        self.verticalLayout_2.addWidget(self.label_9)
+        self.details_verticalLayout.addWidget(self.score_label)
 
-        self.label_10 = QLabel(self.tab_1)
-        self.label_10.setObjectName(u"label_10")
+        self.season_label = QLabel(self.main_info_tab)
+        self.season_label.setObjectName(u"season_label")
 
-        self.verticalLayout_2.addWidget(self.label_10)
+        self.details_verticalLayout.addWidget(self.season_label)
 
-        self.label_11 = QLabel(self.tab_1)
-        self.label_11.setObjectName(u"label_11")
+        self.genres_label = QLabel(self.main_info_tab)
+        self.genres_label.setObjectName(u"genres_label")
 
-        self.verticalLayout_2.addWidget(self.label_11)
+        self.details_verticalLayout.addWidget(self.genres_label)
+
+        self.studio_label = QLabel(self.main_info_tab)
+        self.studio_label.setObjectName(u"studio_label")
+
+        self.details_verticalLayout.addWidget(self.studio_label)
 
 
-        self.verticalLayout_4.addLayout(self.verticalLayout_2)
+        self.verticalLayout_4.addLayout(self.details_verticalLayout)
 
-        self.verticalLayout_3 = QVBoxLayout()
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.label_12 = QLabel(self.tab_1)
-        self.label_12.setObjectName(u"label_12")
-        self.label_12.setFont(font1)
+        self.desc_verticalLayout = QVBoxLayout()
+        self.desc_verticalLayout.setObjectName(u"desc_verticalLayout")
+        self.desc_header_label = QLabel(self.main_info_tab)
+        self.desc_header_label.setObjectName(u"desc_header_label")
+        self.desc_header_label.setFont(font1)
 
-        self.verticalLayout_3.addWidget(self.label_12)
+        self.desc_verticalLayout.addWidget(self.desc_header_label)
 
-        self.line_3 = QFrame(self.tab_1)
-        self.line_3.setObjectName(u"line_3")
-        self.line_3.setFrameShape(QFrame.Shape.HLine)
-        self.line_3.setFrameShadow(QFrame.Shadow.Sunken)
+        self.desc_header_line = QFrame(self.main_info_tab)
+        self.desc_header_line.setObjectName(u"desc_header_line")
+        self.desc_header_line.setFrameShape(QFrame.Shape.HLine)
+        self.desc_header_line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_3.addWidget(self.line_3)
+        self.desc_verticalLayout.addWidget(self.desc_header_line)
 
-        self.label_13 = QLabel(self.tab_1)
-        self.label_13.setObjectName(u"label_13")
-        self.label_13.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
+        self.desc_label = QLabel(self.main_info_tab)
+        self.desc_label.setObjectName(u"desc_label")
+        self.desc_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
 
-        self.verticalLayout_3.addWidget(self.label_13)
+        self.desc_verticalLayout.addWidget(self.desc_label)
 
-        self.verticalLayout_3.setStretch(0, 1)
-        self.verticalLayout_3.setStretch(1, 1)
-        self.verticalLayout_3.setStretch(2, 4)
+        self.desc_verticalLayout.setStretch(0, 1)
+        self.desc_verticalLayout.setStretch(1, 1)
+        self.desc_verticalLayout.setStretch(2, 4)
 
-        self.verticalLayout_4.addLayout(self.verticalLayout_3)
+        self.verticalLayout_4.addLayout(self.desc_verticalLayout)
 
-        self.tabWidget.addTab(self.tab_1, "")
+        self.tabWidget.addTab(self.main_info_tab, "")
 
-        self.verticalLayout_6.addWidget(self.tabWidget)
+        self.main_info_verticalLayout.addWidget(self.tabWidget)
 
-        self.verticalLayout_6.setStretch(0, 1)
-        self.verticalLayout_6.setStretch(1, 10)
+        self.main_info_verticalLayout.setStretch(0, 1)
+        self.main_info_verticalLayout.setStretch(1, 10)
 
-        self.horizontalLayout.addLayout(self.verticalLayout_6)
+        self.info_horizontalLayout.addLayout(self.main_info_verticalLayout)
 
-        self.horizontalLayout.setStretch(0, 2)
-        self.horizontalLayout.setStretch(1, 5)
+        self.info_horizontalLayout.setStretch(0, 2)
+        self.info_horizontalLayout.setStretch(1, 5)
 
-        self.verticalLayout_7.addLayout(self.horizontalLayout)
+        self.main_verticalLayout.addLayout(self.info_horizontalLayout)
 
-        self.verticalLayout_7.setStretch(0, 2)
-        self.verticalLayout_7.setStretch(1, 6)
+        self.main_verticalLayout.setStretch(0, 2)
+        self.main_verticalLayout.setStretch(1, 6)
 
-        self.retranslateUi(Form)
+        self.verticalLayout_8.addLayout(self.main_verticalLayout)
+
+        self.buttonBox = QDialogButtonBox(details_widget)
+        self.buttonBox.setObjectName(u"buttonBox")
+        self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
+
+        self.verticalLayout_8.addWidget(self.buttonBox)
+
+
+        self.retranslateUi(details_widget)
 
         self.tabWidget.setCurrentIndex(0)
 
 
-        QMetaObject.connectSlotsByName(Form)
+        QMetaObject.connectSlotsByName(details_widget)
     # setupUi
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.label_14.setText(QCoreApplication.translate("Form", u"Banner", None))
-        self.label.setText(QCoreApplication.translate("Form", u"Poster", None))
-        self.label_2.setText(QCoreApplication.translate("Form", u"Title", None))
-        self.label_3.setText(QCoreApplication.translate("Form", u"Synonyms", None))
-        self.label_4.setText(QCoreApplication.translate("Form", u"Synonyms", None))
-        self.label_5.setText(QCoreApplication.translate("Form", u"Details", None))
-        self.label_6.setText(QCoreApplication.translate("Form", u"Type: ", None))
-        self.label_7.setText(QCoreApplication.translate("Form", u"Episodes: ", None))
-        self.label_8.setText(QCoreApplication.translate("Form", u"Status:", None))
-        self.label_9.setText(QCoreApplication.translate("Form", u"Season: ", None))
-        self.label_10.setText(QCoreApplication.translate("Form", u"Genres: ", None))
-        self.label_11.setText(QCoreApplication.translate("Form", u"Studio:", None))
-        self.label_12.setText(QCoreApplication.translate("Form", u"Description", None))
-        self.label_13.setText(QCoreApplication.translate("Form", u"Desctiption", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_1), QCoreApplication.translate("Form", u"Main Info", None))
+    def retranslateUi(self, details_widget):
+        details_widget.setWindowTitle(QCoreApplication.translate("details_widget", u"Details", None))
+        self.banner_label.setText(QCoreApplication.translate("details_widget", u"Banner", None))
+        self.poster_label.setText(QCoreApplication.translate("details_widget", u"Poster", None))
+        self.title_label.setText(QCoreApplication.translate("details_widget", u"Title", None))
+        self.synonyms_header_label.setText(QCoreApplication.translate("details_widget", u"Synonyms", None))
+        self.synonyms_label.setText(QCoreApplication.translate("details_widget", u"Synonyms", None))
+        self.details_header_label.setText(QCoreApplication.translate("details_widget", u"Details", None))
+        self.type_label.setText(QCoreApplication.translate("details_widget", u"Type: ", None))
+        self.episodes_label.setText(QCoreApplication.translate("details_widget", u"Episodes: ", None))
+        self.status_label.setText(QCoreApplication.translate("details_widget", u"Status:", None))
+        self.score_label.setText(QCoreApplication.translate("details_widget", u"Avg. Score:", None))
+        self.season_label.setText(QCoreApplication.translate("details_widget", u"Season: ", None))
+        self.genres_label.setText(QCoreApplication.translate("details_widget", u"Genres: ", None))
+        self.studio_label.setText(QCoreApplication.translate("details_widget", u"Studio:", None))
+        self.desc_header_label.setText(QCoreApplication.translate("details_widget", u"Description", None))
+        self.desc_label.setText(QCoreApplication.translate("details_widget", u"Description", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.main_info_tab), QCoreApplication.translate("details_widget", u"Main Info", None))
     # retranslateUi
 
