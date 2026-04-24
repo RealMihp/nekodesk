@@ -52,7 +52,7 @@ class ImageManager:
             return None
         
 
-    def get_posters(self, links, session=None) -> dict | None:
+    def get_posters(self, links: list, session=None) -> dict | None:
         posters_path = self.posters_path
         s = session or requests.Session()
         posters_data = {}

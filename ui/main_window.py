@@ -43,8 +43,8 @@ class MainWindow(QMainWindow):
 
         self.refresh_library()
 
-    def show_details(self):
-        self.details_window = Title_detailsWindow(self) 
+    def show_details(self, anilist_id: str):
+        self.details_window = Title_detailsWindow(self, anilist_id) 
         self.details_window.show()
         
     def show_library_context_menu(self, pos):
@@ -55,7 +55,7 @@ class MainWindow(QMainWindow):
         remove_action = QAction('Remove from library', self)
 
         anilist_id = item.data(0, Qt.ItemDataRole.UserRole)
-        open_action.triggered.connect(self.show_details)
+        open_action.triggered.connect(lambda: self.show_details(anilist_id))
         remove_action.triggered.connect(lambda: self.remove_title(anilist_id))
 
         menu.addAction(open_action)

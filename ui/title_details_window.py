@@ -9,14 +9,79 @@ import sys, os
 from PySide6.QtWidgets import *
 from ui.ui_add_series import *
 from ui.ui_title_details import *
-from core.db import SettingsDB
+from core.db import *
+from core.utils import *
+
 
 
 class Title_detailsWindow(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, anilist_id: str = None):
         super().__init__(parent, Qt.WindowType.Window)
         self.ui = Ui_details_widget()
         self.ui.setupUi(self)
+        self.anilist_id = anilist_id
+        self.ldbClient = LibraryDB()
+        self.imgmClient = ImageManager()
+        self.ui.desc_label.setWordWrap(True)
+
+        self.render_details()
+
+    def render_details(self):
+        # romaji-only for now
+        if not self.anilist_id: return
+        d = self.ldbClient.get_title(self.anilist_id)
+        if not d: return
+        title_romaji = d.get('title_romaji')
+        title_native = d.get('title_native')
+        title_english = d.get('title_english')
+
+        title = title_romaji or title_native or title_english or 'Unknown'
+        syn_list = [d.get('title_native'), d.get('title_english'), d.get('synonyms')]
+        synonyms = ", ".join([s for s in syn_list if s]) or 'N/A'
+        format = f"Type: {d.get('format', 'N/A')}"
+        eps = f"Episodes: {d.get('episodes', 'N/A')}"
+        status = f"Status: {d.get('status', 'N/A')}"
+        score = f"Avg. Score: {d.get('score', 'N/A')}"
+        season = f"Season: {d.get('season') or ''} {d.get('season_year') or ''}".strip() or 'Season: N/A'
+        genres = f"Genres: {d.get('genres', 'N/A')}"
+        studio = f"Studio: {d.get('studio', 'N/A')}"
+        desc = d.get('desc', 'No description :(')
+        poster_link = d.get('poster_large_link')
+        poster_color = d.get('poster_color')
+        poster = self.imgmClient.get_poster(poster_link) if poster_link else self.imgmClient.get_color_icon(poster_color)
+        banner_link = d.get('banner_link')
+        banner = self.imgmClient.get_poster(banner_link) if banner_link else self.imgmClient.get_color_icon(poster_color)
+
+        if not banner.isNull():
+            banner = banner.scaledToWidth(800, Qt.TransformationMode.SmoothTransformation)
+            self.ui.banner_label.setPixmap(banner)
+            self.ui.banner_label.setFixedWidth(800)
+
+        if not poster.isNull():
+            poster = poster.scaledToWidth(210, Qt.TransformationMode.SmoothTransformation)
+            self.ui.poster_label.setPixmap(poster)
+            self.ui.poster_label.setFixedWidth(210)
+
+                
+                
+                
+        
+        self.ui.title_label.setText(title)
+        self.ui.synonyms_label.setText(synonyms)
+        self.ui.type_label.setText(format)
+        self.ui.episodes_label.setText(eps)
+        self.ui.status_label.setText(status)
+        self.ui.score_label.setText(score)
+        self.ui.season_label.setText(season)
+        self.ui.genres_label.setText(genres)
+        self.ui.studio_label.setText(studio)
+        self.ui.desc_label.setText(desc)
+        self.ui.poster_label.setPixmap(poster)
+        self.ui.banner_label.setPixmap(banner)
+
+
+
+
 
         
         

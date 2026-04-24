@@ -23,13 +23,27 @@ class Ui_details_widget(object):
     def setupUi(self, details_widget):
         if not details_widget.objectName():
             details_widget.setObjectName(u"details_widget")
-        details_widget.resize(745, 640)
+        details_widget.resize(800, 700)
+        sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(details_widget.sizePolicy().hasHeightForWidth())
+        details_widget.setSizePolicy(sizePolicy)
+        details_widget.setMinimumSize(QSize(800, 700))
+        details_widget.setMaximumSize(QSize(800, 700))
         self.verticalLayout_8 = QVBoxLayout(details_widget)
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.main_verticalLayout = QVBoxLayout()
         self.main_verticalLayout.setObjectName(u"main_verticalLayout")
         self.banner_label = QLabel(details_widget)
         self.banner_label.setObjectName(u"banner_label")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Ignored)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.banner_label.sizePolicy().hasHeightForWidth())
+        self.banner_label.setSizePolicy(sizePolicy1)
+        self.banner_label.setMinimumSize(QSize(0, 0))
+        self.banner_label.setMaximumSize(QSize(16777215, 16777215))
         self.banner_label.setFrameShape(QFrame.Shape.StyledPanel)
         self.banner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -45,7 +59,12 @@ class Ui_details_widget(object):
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.poster_label = QLabel(self.poster_frame)
         self.poster_label.setObjectName(u"poster_label")
+        sizePolicy1.setHeightForWidth(self.poster_label.sizePolicy().hasHeightForWidth())
+        self.poster_label.setSizePolicy(sizePolicy1)
+        self.poster_label.setMinimumSize(QSize(0, 0))
+        self.poster_label.setMaximumSize(QSize(16777215, 16777215))
         self.poster_label.setFrameShape(QFrame.Shape.StyledPanel)
+        self.poster_label.setScaledContents(False)
         self.poster_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.poster_label.setOpenExternalLinks(True)
 
@@ -64,6 +83,13 @@ class Ui_details_widget(object):
         self.main_info_verticalLayout.setObjectName(u"main_info_verticalLayout")
         self.title_label = QLabel(details_widget)
         self.title_label.setObjectName(u"title_label")
+        font = QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setItalic(False)
+        font.setUnderline(False)
+        self.title_label.setFont(font)
+        self.title_label.setStyleSheet(u"")
 
         self.main_info_verticalLayout.addWidget(self.title_label)
 
@@ -78,10 +104,10 @@ class Ui_details_widget(object):
         self.synonyms_verticalLayout.setObjectName(u"synonyms_verticalLayout")
         self.synonyms_header_label = QLabel(self.main_info_tab)
         self.synonyms_header_label.setObjectName(u"synonyms_header_label")
-        font = QFont()
-        font.setBold(True)
-        font.setUnderline(False)
-        self.synonyms_header_label.setFont(font)
+        font1 = QFont()
+        font1.setBold(True)
+        font1.setUnderline(False)
+        self.synonyms_header_label.setFont(font1)
 
         self.synonyms_verticalLayout.addWidget(self.synonyms_header_label)
 
@@ -104,9 +130,9 @@ class Ui_details_widget(object):
         self.details_verticalLayout.setObjectName(u"details_verticalLayout")
         self.details_header_label = QLabel(self.main_info_tab)
         self.details_header_label.setObjectName(u"details_header_label")
-        font1 = QFont()
-        font1.setBold(True)
-        self.details_header_label.setFont(font1)
+        font2 = QFont()
+        font2.setBold(True)
+        self.details_header_label.setFont(font2)
 
         self.details_verticalLayout.addWidget(self.details_header_label)
 
@@ -159,7 +185,7 @@ class Ui_details_widget(object):
         self.desc_verticalLayout.setObjectName(u"desc_verticalLayout")
         self.desc_header_label = QLabel(self.main_info_tab)
         self.desc_header_label.setObjectName(u"desc_header_label")
-        self.desc_header_label.setFont(font1)
+        self.desc_header_label.setFont(font2)
 
         self.desc_verticalLayout.addWidget(self.desc_header_label)
 
@@ -218,8 +244,8 @@ class Ui_details_widget(object):
 
     def retranslateUi(self, details_widget):
         details_widget.setWindowTitle(QCoreApplication.translate("details_widget", u"Details", None))
-        self.banner_label.setText(QCoreApplication.translate("details_widget", u"Banner", None))
-        self.poster_label.setText(QCoreApplication.translate("details_widget", u"Poster", None))
+        self.banner_label.setText("")
+        self.poster_label.setText("")
         self.title_label.setText(QCoreApplication.translate("details_widget", u"Title", None))
         self.synonyms_header_label.setText(QCoreApplication.translate("details_widget", u"Synonyms", None))
         self.synonyms_label.setText(QCoreApplication.translate("details_widget", u"Synonyms", None))

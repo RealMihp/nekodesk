@@ -40,7 +40,7 @@ class LibraryDB:
     def __init__(self, db_path='data/library.db'):
         self.db_path = db_path
         self._create_tables()
-        self.utilsClient = ImageManager()
+        self.imgmClient = ImageManager()
     
     def _create_tables(self):
         with sqlite3.connect(self.db_path) as conn:
@@ -75,7 +75,7 @@ class LibraryDB:
             ''')
             
     
-    def add_title(self, title_data):
+    def add_title(self, title_data: dict):
         """
         Saves metadata to the library table.
         title_data: A list containing all the info from API.
@@ -96,7 +96,7 @@ class LibraryDB:
             banner = d.get('bannerImage')
             links = [medium, extraLarge, banner]
 
-            paths = self.utilsClient.get_posters(links)
+            paths = self.imgmClient.get_posters(links)
             path_small = paths.get(medium, (None, None))[1]
             path_extraLarge = paths.get(extraLarge, (None, None))[1]
             path_banner = paths.get(banner, (None, None))[1]
@@ -133,13 +133,21 @@ class LibraryDB:
             cursor = conn.execute(query, values)
             return cursor.lastrowid  # Returns the ID of the title
         
-    def get_all_titles(self):
+    def get_all_titles(self) -> dict | None:
         with sqlite3.connect(self.db_path) as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.execute('SELECT * FROM library')
             return [dict(row) for row in cursor.fetchall()]
+    
+    def get_title(self, anilist_id: str) -> dict | None:
+        with sqlite3.connect(self.db_path) as conn:
+            conn.row_factory = sqlite3.Row
+            query = 'SELECT * FROM library WHERE anilist_id = ?'
+            c = conn.execute(query, (anilist_id,))
+            row = c.fetchone()
+            return dict(row) if row else None
         
-    def remove_title_by_id(self, anilist_id):
+    def remove_title_by_id(self, anilist_id: str):
         query = "DELETE FROM library WHERE anilist_id = ?"
         with sqlite3.connect(self.db_path) as conn:
             c = conn.execute(query, (anilist_id,))
