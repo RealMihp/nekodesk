@@ -97,3 +97,12 @@ class ImageManager:
         pixmap.fill(color)
         
         return QIcon(pixmap)
+    
+    def get_color_pixmap(self, hex_color: str, width=64, height=96):
+        pixmap = QPixmap(width, height)
+        
+        color = QColor(hex_color) if hex_color else QColor("#cccccc")
+
+        pixmap.fill(color)
+        
+        return pixmap

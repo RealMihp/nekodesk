@@ -49,6 +49,7 @@ class MainWindow(QMainWindow):
         
     def show_library_context_menu(self, pos):
         item = self.ui.library_treeWidget.itemAt(pos)
+        if not item: return
 
         menu = QMenu(self)
         open_action = QAction('Details', self)

@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialogButtonBox, QFrame,
-    QHBoxLayout, QLabel, QSizePolicy, QSpacerItem,
-    QTabWidget, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractButton, QAbstractScrollArea, QApplication, QDialogButtonBox,
+    QFrame, QHBoxLayout, QLabel, QLayout,
+    QScrollArea, QSizePolicy, QSpacerItem, QTabWidget,
+    QVBoxLayout, QWidget)
 
 class Ui_details_widget(object):
     def setupUi(self, details_widget):
@@ -31,8 +32,10 @@ class Ui_details_widget(object):
         details_widget.setSizePolicy(sizePolicy)
         details_widget.setMinimumSize(QSize(800, 700))
         details_widget.setMaximumSize(QSize(800, 700))
-        self.verticalLayout_8 = QVBoxLayout(details_widget)
-        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.verticalLayout_3 = QVBoxLayout(details_widget)
+        self.verticalLayout_3.setSpacing(3)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.verticalLayout_3.setContentsMargins(0, 0, 0, 6)
         self.main_verticalLayout = QVBoxLayout()
         self.main_verticalLayout.setObjectName(u"main_verticalLayout")
         self.banner_label = QLabel(details_widget)
@@ -51,6 +54,7 @@ class Ui_details_widget(object):
 
         self.info_horizontalLayout = QHBoxLayout()
         self.info_horizontalLayout.setObjectName(u"info_horizontalLayout")
+        self.info_horizontalLayout.setContentsMargins(-1, -1, 0, -1)
         self.poster_frame = QFrame(details_widget)
         self.poster_frame.setObjectName(u"poster_frame")
         self.poster_frame.setFrameShape(QFrame.Shape.NoFrame)
@@ -59,13 +63,16 @@ class Ui_details_widget(object):
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.poster_label = QLabel(self.poster_frame)
         self.poster_label.setObjectName(u"poster_label")
-        sizePolicy1.setHeightForWidth(self.poster_label.sizePolicy().hasHeightForWidth())
-        self.poster_label.setSizePolicy(sizePolicy1)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.poster_label.sizePolicy().hasHeightForWidth())
+        self.poster_label.setSizePolicy(sizePolicy2)
         self.poster_label.setMinimumSize(QSize(0, 0))
         self.poster_label.setMaximumSize(QSize(16777215, 16777215))
         self.poster_label.setFrameShape(QFrame.Shape.StyledPanel)
         self.poster_label.setScaledContents(False)
-        self.poster_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.poster_label.setAlignment(Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
         self.poster_label.setOpenExternalLinks(True)
 
         self.verticalLayout_5.addWidget(self.poster_label)
@@ -74,22 +81,27 @@ class Ui_details_widget(object):
 
         self.verticalLayout_5.addItem(self.poster_verticalSpacer)
 
-        self.verticalLayout_5.setStretch(0, 2)
-        self.verticalLayout_5.setStretch(1, 1)
+        self.verticalLayout_5.setStretch(0, 5)
+        self.verticalLayout_5.setStretch(1, 4)
 
         self.info_horizontalLayout.addWidget(self.poster_frame)
 
         self.main_info_verticalLayout = QVBoxLayout()
+        self.main_info_verticalLayout.setSpacing(0)
         self.main_info_verticalLayout.setObjectName(u"main_info_verticalLayout")
+        self.main_info_verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
+        self.main_info_verticalLayout.setContentsMargins(0, -1, 9, -1)
         self.title_label = QLabel(details_widget)
         self.title_label.setObjectName(u"title_label")
         font = QFont()
-        font.setPointSize(12)
+        font.setPointSize(14)
         font.setBold(True)
         font.setItalic(False)
         font.setUnderline(False)
         self.title_label.setFont(font)
         self.title_label.setStyleSheet(u"")
+        self.title_label.setMargin(0)
+        self.title_label.setIndent(0)
 
         self.main_info_verticalLayout.addWidget(self.title_label)
 
@@ -101,6 +113,7 @@ class Ui_details_widget(object):
         self.verticalLayout_4 = QVBoxLayout(self.main_info_tab)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
         self.synonyms_verticalLayout = QVBoxLayout()
+        self.synonyms_verticalLayout.setSpacing(2)
         self.synonyms_verticalLayout.setObjectName(u"synonyms_verticalLayout")
         self.synonyms_header_label = QLabel(self.main_info_tab)
         self.synonyms_header_label.setObjectName(u"synonyms_header_label")
@@ -118,15 +131,56 @@ class Ui_details_widget(object):
 
         self.synonyms_verticalLayout.addWidget(self.synonyms_line)
 
-        self.synonyms_label = QLabel(self.main_info_tab)
+        self.synonyms_scrollArea = QScrollArea(self.main_info_tab)
+        self.synonyms_scrollArea.setObjectName(u"synonyms_scrollArea")
+        sizePolicy2.setHeightForWidth(self.synonyms_scrollArea.sizePolicy().hasHeightForWidth())
+        self.synonyms_scrollArea.setSizePolicy(sizePolicy2)
+        self.synonyms_scrollArea.setMaximumSize(QSize(16777215, 35))
+        palette = QPalette()
+        brush = QBrush(QColor(0, 0, 0, 0))
+        brush.setStyle(Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Base, brush)
+        palette.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Window, brush)
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Base, brush)
+        palette.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Window, brush)
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Base, brush)
+        palette.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Window, brush)
+        self.synonyms_scrollArea.setPalette(palette)
+        self.synonyms_scrollArea.setStyleSheet(u"")
+        self.synonyms_scrollArea.setFrameShape(QFrame.Shape.NoFrame)
+        self.synonyms_scrollArea.setFrameShadow(QFrame.Shadow.Sunken)
+        self.synonyms_scrollArea.setLineWidth(1)
+        self.synonyms_scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.synonyms_scrollArea.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents)
+        self.synonyms_scrollArea.setWidgetResizable(True)
+        self.synonyms_scrollAreaWidgetContents = QWidget()
+        self.synonyms_scrollAreaWidgetContents.setObjectName(u"synonyms_scrollAreaWidgetContents")
+        self.synonyms_scrollAreaWidgetContents.setGeometry(QRect(0, 0, 556, 35))
+        self.synonyms_scrollAreaWidgetContents.setMaximumSize(QSize(16777215, 16777215))
+        self.synonyms_scrollAreaWidgetContents.setAutoFillBackground(False)
+        self.verticalLayout_2 = QVBoxLayout(self.synonyms_scrollAreaWidgetContents)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.synonyms_label = QLabel(self.synonyms_scrollAreaWidgetContents)
         self.synonyms_label.setObjectName(u"synonyms_label")
+        self.synonyms_label.setMaximumSize(QSize(16777215, 16777215))
+        self.synonyms_label.setMargin(0)
 
-        self.synonyms_verticalLayout.addWidget(self.synonyms_label)
+        self.verticalLayout_2.addWidget(self.synonyms_label)
 
+        self.synonyms_scrollArea.setWidget(self.synonyms_scrollAreaWidgetContents)
+
+        self.synonyms_verticalLayout.addWidget(self.synonyms_scrollArea)
+
+        self.synonyms_verticalLayout.setStretch(0, 1)
+        self.synonyms_verticalLayout.setStretch(1, 1)
+        self.synonyms_verticalLayout.setStretch(2, 1)
 
         self.verticalLayout_4.addLayout(self.synonyms_verticalLayout)
 
         self.details_verticalLayout = QVBoxLayout()
+        self.details_verticalLayout.setSpacing(2)
         self.details_verticalLayout.setObjectName(u"details_verticalLayout")
         self.details_header_label = QLabel(self.main_info_tab)
         self.details_header_label.setObjectName(u"details_header_label")
@@ -182,6 +236,7 @@ class Ui_details_widget(object):
         self.verticalLayout_4.addLayout(self.details_verticalLayout)
 
         self.desc_verticalLayout = QVBoxLayout()
+        self.desc_verticalLayout.setSpacing(2)
         self.desc_verticalLayout.setObjectName(u"desc_verticalLayout")
         self.desc_header_label = QLabel(self.main_info_tab)
         self.desc_header_label.setObjectName(u"desc_header_label")
@@ -196,18 +251,49 @@ class Ui_details_widget(object):
 
         self.desc_verticalLayout.addWidget(self.desc_header_line)
 
-        self.desc_label = QLabel(self.main_info_tab)
+        self.desc_scrollArea = QScrollArea(self.main_info_tab)
+        self.desc_scrollArea.setObjectName(u"desc_scrollArea")
+        palette1 = QPalette()
+        palette1.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Base, brush)
+        palette1.setBrush(QPalette.ColorGroup.Active, QPalette.ColorRole.Window, brush)
+        palette1.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Base, brush)
+        palette1.setBrush(QPalette.ColorGroup.Inactive, QPalette.ColorRole.Window, brush)
+        palette1.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Base, brush)
+        palette1.setBrush(QPalette.ColorGroup.Disabled, QPalette.ColorRole.Window, brush)
+        self.desc_scrollArea.setPalette(palette1)
+        self.desc_scrollArea.setStyleSheet(u"")
+        self.desc_scrollArea.setFrameShape(QFrame.Shape.NoFrame)
+        self.desc_scrollArea.setFrameShadow(QFrame.Shadow.Sunken)
+        self.desc_scrollArea.setWidgetResizable(True)
+        self.desc_scrollAreaWidgetContents = QWidget()
+        self.desc_scrollAreaWidgetContents.setObjectName(u"desc_scrollAreaWidgetContents")
+        self.desc_scrollAreaWidgetContents.setGeometry(QRect(0, 0, 556, 171))
+        self.desc_scrollAreaWidgetContents.setAutoFillBackground(False)
+        self.verticalLayout = QVBoxLayout(self.desc_scrollAreaWidgetContents)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.desc_label = QLabel(self.desc_scrollAreaWidgetContents)
         self.desc_label.setObjectName(u"desc_label")
+        self.desc_label.setTextFormat(Qt.TextFormat.RichText)
         self.desc_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
+        self.desc_label.setWordWrap(True)
 
-        self.desc_verticalLayout.addWidget(self.desc_label)
+        self.verticalLayout.addWidget(self.desc_label)
+
+        self.desc_scrollArea.setWidget(self.desc_scrollAreaWidgetContents)
+
+        self.desc_verticalLayout.addWidget(self.desc_scrollArea)
 
         self.desc_verticalLayout.setStretch(0, 1)
         self.desc_verticalLayout.setStretch(1, 1)
-        self.desc_verticalLayout.setStretch(2, 4)
+        self.desc_verticalLayout.setStretch(2, 5)
 
         self.verticalLayout_4.addLayout(self.desc_verticalLayout)
 
+        self.verticalLayout_4.setStretch(0, 1)
+        self.verticalLayout_4.setStretch(1, 4)
+        self.verticalLayout_4.setStretch(2, 6)
         self.tabWidget.addTab(self.main_info_tab, "")
 
         self.main_info_verticalLayout.addWidget(self.tabWidget)
@@ -218,20 +304,31 @@ class Ui_details_widget(object):
         self.info_horizontalLayout.addLayout(self.main_info_verticalLayout)
 
         self.info_horizontalLayout.setStretch(0, 2)
-        self.info_horizontalLayout.setStretch(1, 5)
+        self.info_horizontalLayout.setStretch(1, 6)
 
         self.main_verticalLayout.addLayout(self.info_horizontalLayout)
 
         self.main_verticalLayout.setStretch(0, 2)
-        self.main_verticalLayout.setStretch(1, 6)
+        self.main_verticalLayout.setStretch(1, 7)
 
-        self.verticalLayout_8.addLayout(self.main_verticalLayout)
+        self.verticalLayout_3.addLayout(self.main_verticalLayout)
 
+        self.buttonBox_horizontalLayout = QHBoxLayout()
+        self.buttonBox_horizontalLayout.setSpacing(0)
+        self.buttonBox_horizontalLayout.setObjectName(u"buttonBox_horizontalLayout")
         self.buttonBox = QDialogButtonBox(details_widget)
         self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
 
-        self.verticalLayout_8.addWidget(self.buttonBox)
+        self.buttonBox_horizontalLayout.addWidget(self.buttonBox)
+
+        self.horizontalSpacer = QSpacerItem(9, 0, QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Minimum)
+
+        self.buttonBox_horizontalLayout.addItem(self.horizontalSpacer)
+
+        self.buttonBox_horizontalLayout.setStretch(0, 1)
+
+        self.verticalLayout_3.addLayout(self.buttonBox_horizontalLayout)
 
 
         self.retranslateUi(details_widget)

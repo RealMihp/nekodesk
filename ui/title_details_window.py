@@ -22,7 +22,7 @@ class Title_detailsWindow(QWidget):
         self.anilist_id = anilist_id
         self.ldbClient = LibraryDB()
         self.imgmClient = ImageManager()
-        self.ui.desc_label.setWordWrap(True)
+        
 
         self.render_details()
 
@@ -41,7 +41,7 @@ class Title_detailsWindow(QWidget):
         format = f"Type: {d.get('format', 'N/A')}"
         eps = f"Episodes: {d.get('episodes', 'N/A')}"
         status = f"Status: {d.get('status', 'N/A')}"
-        score = f"Avg. Score: {d.get('score', 'N/A')}"
+        score = f"Avg. Score: {d.get('score', 'N/A')}%"
         season = f"Season: {d.get('season') or ''} {d.get('season_year') or ''}".strip() or 'Season: N/A'
         genres = f"Genres: {d.get('genres', 'N/A')}"
         studio = f"Studio: {d.get('studio', 'N/A')}"
@@ -49,8 +49,10 @@ class Title_detailsWindow(QWidget):
         poster_link = d.get('poster_large_link')
         poster_color = d.get('poster_color')
         poster = self.imgmClient.get_poster(poster_link) if poster_link else self.imgmClient.get_color_icon(poster_color)
+        placeholder_poster = self.imgmClient.get_color_pixmap(poster_color, 460, 690)
         banner_link = d.get('banner_link')
-        banner = self.imgmClient.get_poster(banner_link) if banner_link else self.imgmClient.get_color_icon(poster_color)
+        placeholder_banner = self.imgmClient.get_color_pixmap(poster_color, 1900, 400)
+        banner = self.imgmClient.get_poster(banner_link) if banner_link else placeholder_banner
 
         if not banner.isNull():
             banner = banner.scaledToWidth(800, Qt.TransformationMode.SmoothTransformation)
@@ -61,6 +63,12 @@ class Title_detailsWindow(QWidget):
             poster = poster.scaledToWidth(210, Qt.TransformationMode.SmoothTransformation)
             self.ui.poster_label.setPixmap(poster)
             self.ui.poster_label.setFixedWidth(210)
+
+        # poster = poster.scaled(
+        #     200, 300, 
+        #     Qt.AspectRatioMode.KeepAspectRatio, 
+        #     Qt.TransformationMode.SmoothTransformation
+        # )
 
                 
                 
@@ -78,6 +86,9 @@ class Title_detailsWindow(QWidget):
         self.ui.desc_label.setText(desc)
         self.ui.poster_label.setPixmap(poster)
         self.ui.banner_label.setPixmap(banner)
+
+        self.ui.poster_label.setFixedSize(poster.size())
+        self.ui.banner_label.setFixedSize(banner.size())
 
 
 
