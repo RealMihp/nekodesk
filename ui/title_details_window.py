@@ -23,7 +23,8 @@ class Title_detailsWindow(QWidget):
         self.ldbClient = LibraryDB()
         self.imgmClient = ImageManager()
         
-
+        self.ui.buttonBox.accepted.connect(self.close)
+        self.ui.buttonBox.rejected.connect(self.close)
         self.render_details()
 
     def render_details(self):
@@ -57,7 +58,7 @@ class Title_detailsWindow(QWidget):
         if not banner.isNull():
             banner = banner.scaledToWidth(800, Qt.TransformationMode.SmoothTransformation)
             self.ui.banner_label.setPixmap(banner)
-            self.ui.banner_label.setFixedWidth(800)
+            
 
         if not poster.isNull():
             poster = poster.scaledToWidth(210, Qt.TransformationMode.SmoothTransformation)
@@ -88,7 +89,7 @@ class Title_detailsWindow(QWidget):
         self.ui.banner_label.setPixmap(banner)
 
         self.ui.poster_label.setFixedSize(poster.size())
-        self.ui.banner_label.setFixedSize(banner.size())
+        
 
 
 

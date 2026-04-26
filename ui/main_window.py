@@ -44,7 +44,8 @@ class MainWindow(QMainWindow):
         self.refresh_library()
 
     def show_details(self, anilist_id: str):
-        self.details_window = Title_detailsWindow(self, anilist_id) 
+        self.details_window = Title_detailsWindow(self, anilist_id)
+        
         self.details_window.show()
         
     def show_library_context_menu(self, pos):
