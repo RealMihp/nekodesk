@@ -203,3 +203,5 @@ class MainWindow(QMainWindow):
             item.setData(0, Qt.ItemDataRole.UserRole, title.get('anilist_id'))
 
             widget.addTopLevelItem(item)
+        imgmClient = ImageManager()
+        imgmClient.clear_temp_folder()

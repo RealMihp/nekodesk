@@ -49,11 +49,11 @@ class Title_detailsWindow(QWidget):
         desc = d.get('desc', 'No description :(')
         poster_link = d.get('poster_large_link')
         poster_color = d.get('poster_color')
-        poster = self.imgmClient.get_poster(poster_link) if poster_link else self.imgmClient.get_color_icon(poster_color)
+        poster = self.imgmClient.get_poster(poster_link, return_pixmap=True) if poster_link else self.imgmClient.get_color_icon(poster_color)
         placeholder_poster = self.imgmClient.get_color_pixmap(poster_color, 460, 690)
         banner_link = d.get('banner_link')
         placeholder_banner = self.imgmClient.get_color_pixmap(poster_color, 1900, 400)
-        banner = self.imgmClient.get_poster(banner_link) if banner_link else placeholder_banner
+        banner = self.imgmClient.get_poster(banner_link, return_pixmap=True) if banner_link else placeholder_banner
 
         if not banner.isNull():
             banner = banner.scaledToWidth(800, Qt.TransformationMode.SmoothTransformation)

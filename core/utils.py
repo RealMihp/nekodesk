@@ -1,26 +1,39 @@
 import os
+import shutil
 import requests
 from PySide6.QtGui import QColor, QIcon, QPixmap
 
 class ImageManager:
-    def __init__(self, posters_path="data/posters"):
+    def __init__(self, posters_path="data\\posters", temp_posters_path = "data\\temp\\posters"):
         """
         Initialize the manager with a directory to store downloaded posters.
         """
         self.posters_path = posters_path
+        self.temp_posters_path = temp_posters_path
         os.makedirs(self.posters_path, exist_ok=True)
 
-    def get_poster(self, link: str) -> QPixmap | None:
+
+    def clear_temp_folder(self):
+        shutil.rmtree(self.temp_posters_path)
+        os.makedirs(self.temp_posters_path, exist_ok=True)
+        return True
+
+    def get_poster(self, link: str, return_pixmap: bool = False, is_temp: bool = False) -> str | QPixmap | None:
         """
         Load a poster from a local file or download it if it doesn't exist.
         :param link: Direct URL to the image
-        :return: QPixmap object or None if failed
+        :param return_pixmap: If True returns QPixmap else returns link (string)
         """
         try:
-            file_name = link.split("/")[-1]
-            
+            parts = link.split("/")
+            file_name = f"{parts[-2]}_{parts[-1]}" 
 
-            folder_path = os.path.join(self.posters_path)
+            
+            if not is_temp:
+                folder_path = os.path.join(self.posters_path)
+            else:
+                folder_path = os.path.join(self.temp_posters_path)
+
             file_path = os.path.join(folder_path, file_name).replace('\\', '/')
 
             os.makedirs(folder_path, exist_ok=True)
@@ -37,10 +50,13 @@ class ImageManager:
                     with open(file_path, "wb") as f:
                         f.write(response.content)
                     
-                    # Create QPixmap from the downloaded data
-                    pixmap = QPixmap()
-                    pixmap.loadFromData(response.content)
-                    return pixmap
+                    if return_pixmap:
+                        # Create QPixmap from the downloaded data
+                        pixmap = QPixmap()
+                        pixmap.loadFromData(response.content)
+                        return pixmap
+                    else:
+                        return file_path
                     
             except Exception as e:
                 print(f"Network error while saving image: {e}")
@@ -52,8 +68,11 @@ class ImageManager:
             return None
         
 
-    def get_posters(self, links: list, session=None) -> dict | None:
-        posters_path = self.posters_path
+    def get_posters(self, links: list, session=None, is_temp: bool = False) -> dict | None:
+        if not is_temp:
+            posters_path = self.posters_path
+        else:
+            posters_path = self.temp_posters_path
         s = session or requests.Session()
         posters_data = {}
         
@@ -61,8 +80,10 @@ class ImageManager:
 
         for link in links:
             if not link: continue
-            
-            file_name = link.split("/")[-1]
+
+            parts = link.split("/")
+            file_name = f"{parts[-2]}_{parts[-1]}" 
+
             file_path = os.path.join(posters_path, file_name).replace('\\', '/')
             pixmap = QPixmap()
 

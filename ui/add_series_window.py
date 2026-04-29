@@ -53,10 +53,10 @@ class AddSeriesWindow(QDialog):
             
             self.search_data_cache = results
 
-            links = [r.get('coverImage', {}).get('extraLarge') for r in results if r.get('coverImage')]
+            links = [r.get('coverImage', {}).get('medium') for r in results if r.get('coverImage')]
             
             imgm = ImageManager()
-            posters_map = imgm.get_posters(links, session=client.session)
+            posters_map = imgm.get_posters(links, session=client.session, is_temp=True)
 
             for result in results:
                 title = result.get('title', {}).get('romaji') or "Unknown Title"
@@ -64,7 +64,7 @@ class AddSeriesWindow(QDialog):
                 status = result.get('status') or "Unknown"
                 anime_id = str(result.get('id'))
                 
-                link = result.get('coverImage', {}).get('extraLarge')
+                link = result.get('coverImage', {}).get('medium')
                 color = result.get('coverImage', {}).get('color')
                 pixmap = posters_map.get(link, (None, None))[0]
                 
