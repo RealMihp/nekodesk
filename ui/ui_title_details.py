@@ -46,7 +46,7 @@ class Ui_details_widget(object):
         sizePolicy1.setHeightForWidth(self.banner_label.sizePolicy().hasHeightForWidth())
         self.banner_label.setSizePolicy(sizePolicy1)
         self.banner_label.setMinimumSize(QSize(0, 0))
-        self.banner_label.setMaximumSize(QSize(16777215, 150))
+        self.banner_label.setMaximumSize(QSize(798, 146))
         self.banner_label.setFrameShape(QFrame.Shape.StyledPanel)
         self.banner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
