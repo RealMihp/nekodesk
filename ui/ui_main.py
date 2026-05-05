@@ -21,6 +21,8 @@ from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QHeaderView,
     QPushButton, QSizePolicy, QStatusBar, QTreeWidget,
     QTreeWidgetItem, QVBoxLayout, QWidget)
 
+from ui.widgets import FilesTree
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
@@ -90,8 +92,9 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.btn_frame)
 
-        self.files_treeWidget = QTreeWidget(self.left_frame)
+        self.files_treeWidget = FilesTree(self.left_frame)
         self.files_treeWidget.setObjectName(u"files_treeWidget")
+        self.files_treeWidget.setAcceptDrops(True)
         self.files_treeWidget.setLineWidth(1)
 
         self.verticalLayout.addWidget(self.files_treeWidget)
@@ -114,6 +117,7 @@ class Ui_MainWindow(object):
 
         self.library_treeWidget = QTreeWidget(self.right_frame)
         self.library_treeWidget.setObjectName(u"library_treeWidget")
+        self.library_treeWidget.setDragEnabled(True)
 
         self.verticalLayout_2.addWidget(self.library_treeWidget)
 

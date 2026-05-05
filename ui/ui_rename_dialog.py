@@ -16,9 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
-    QHBoxLayout, QHeaderView, QLabel, QLayout,
-    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
-    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
+    QFrame, QHBoxLayout, QHeaderView, QLabel,
+    QLayout, QLineEdit, QPushButton, QSizePolicy,
+    QSpacerItem, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+    QWidget)
 
 class Ui_RenameDialog(object):
     def setupUi(self, RenameDialog):
@@ -26,304 +27,341 @@ class Ui_RenameDialog(object):
             RenameDialog.setObjectName(u"RenameDialog")
         RenameDialog.resize(800, 600)
         RenameDialog.setSizeGripEnabled(True)
-        self.verticalLayout_7 = QVBoxLayout(RenameDialog)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_5 = QVBoxLayout()
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.label = QLabel(RenameDialog)
-        self.label.setObjectName(u"label")
-
-        self.horizontalLayout.addWidget(self.label)
-
-        self.lineEdit = QLineEdit(RenameDialog)
-        self.lineEdit.setObjectName(u"lineEdit")
-
-        self.horizontalLayout.addWidget(self.lineEdit)
-
-
-        self.verticalLayout_5.addLayout(self.horizontalLayout)
-
-        self.horizontalLayout_14 = QHBoxLayout()
-        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
-        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3 = QVBoxLayout(RenameDialog)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.title_horizontalLayout = QHBoxLayout()
+        self.title_horizontalLayout.setObjectName(u"title_horizontalLayout")
+        self.title_label = QLabel(RenameDialog)
+        self.title_label.setObjectName(u"title_label")
+
+        self.title_horizontalLayout.addWidget(self.title_label)
+
+        self.title_lineEdit = QLineEdit(RenameDialog)
+        self.title_lineEdit.setObjectName(u"title_lineEdit")
+
+        self.title_horizontalLayout.addWidget(self.title_lineEdit)
+
+
+        self.verticalLayout_3.addLayout(self.title_horizontalLayout)
+
+        self.main_horizontalLayout = QHBoxLayout()
+        self.main_horizontalLayout.setObjectName(u"main_horizontalLayout")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.label_2 = QLabel(RenameDialog)
-        self.label_2.setObjectName(u"label_2")
+        self.season_num_horizontalLayout = QHBoxLayout()
+        self.season_num_horizontalLayout.setObjectName(u"season_num_horizontalLayout")
+        self.season_num_label = QLabel(RenameDialog)
+        self.season_num_label.setObjectName(u"season_num_label")
 
-        self.horizontalLayout_2.addWidget(self.label_2)
+        self.season_num_horizontalLayout.addWidget(self.season_num_label)
 
-        self.lineEdit_2 = QLineEdit(RenameDialog)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-        self.lineEdit_2.setClearButtonEnabled(False)
+        self.season_num_lineEdit = QLineEdit(RenameDialog)
+        self.season_num_lineEdit.setObjectName(u"season_num_lineEdit")
+        self.season_num_lineEdit.setClearButtonEnabled(False)
 
-        self.horizontalLayout_2.addWidget(self.lineEdit_2)
+        self.season_num_horizontalLayout.addWidget(self.season_num_lineEdit)
 
 
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.verticalLayout.addLayout(self.season_num_horizontalLayout)
 
-        self.horizontalLayout_3 = QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.label_3 = QLabel(RenameDialog)
-        self.label_3.setObjectName(u"label_3")
+        self.season_horizontalLayout = QHBoxLayout()
+        self.season_horizontalLayout.setObjectName(u"season_horizontalLayout")
+        self.season_label = QLabel(RenameDialog)
+        self.season_label.setObjectName(u"season_label")
 
-        self.horizontalLayout_3.addWidget(self.label_3)
+        self.season_horizontalLayout.addWidget(self.season_label)
 
-        self.lineEdit_3 = QLineEdit(RenameDialog)
-        self.lineEdit_3.setObjectName(u"lineEdit_3")
+        self.season_lineEdit = QLineEdit(RenameDialog)
+        self.season_lineEdit.setObjectName(u"season_lineEdit")
 
-        self.horizontalLayout_3.addWidget(self.lineEdit_3)
+        self.season_horizontalLayout.addWidget(self.season_lineEdit)
 
-        self.horizontalLayout_4 = QHBoxLayout()
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.label_4 = QLabel(RenameDialog)
-        self.label_4.setObjectName(u"label_4")
+        self.season_year_label = QLabel(RenameDialog)
+        self.season_year_label.setObjectName(u"season_year_label")
 
-        self.horizontalLayout_4.addWidget(self.label_4)
+        self.season_horizontalLayout.addWidget(self.season_year_label)
 
-        self.lineEdit_4 = QLineEdit(RenameDialog)
-        self.lineEdit_4.setObjectName(u"lineEdit_4")
+        self.season_year_lineEdit = QLineEdit(RenameDialog)
+        self.season_year_lineEdit.setObjectName(u"season_year_lineEdit")
 
-        self.horizontalLayout_4.addWidget(self.lineEdit_4)
+        self.season_horizontalLayout.addWidget(self.season_year_lineEdit)
 
 
-        self.horizontalLayout_3.addLayout(self.horizontalLayout_4)
+        self.verticalLayout.addLayout(self.season_horizontalLayout)
 
+        self.type_horizontalLayout = QHBoxLayout()
+        self.type_horizontalLayout.setObjectName(u"type_horizontalLayout")
+        self.type_label = QLabel(RenameDialog)
+        self.type_label.setObjectName(u"type_label")
 
-        self.verticalLayout.addLayout(self.horizontalLayout_3)
+        self.type_horizontalLayout.addWidget(self.type_label)
 
-        self.horizontalLayout_5 = QHBoxLayout()
-        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
-        self.label_5 = QLabel(RenameDialog)
-        self.label_5.setObjectName(u"label_5")
+        self.type_lineEdit = QLineEdit(RenameDialog)
+        self.type_lineEdit.setObjectName(u"type_lineEdit")
 
-        self.horizontalLayout_5.addWidget(self.label_5)
+        self.type_horizontalLayout.addWidget(self.type_lineEdit)
 
-        self.lineEdit_5 = QLineEdit(RenameDialog)
-        self.lineEdit_5.setObjectName(u"lineEdit_5")
 
-        self.horizontalLayout_5.addWidget(self.lineEdit_5)
+        self.verticalLayout.addLayout(self.type_horizontalLayout)
 
+        self.studio_horizontalLayout = QHBoxLayout()
+        self.studio_horizontalLayout.setObjectName(u"studio_horizontalLayout")
+        self.studio_label = QLabel(RenameDialog)
+        self.studio_label.setObjectName(u"studio_label")
 
-        self.verticalLayout.addLayout(self.horizontalLayout_5)
+        self.studio_horizontalLayout.addWidget(self.studio_label)
 
-        self.horizontalLayout_6 = QHBoxLayout()
-        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
-        self.label_6 = QLabel(RenameDialog)
-        self.label_6.setObjectName(u"label_6")
+        self.studio_lineEdit = QLineEdit(RenameDialog)
+        self.studio_lineEdit.setObjectName(u"studio_lineEdit")
 
-        self.horizontalLayout_6.addWidget(self.label_6)
+        self.studio_horizontalLayout.addWidget(self.studio_lineEdit)
 
-        self.lineEdit_6 = QLineEdit(RenameDialog)
-        self.lineEdit_6.setObjectName(u"lineEdit_6")
 
-        self.horizontalLayout_6.addWidget(self.lineEdit_6)
+        self.verticalLayout.addLayout(self.studio_horizontalLayout)
 
+        self.duration_horizontalLayout = QHBoxLayout()
+        self.duration_horizontalLayout.setObjectName(u"duration_horizontalLayout")
+        self.duration_label = QLabel(RenameDialog)
+        self.duration_label.setObjectName(u"duration_label")
 
-        self.verticalLayout.addLayout(self.horizontalLayout_6)
+        self.duration_horizontalLayout.addWidget(self.duration_label)
 
-        self.horizontalLayout_7 = QHBoxLayout()
-        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.label_7 = QLabel(RenameDialog)
-        self.label_7.setObjectName(u"label_7")
+        self.duration_lineEdit = QLineEdit(RenameDialog)
+        self.duration_lineEdit.setObjectName(u"duration_lineEdit")
 
-        self.horizontalLayout_7.addWidget(self.label_7)
+        self.duration_horizontalLayout.addWidget(self.duration_lineEdit)
 
-        self.lineEdit_7 = QLineEdit(RenameDialog)
-        self.lineEdit_7.setObjectName(u"lineEdit_7")
 
-        self.horizontalLayout_7.addWidget(self.lineEdit_7)
+        self.verticalLayout.addLayout(self.duration_horizontalLayout)
 
+        self.source_horizontalLayout = QHBoxLayout()
+        self.source_horizontalLayout.setObjectName(u"source_horizontalLayout")
+        self.source_label = QLabel(RenameDialog)
+        self.source_label.setObjectName(u"source_label")
 
-        self.verticalLayout.addLayout(self.horizontalLayout_7)
+        self.source_horizontalLayout.addWidget(self.source_label)
 
-        self.horizontalLayout_8 = QHBoxLayout()
-        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
-        self.label_8 = QLabel(RenameDialog)
-        self.label_8.setObjectName(u"label_8")
+        self.source_lineEdit = QLineEdit(RenameDialog)
+        self.source_lineEdit.setObjectName(u"source_lineEdit")
 
-        self.horizontalLayout_8.addWidget(self.label_8)
+        self.source_horizontalLayout.addWidget(self.source_lineEdit)
 
-        self.lineEdit_8 = QLineEdit(RenameDialog)
-        self.lineEdit_8.setObjectName(u"lineEdit_8")
 
-        self.horizontalLayout_8.addWidget(self.lineEdit_8)
+        self.verticalLayout.addLayout(self.source_horizontalLayout)
 
+        self.quality_horizontalLayout = QHBoxLayout()
+        self.quality_horizontalLayout.setObjectName(u"quality_horizontalLayout")
+        self.quality_label = QLabel(RenameDialog)
+        self.quality_label.setObjectName(u"quality_label")
 
-        self.verticalLayout.addLayout(self.horizontalLayout_8)
+        self.quality_horizontalLayout.addWidget(self.quality_label)
 
-        self.horizontalLayout_9 = QHBoxLayout()
-        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
-        self.label_9 = QLabel(RenameDialog)
-        self.label_9.setObjectName(u"label_9")
+        self.quality_lineEdit = QLineEdit(RenameDialog)
+        self.quality_lineEdit.setObjectName(u"quality_lineEdit")
 
-        self.horizontalLayout_9.addWidget(self.label_9)
+        self.quality_horizontalLayout.addWidget(self.quality_lineEdit)
 
-        self.lineEdit_9 = QLineEdit(RenameDialog)
-        self.lineEdit_9.setObjectName(u"lineEdit_9")
 
-        self.horizontalLayout_9.addWidget(self.lineEdit_9)
+        self.verticalLayout.addLayout(self.quality_horizontalLayout)
 
+        self.translation_studio_horizontalLayout = QHBoxLayout()
+        self.translation_studio_horizontalLayout.setObjectName(u"translation_studio_horizontalLayout")
+        self.translation_studio_label = QLabel(RenameDialog)
+        self.translation_studio_label.setObjectName(u"translation_studio_label")
 
-        self.verticalLayout.addLayout(self.horizontalLayout_9)
+        self.translation_studio_horizontalLayout.addWidget(self.translation_studio_label)
 
-        self.horizontalLayout_10 = QHBoxLayout()
-        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.label_10 = QLabel(RenameDialog)
-        self.label_10.setObjectName(u"label_10")
+        self.translation_studio_lineEdit = QLineEdit(RenameDialog)
+        self.translation_studio_lineEdit.setObjectName(u"translation_studio_lineEdit")
 
-        self.horizontalLayout_10.addWidget(self.label_10)
+        self.translation_studio_horizontalLayout.addWidget(self.translation_studio_lineEdit)
 
-        self.lineEdit_10 = QLineEdit(RenameDialog)
-        self.lineEdit_10.setObjectName(u"lineEdit_10")
 
-        self.horizontalLayout_10.addWidget(self.lineEdit_10)
+        self.verticalLayout.addLayout(self.translation_studio_horizontalLayout)
 
+        self.left_verticalSpacer_2 = QSpacerItem(20, 10, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
 
-        self.verticalLayout.addLayout(self.horizontalLayout_10)
+        self.verticalLayout.addItem(self.left_verticalSpacer_2)
 
-        self.horizontalLayout_11 = QHBoxLayout()
-        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.label_11 = QLabel(RenameDialog)
-        self.label_11.setObjectName(u"label_11")
+        self.left_line = QFrame(RenameDialog)
+        self.left_line.setObjectName(u"left_line")
+        self.left_line.setFrameShape(QFrame.Shape.HLine)
+        self.left_line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.horizontalLayout_11.addWidget(self.label_11)
+        self.verticalLayout.addWidget(self.left_line)
 
-        self.lineEdit_11 = QLineEdit(RenameDialog)
-        self.lineEdit_11.setObjectName(u"lineEdit_11")
+        self.score_horizontalLayout = QHBoxLayout()
+        self.score_horizontalLayout.setObjectName(u"score_horizontalLayout")
+        self.score_label = QLabel(RenameDialog)
+        self.score_label.setObjectName(u"score_label")
 
-        self.horizontalLayout_11.addWidget(self.lineEdit_11)
+        self.score_horizontalLayout.addWidget(self.score_label)
 
+        self.score_lineEdit = QLineEdit(RenameDialog)
+        self.score_lineEdit.setObjectName(u"score_lineEdit")
 
-        self.verticalLayout.addLayout(self.horizontalLayout_11)
+        self.score_horizontalLayout.addWidget(self.score_lineEdit)
 
 
-        self.verticalLayout_3.addLayout(self.verticalLayout)
+        self.verticalLayout.addLayout(self.score_horizontalLayout)
 
-        self.verticalSpacer = QSpacerItem(20, 13, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.status_horizontalLayout = QHBoxLayout()
+        self.status_horizontalLayout.setObjectName(u"status_horizontalLayout")
+        self.status_label = QLabel(RenameDialog)
+        self.status_label.setObjectName(u"status_label")
 
-        self.verticalLayout_3.addItem(self.verticalSpacer)
+        self.status_horizontalLayout.addWidget(self.status_label)
 
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.horizontalLayout_12 = QHBoxLayout()
-        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
-        self.horizontalLayout_12.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
-        self.label_14 = QLabel(RenameDialog)
-        self.label_14.setObjectName(u"label_14")
+        self.status_lineEdit = QLineEdit(RenameDialog)
+        self.status_lineEdit.setObjectName(u"status_lineEdit")
 
-        self.horizontalLayout_12.addWidget(self.label_14)
+        self.status_horizontalLayout.addWidget(self.status_lineEdit)
 
-        self.lineEdit_13 = QLineEdit(RenameDialog)
-        self.lineEdit_13.setObjectName(u"lineEdit_13")
 
-        self.horizontalLayout_12.addWidget(self.lineEdit_13)
+        self.verticalLayout.addLayout(self.status_horizontalLayout)
 
-        self.label_15 = QLabel(RenameDialog)
-        self.label_15.setObjectName(u"label_15")
+        self.left_verticalSpacer = QSpacerItem(20, 13, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.horizontalLayout_12.addWidget(self.label_15)
+        self.verticalLayout.addItem(self.left_verticalSpacer)
 
-        self.horizontalLayout_12.setStretch(0, 1)
-        self.horizontalLayout_12.setStretch(1, 2)
-        self.horizontalLayout_12.setStretch(2, 2)
+        self.left_line_2 = QFrame(RenameDialog)
+        self.left_line_2.setObjectName(u"left_line_2")
+        self.left_line_2.setFrameShape(QFrame.Shape.HLine)
+        self.left_line_2.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout_12)
+        self.verticalLayout.addWidget(self.left_line_2)
 
-        self.horizontalLayout_13 = QHBoxLayout()
-        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
-        self.label_16 = QLabel(RenameDialog)
-        self.label_16.setObjectName(u"label_16")
+        self.episodes_verticalLayout = QVBoxLayout()
+        self.episodes_verticalLayout.setObjectName(u"episodes_verticalLayout")
+        self.episodes_horizontalLayout = QHBoxLayout()
+        self.episodes_horizontalLayout.setObjectName(u"episodes_horizontalLayout")
+        self.episodes_horizontalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
+        self.episodes_label = QLabel(RenameDialog)
+        self.episodes_label.setObjectName(u"episodes_label")
 
-        self.horizontalLayout_13.addWidget(self.label_16)
+        self.episodes_horizontalLayout.addWidget(self.episodes_label)
 
-        self.lineEdit_14 = QLineEdit(RenameDialog)
-        self.lineEdit_14.setObjectName(u"lineEdit_14")
+        self.episodes_lineEdit = QLineEdit(RenameDialog)
+        self.episodes_lineEdit.setObjectName(u"episodes_lineEdit")
 
-        self.horizontalLayout_13.addWidget(self.lineEdit_14)
+        self.episodes_horizontalLayout.addWidget(self.episodes_lineEdit)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.episodes_in_folder_label = QLabel(RenameDialog)
+        self.episodes_in_folder_label.setObjectName(u"episodes_in_folder_label")
 
-        self.horizontalLayout_13.addItem(self.horizontalSpacer)
+        self.episodes_horizontalLayout.addWidget(self.episodes_in_folder_label)
 
-        self.horizontalLayout_13.setStretch(0, 1)
-        self.horizontalLayout_13.setStretch(1, 2)
-        self.horizontalLayout_13.setStretch(2, 2)
+        self.episodes_horizontalLayout.setStretch(0, 1)
+        self.episodes_horizontalLayout.setStretch(1, 2)
+        self.episodes_horizontalLayout.setStretch(2, 2)
 
-        self.verticalLayout_2.addLayout(self.horizontalLayout_13)
+        self.episodes_verticalLayout.addLayout(self.episodes_horizontalLayout)
 
+        self.start_from_horizontalLayout = QHBoxLayout()
+        self.start_from_horizontalLayout.setObjectName(u"start_from_horizontalLayout")
+        self.start_from_label = QLabel(RenameDialog)
+        self.start_from_label.setObjectName(u"start_from_label")
 
-        self.verticalLayout_3.addLayout(self.verticalLayout_2)
+        self.start_from_horizontalLayout.addWidget(self.start_from_label)
 
+        self.start_from_lineEdit = QLineEdit(RenameDialog)
+        self.start_from_lineEdit.setObjectName(u"start_from_lineEdit")
 
-        self.horizontalLayout_14.addLayout(self.verticalLayout_3)
+        self.start_from_horizontalLayout.addWidget(self.start_from_lineEdit)
 
-        self.verticalLayout_4 = QVBoxLayout()
-        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.label_13 = QLabel(RenameDialog)
-        self.label_13.setObjectName(u"label_13")
+        self.start_from_horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.verticalLayout_4.addWidget(self.label_13)
+        self.start_from_horizontalLayout.addItem(self.start_from_horizontalSpacer)
 
-        self.treeWidget = QTreeWidget(RenameDialog)
-        self.treeWidget.setObjectName(u"treeWidget")
+        self.start_from_horizontalLayout.setStretch(0, 1)
+        self.start_from_horizontalLayout.setStretch(1, 2)
+        self.start_from_horizontalLayout.setStretch(2, 2)
 
-        self.verticalLayout_4.addWidget(self.treeWidget)
+        self.episodes_verticalLayout.addLayout(self.start_from_horizontalLayout)
 
 
-        self.horizontalLayout_14.addLayout(self.verticalLayout_4)
+        self.verticalLayout.addLayout(self.episodes_verticalLayout)
 
 
-        self.verticalLayout_5.addLayout(self.horizontalLayout_14)
+        self.main_horizontalLayout.addLayout(self.verticalLayout)
 
+        self.main_line = QFrame(RenameDialog)
+        self.main_line.setObjectName(u"main_line")
+        self.main_line.setFrameShape(QFrame.Shape.VLine)
+        self.main_line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_7.addLayout(self.verticalLayout_5)
+        self.main_horizontalLayout.addWidget(self.main_line)
 
-        self.verticalLayout_6 = QVBoxLayout()
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.horizontalLayout_15 = QHBoxLayout()
-        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
-        self.label_12 = QLabel(RenameDialog)
-        self.label_12.setObjectName(u"label_12")
+        self.preview_verticalLayout = QVBoxLayout()
+        self.preview_verticalLayout.setObjectName(u"preview_verticalLayout")
+        self.preview_label = QLabel(RenameDialog)
+        self.preview_label.setObjectName(u"preview_label")
 
-        self.horizontalLayout_15.addWidget(self.label_12)
+        self.preview_verticalLayout.addWidget(self.preview_label)
 
-        self.pushButton = QPushButton(RenameDialog)
-        self.pushButton.setObjectName(u"pushButton")
+        self.preview_treeWidget = QTreeWidget(RenameDialog)
+        self.preview_treeWidget.setObjectName(u"preview_treeWidget")
 
-        self.horizontalLayout_15.addWidget(self.pushButton)
+        self.preview_verticalLayout.addWidget(self.preview_treeWidget)
 
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.horizontalLayout_15.addItem(self.horizontalSpacer_2)
+        self.main_horizontalLayout.addLayout(self.preview_verticalLayout)
 
+        self.main_horizontalLayout.setStretch(0, 1)
+        self.main_horizontalLayout.setStretch(2, 2)
 
-        self.verticalLayout_6.addLayout(self.horizontalLayout_15)
+        self.verticalLayout_3.addLayout(self.main_horizontalLayout)
 
-        self.horizontalLayout_16 = QHBoxLayout()
-        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
-        self.lineEdit_12 = QLineEdit(RenameDialog)
-        self.lineEdit_12.setObjectName(u"lineEdit_12")
+        self.bottom_line = QFrame(RenameDialog)
+        self.bottom_line.setObjectName(u"bottom_line")
+        self.bottom_line.setFrameShape(QFrame.Shape.HLine)
+        self.bottom_line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.horizontalLayout_16.addWidget(self.lineEdit_12)
+        self.verticalLayout_3.addWidget(self.bottom_line)
+
+        self.botoom_verticalLayout = QVBoxLayout()
+        self.botoom_verticalLayout.setObjectName(u"botoom_verticalLayout")
+        self.template_horizontalLayout = QHBoxLayout()
+        self.template_horizontalLayout.setObjectName(u"template_horizontalLayout")
+        self.template_label = QLabel(RenameDialog)
+        self.template_label.setObjectName(u"template_label")
+
+        self.template_horizontalLayout.addWidget(self.template_label)
+
+        self.template_pushButton = QPushButton(RenameDialog)
+        self.template_pushButton.setObjectName(u"template_pushButton")
+        self.template_pushButton.setMaximumSize(QSize(30, 30))
+
+        self.template_horizontalLayout.addWidget(self.template_pushButton)
+
+        self.template_horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.template_horizontalLayout.addItem(self.template_horizontalSpacer)
+
+
+        self.botoom_verticalLayout.addLayout(self.template_horizontalLayout)
+
+        self.buttonbox_horizontalLayout = QHBoxLayout()
+        self.buttonbox_horizontalLayout.setObjectName(u"buttonbox_horizontalLayout")
+        self.template_lineEdit = QLineEdit(RenameDialog)
+        self.template_lineEdit.setObjectName(u"template_lineEdit")
+
+        self.buttonbox_horizontalLayout.addWidget(self.template_lineEdit)
 
         self.buttonBox = QDialogButtonBox(RenameDialog)
         self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setOrientation(Qt.Orientation.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
 
-        self.horizontalLayout_16.addWidget(self.buttonBox)
+        self.buttonbox_horizontalLayout.addWidget(self.buttonBox)
+
+        self.buttonbox_horizontalLayout.setStretch(0, 2)
+        self.buttonbox_horizontalLayout.setStretch(1, 1)
+
+        self.botoom_verticalLayout.addLayout(self.buttonbox_horizontalLayout)
 
 
-        self.verticalLayout_6.addLayout(self.horizontalLayout_16)
-
-
-        self.verticalLayout_7.addLayout(self.verticalLayout_6)
+        self.verticalLayout_3.addLayout(self.botoom_verticalLayout)
 
 
         self.retranslateUi(RenameDialog)
@@ -335,24 +373,25 @@ class Ui_RenameDialog(object):
 
     def retranslateUi(self, RenameDialog):
         RenameDialog.setWindowTitle(QCoreApplication.translate("RenameDialog", u"Rename", None))
-        self.label.setText(QCoreApplication.translate("RenameDialog", u"Title :", None))
-        self.label_2.setText(QCoreApplication.translate("RenameDialog", u"Season number :", None))
-        self.label_3.setText(QCoreApplication.translate("RenameDialog", u"Season :", None))
-        self.label_4.setText(QCoreApplication.translate("RenameDialog", u"Year :", None))
-        self.label_5.setText(QCoreApplication.translate("RenameDialog", u"Type :", None))
-        self.label_6.setText(QCoreApplication.translate("RenameDialog", u"Studio :", None))
-        self.label_7.setText(QCoreApplication.translate("RenameDialog", u"Duration :", None))
-        self.label_8.setText(QCoreApplication.translate("RenameDialog", u"Source :", None))
-        self.label_9.setText(QCoreApplication.translate("RenameDialog", u"Quality :", None))
-        self.label_10.setText(QCoreApplication.translate("RenameDialog", u"Translation studio :", None))
-        self.label_11.setText(QCoreApplication.translate("RenameDialog", u"Status :", None))
-        self.label_14.setText(QCoreApplication.translate("RenameDialog", u"Episodes :  ", None))
-        self.label_15.setText(QCoreApplication.translate("RenameDialog", u"(?? in folder)", None))
-        self.label_16.setText(QCoreApplication.translate("RenameDialog", u"Start from :", None))
-        self.label_13.setText(QCoreApplication.translate("RenameDialog", u"Preview", None))
-        ___qtreewidgetitem = self.treeWidget.headerItem()
+        self.title_label.setText(QCoreApplication.translate("RenameDialog", u"Title :", None))
+        self.season_num_label.setText(QCoreApplication.translate("RenameDialog", u"Season number :", None))
+        self.season_label.setText(QCoreApplication.translate("RenameDialog", u"Season :", None))
+        self.season_year_label.setText(QCoreApplication.translate("RenameDialog", u"Year :", None))
+        self.type_label.setText(QCoreApplication.translate("RenameDialog", u"Type :", None))
+        self.studio_label.setText(QCoreApplication.translate("RenameDialog", u"Studio :", None))
+        self.duration_label.setText(QCoreApplication.translate("RenameDialog", u"Duration :", None))
+        self.source_label.setText(QCoreApplication.translate("RenameDialog", u"Source :", None))
+        self.quality_label.setText(QCoreApplication.translate("RenameDialog", u"Quality :", None))
+        self.translation_studio_label.setText(QCoreApplication.translate("RenameDialog", u"Translation studio :", None))
+        self.score_label.setText(QCoreApplication.translate("RenameDialog", u"Score :", None))
+        self.status_label.setText(QCoreApplication.translate("RenameDialog", u"Status :", None))
+        self.episodes_label.setText(QCoreApplication.translate("RenameDialog", u"Episodes :  ", None))
+        self.episodes_in_folder_label.setText(QCoreApplication.translate("RenameDialog", u"(?? in folder)", None))
+        self.start_from_label.setText(QCoreApplication.translate("RenameDialog", u"Start from :", None))
+        self.preview_label.setText(QCoreApplication.translate("RenameDialog", u"Preview", None))
+        ___qtreewidgetitem = self.preview_treeWidget.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("RenameDialog", u"Folder", None))
-        self.label_12.setText(QCoreApplication.translate("RenameDialog", u"Template :", None))
-        self.pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
+        self.template_label.setText(QCoreApplication.translate("RenameDialog", u"Template :", None))
+        self.template_pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
     # retranslateUi
 

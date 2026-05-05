@@ -8,10 +8,12 @@ import sys, os
 
 from PySide6.QtWidgets import *
 from ui.title_details_window import Title_detailsWindow
+from ui.rename_dialog_window import RenameWindow
 from ui.ui_main import *
 from ui.add_series_window import *
 from ui.settings_window import *
 from ui.ui_settings import *
+from ui.widgets import FilesTree
 
 
 PATH_ROLE = 32
@@ -40,6 +42,11 @@ class MainWindow(QMainWindow):
         self.ui.forward_pushButton.pressed.connect(self.forward)
         self.ui.addSeries_pushButton.pressed.connect(self.show_addseries)
         self.ui.actionSettings.triggered.connect(self.show_settings)
+
+        self.ui.files_treeWidget.setDragDropOverwriteMode(False)
+        self.ui.library_treeWidget.setDragEnabled(True)
+        self.ui.library_treeWidget.setDragDropMode(QAbstractItemView.DragOnly)
+        self.ui.files_treeWidget.setDropIndicatorShown(True)
 
         self.refresh_library()
 
@@ -205,3 +212,19 @@ class MainWindow(QMainWindow):
             widget.addTopLevelItem(item)
         imgmClient = ImageManager()
         imgmClient.clear_temp_folder()
+
+    def open_rename_dialog(self, title_id: str, folder_path: str):
+        title_data = self.ldbclient.get_title(title_id) # dict
+
+        print(f"{title_data['title_romaji']} -> {folder_path}")
+
+        dialog = RenameWindow(self, title_data=title_data, folder_path=folder_path)
+        
+        if dialog.exec(): 
+            print(f"Rename dialog OK")
+           
+        else:
+            print("Rename dialog Cancel")
+
+
+

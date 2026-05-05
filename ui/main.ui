@@ -83,7 +83,10 @@
         </widget>
        </item>
        <item>
-        <widget class="QTreeWidget" name="files_treeWidget">
+        <widget class="FilesTree" name="files_treeWidget">
+         <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
          <property name="lineWidth">
           <number>1</number>
          </property>
@@ -121,6 +124,9 @@
        </item>
        <item>
         <widget class="QTreeWidget" name="library_treeWidget">
+         <property name="dragEnabled">
+          <bool>true</bool>
+         </property>
          <column>
           <property name="text">
            <string>Library</string>
@@ -217,6 +223,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FilesTree</class>
+   <extends>QTreeWidget</extends>
+   <header>ui.widgets</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

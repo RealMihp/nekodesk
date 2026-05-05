@@ -16,289 +16,341 @@
   <property name="sizeGripEnabled">
    <bool>true</bool>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_7">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_5">
+    <layout class="QHBoxLayout" name="title_horizontalLayout">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
+      <widget class="QLabel" name="title_label">
+       <property name="text">
+        <string>Title :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="title_lineEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="main_horizontalLayout" stretch="1,0,2">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Title :</string>
+        <layout class="QHBoxLayout" name="season_num_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="season_num_label">
+           <property name="text">
+            <string>Season number :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="season_num_lineEdit">
+           <property name="clearButtonEnabled">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="season_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="season_label">
+           <property name="text">
+            <string>Season :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="season_lineEdit"/>
+         </item>
+         <item>
+          <widget class="QLabel" name="season_year_label">
+           <property name="text">
+            <string>Year :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="season_year_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="type_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="type_label">
+           <property name="text">
+            <string>Type :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="type_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="studio_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="studio_label">
+           <property name="text">
+            <string>Studio :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="studio_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="duration_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="duration_label">
+           <property name="text">
+            <string>Duration :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="duration_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="source_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="source_label">
+           <property name="text">
+            <string>Source :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="source_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="quality_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="quality_label">
+           <property name="text">
+            <string>Quality :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="quality_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="translation_studio_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="translation_studio_label">
+           <property name="text">
+            <string>Translation studio :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="translation_studio_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="left_verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Policy::Minimum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>10</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="left_line">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLineEdit" name="lineEdit"/>
+        <layout class="QHBoxLayout" name="score_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="score_label">
+           <property name="text">
+            <string>Score :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="score_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="status_horizontalLayout">
+         <item>
+          <widget class="QLabel" name="status_label">
+           <property name="text">
+            <string>Status :</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="status_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="left_verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>13</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="Line" name="left_line_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="episodes_verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="episodes_horizontalLayout" stretch="1,2,2">
+           <property name="sizeConstraint">
+            <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+           </property>
+           <item>
+            <widget class="QLabel" name="episodes_label">
+             <property name="text">
+              <string>Episodes :  </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="episodes_lineEdit"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="episodes_in_folder_label">
+             <property name="text">
+              <string>(?? in folder)</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="start_from_horizontalLayout" stretch="1,2,2">
+           <item>
+            <widget class="QLabel" name="start_from_label">
+             <property name="text">
+              <string>Start from :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="start_from_lineEdit"/>
+           </item>
+           <item>
+            <spacer name="start_from_horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_14">
+      <widget class="Line" name="main_line">
+       <property name="orientation">
+        <enum>Qt::Orientation::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="preview_verticalLayout">
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_3">
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
-             <item>
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>Season number :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_2">
-               <property name="clearButtonEnabled">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QLabel" name="label_3">
-               <property name="text">
-                <string>Season :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_3"/>
-             </item>
-             <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_4">
-               <item>
-                <widget class="QLabel" name="label_4">
-                 <property name="text">
-                  <string>Year :</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEdit_4"/>
-               </item>
-              </layout>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="text">
-                <string>Type :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_5"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_6">
-             <item>
-              <widget class="QLabel" name="label_6">
-               <property name="text">
-                <string>Studio :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_6"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <item>
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>Duration :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_7"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
-             <item>
-              <widget class="QLabel" name="label_8">
-               <property name="text">
-                <string>Source :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_8"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <item>
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>Quality :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_9"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>Translation studio :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_10"/>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_11">
-             <item>
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>Status :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_11"/>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Orientation::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>13</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="1,2,2">
-             <property name="sizeConstraint">
-              <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
-             </property>
-             <item>
-              <widget class="QLabel" name="label_14">
-               <property name="text">
-                <string>Episodes :  </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_13"/>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_15">
-               <property name="text">
-                <string>(?? in folder)</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_13" stretch="1,2,2">
-             <item>
-              <widget class="QLabel" name="label_16">
-               <property name="text">
-                <string>Start from :</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="lineEdit_14"/>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </item>
-        </layout>
+        <widget class="QLabel" name="preview_label">
+         <property name="text">
+          <string>Preview</string>
+         </property>
+        </widget>
        </item>
        <item>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
-         <item>
-          <widget class="QLabel" name="label_13">
-           <property name="text">
-            <string>Preview</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QTreeWidget" name="treeWidget">
-           <column>
-            <property name="text">
-             <string>Folder</string>
-            </property>
-           </column>
-          </widget>
-         </item>
-        </layout>
+        <widget class="QTreeWidget" name="preview_treeWidget">
+         <column>
+          <property name="text">
+           <string>Folder</string>
+          </property>
+         </column>
+        </widget>
        </item>
       </layout>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_6">
+    <widget class="Line" name="bottom_line">
+     <property name="orientation">
+      <enum>Qt::Orientation::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="botoom_verticalLayout">
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_15">
+      <layout class="QHBoxLayout" name="template_horizontalLayout">
        <item>
-        <widget class="QLabel" name="label_12">
+        <widget class="QLabel" name="template_label">
          <property name="text">
           <string>Template :</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="template_pushButton">
+         <property name="maximumSize">
+          <size>
+           <width>30</width>
+           <height>30</height>
+          </size>
+         </property>
          <property name="text">
           <string>?</string>
          </property>
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer_2">
+        <spacer name="template_horizontalSpacer">
          <property name="orientation">
           <enum>Qt::Orientation::Horizontal</enum>
          </property>
@@ -313,9 +365,9 @@
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_16">
+      <layout class="QHBoxLayout" name="buttonbox_horizontalLayout" stretch="2,1">
        <item>
-        <widget class="QLineEdit" name="lineEdit_12"/>
+        <widget class="QLineEdit" name="template_lineEdit"/>
        </item>
        <item>
         <widget class="QDialogButtonBox" name="buttonBox">
