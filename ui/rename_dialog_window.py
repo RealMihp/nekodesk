@@ -39,16 +39,18 @@ class RenameWindow(QDialog):
         folder_path = self.folder_path
 
         local_data = FileScanner.get_title_local_data(folder_path)
-        fansub_groups = local_data.get('groups')
+        fansub_groups = local_data.get('groups', '')
         first_group = fansub_groups[0] if fansub_groups else ""
-        max_ep = local_data.get('max_ep')
+        max_ep = local_data.get('max_ep', '')
+        resolution = local_data.get('resolution')
+        source = local_data.get('source', '')
         title_romaji = data.get('title_romaji')
         title_native = data.get('title_native')
         title_english = data.get('title_english')
 
         title = title_romaji or title_native or title_english
 
-        self.ui.translation_studio_lineEdit.setText(first_group)
+        self.ui.fansub_lineEdit.setText(first_group)
 
         eps_in_folder_str = '(' + str(max_ep) + ' in folder)' if max_ep > 0 else ''
         self.ui.episodes_in_folder_label.setText(eps_in_folder_str)
@@ -64,6 +66,8 @@ class RenameWindow(QDialog):
         self.ui.start_from_lineEdit.setText('1')
         self.ui.score_lineEdit.setText(str(data.get('score', '')))
         self.ui.status_lineEdit.setText(data.get('status', ''))
+        self.ui.resolution_lineEdit.setText(resolution)
+        self.ui.source_lineEdit.setText(source)
 
 
     
