@@ -35,18 +35,35 @@ class RenameWindow(QDialog):
     def insert_data(self):
         """Insert data to lineEdits using self.title_data and names of video files in the folder"""
         ...
-        title_data = self.title_data
+        data = self.title_data
         folder_path = self.folder_path
 
         local_data = FileScanner.get_title_local_data(folder_path)
         fansub_groups = local_data.get('groups')
+        first_group = fansub_groups[0] if fansub_groups else ""
         max_ep = local_data.get('max_ep')
+        title_romaji = data.get('title_romaji')
+        title_native = data.get('title_native')
+        title_english = data.get('title_english')
 
-        self.ui.translation_studio_lineEdit.setText((',').join(fansub_groups))
+        title = title_romaji or title_native or title_english
+
+        self.ui.translation_studio_lineEdit.setText(first_group)
 
         eps_in_folder_str = '(' + str(max_ep) + ' in folder)' if max_ep > 0 else ''
         self.ui.episodes_in_folder_label.setText(eps_in_folder_str)
         
+        self.ui.title_lineEdit.setText(title)
+        self.ui.season_num_lineEdit.setText('1')
+        self.ui.season_lineEdit.setText(data.get('season', ''))
+        self.ui.season_year_lineEdit.setText(str(data.get('season_year', '')))
+        self.ui.type_lineEdit.setText(data.get('format', '').capitalize() if data.get('format', '') == 'MOVIE' else data.get('format', ''))
+        self.ui.studio_lineEdit.setText(data.get('studio', ''))
+        self.ui.duration_lineEdit.setText(str(data.get('duration', '')))
+        self.ui.episodes_lineEdit.setText(str(data.get('episodes', '')))
+        self.ui.start_from_lineEdit.setText('1')
+        self.ui.score_lineEdit.setText(str(data.get('score', '')))
+        self.ui.status_lineEdit.setText(data.get('status', ''))
 
 
     

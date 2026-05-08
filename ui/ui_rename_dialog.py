@@ -382,7 +382,7 @@ class Ui_RenameDialog(object):
         self.duration_label.setText(QCoreApplication.translate("RenameDialog", u"Duration :", None))
         self.source_label.setText(QCoreApplication.translate("RenameDialog", u"Source :", None))
         self.quality_label.setText(QCoreApplication.translate("RenameDialog", u"Quality :", None))
-        self.translation_studio_label.setText(QCoreApplication.translate("RenameDialog", u"Translation studio :", None))
+        self.translation_studio_label.setText(QCoreApplication.translate("RenameDialog", u"Fansub Group :", None))
         self.score_label.setText(QCoreApplication.translate("RenameDialog", u"Score :", None))
         self.status_label.setText(QCoreApplication.translate("RenameDialog", u"Status :", None))
         self.episodes_label.setText(QCoreApplication.translate("RenameDialog", u"Episodes :  ", None))

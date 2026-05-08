@@ -152,7 +152,7 @@
          <item>
           <widget class="QLabel" name="translation_studio_label">
            <property name="text">
-            <string>Translation studio :</string>
+            <string>Fansub Group :</string>
            </property>
           </widget>
          </item>
