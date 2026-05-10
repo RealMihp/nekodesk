@@ -82,6 +82,7 @@ class FileScanner:
                 except: pass
 
         # source in dirs
+        dirs.add(folder_path)
         for d in dirs:
             dir_name_up = os.path.basename(d).upper()
             for s in SOURCES:

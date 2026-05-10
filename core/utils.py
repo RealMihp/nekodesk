@@ -27,20 +27,27 @@ class ImageManager:
         try:
             parts = link.split("/")
             file_name = f"{parts[-2]}_{parts[-1]}" 
-
+            def_folder_path=os.path.join("data/posters")
             
             if not is_temp:
                 folder_path = os.path.join(self.posters_path)
+                
             else:
                 folder_path = os.path.join(self.temp_posters_path)
 
             file_path = os.path.join(folder_path, file_name).replace('\\', '/')
-
+            def_file_path = os.path.join(def_folder_path, file_name).replace('\\', '/')
             os.makedirs(folder_path, exist_ok=True)
+            os.makedirs(def_folder_path, exist_ok=True)
 
             # 1. Check if the file already exists locally
             if os.path.exists(file_path):
-                return QPixmap(file_path)
+                if return_pixmap: return QPixmap(file_path) 
+                else: return file_path
+            
+            if os.path.exists(def_file_path):
+                if return_pixmap: return QPixmap(def_file_path)
+                else: return def_file_path
 
             # 2. If not, download it
             try:

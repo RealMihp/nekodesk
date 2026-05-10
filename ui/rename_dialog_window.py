@@ -4,7 +4,7 @@ from core.logic import FileScanner
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtCore import QUrl
 
-import sys, os
+import sys, os, shutil
 
 from ui.ui_rename_dialog import *
 from core.db import *
@@ -18,13 +18,18 @@ class RenameWindow(QDialog):
         super().__init__(parent)
         self.ui = Ui_RenameDialog()
         self.ui.setupUi(self)
+        self.imgmClient = ImageManager()
 
         self.title_data = title_data
         self.folder_path = folder_path
 
+        self.save_poster_file_name = 'poster'   # get from settings
+        self.save_banner_file_name = 'banner'   # get from settings
+
         self.insert_data()
         
-
+        self.ui.save_poster_checkBox.toggled.connect(lambda: self.handle_checkboxes('save_poster_checkBox'))
+        self.ui.save_banner_checkBox.toggled.connect(lambda: self.handle_checkboxes('save_banner_checkBox'))
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
 
@@ -70,4 +75,53 @@ class RenameWindow(QDialog):
         self.ui.source_lineEdit.setText(source)
 
 
+        poster_link = data.get('poster_large_link')
+        poster_color = data.get('poster_color')
+        poster = self.imgmClient.get_poster(poster_link, return_pixmap=True) if poster_link else self.imgmClient.get_color_icon(poster_color)
+        placeholder_poster = self.imgmClient.get_color_pixmap(poster_color, 460, 690)
+        banner_link = data.get('banner_link')
+        placeholder_banner = self.imgmClient.get_color_pixmap(poster_color, 1900, 400)
+        banner = self.imgmClient.get_poster(banner_link, return_pixmap=True) if banner_link else placeholder_banner
+
+        if not banner.isNull():
+            banner = banner.scaledToWidth(998, Qt.TransformationMode.SmoothTransformation)
+            self.ui.banner_label.setPixmap(banner)
+            
+
+        if not poster.isNull():
+            poster = poster.scaledToWidth(191, Qt.TransformationMode.SmoothTransformation)
+            self.ui.poster_label.setPixmap(poster)
+            self.ui.poster_label.setFixedSize(poster.size())
+
+        self.ui.banner_label.setPixmap(banner)
+        self.ui.poster_label.setPixmap(poster)
+        
+    def handle_checkboxes(self, checkbox):
+        if checkbox == 'save_poster_checkBox':
+            self.ui.save_poster_lineEdit.setEnabled(self.ui.save_poster_checkBox.isChecked())
+        elif checkbox == 'save_banner_checkBox':
+            self.ui.save_banner_lineEdit.setEnabled(self.ui.save_banner_checkBox.isChecked())
     
+    def save_pictures(self):
+        poster_link = self.title_data.get('poster_large_link')
+        banner_link = self.title_data.get('banner_link')
+        
+        imgmClient = ImageManager(posters_path=self.folder_path)
+
+        if poster_link:
+            poster_src = imgmClient.get_poster(poster_link, return_pixmap=False, is_temp=False)
+            if poster_src:
+                poster_dst = os.path.join(self.folder_path, os.path.basename(poster_src)).replace('\\', '/')
+
+                if os.path.abspath(poster_src) != os.path.abspath(poster_dst):
+                    shutil.copy2(poster_src, poster_dst)
+
+        if banner_link:
+            banner_src = imgmClient.get_poster(banner_link, return_pixmap=False, is_temp=False)
+            if banner_src:
+                banner_dst = os.path.join(self.folder_path, os.path.basename(banner_src)).replace('\\', '/')
+                if os.path.abspath(banner_src) != os.path.abspath(banner_dst):
+                    shutil.copy2(banner_src, banner_dst)
+
+
+        

@@ -26,7 +26,8 @@ class Ui_RenameDialog(object):
         if not RenameDialog.objectName():
             RenameDialog.setObjectName(u"RenameDialog")
         RenameDialog.resize(1000, 800)
-        RenameDialog.setSizeGripEnabled(True)
+        RenameDialog.setMaximumSize(QSize(1000, 800))
+        RenameDialog.setSizeGripEnabled(False)
         self.verticalLayout_6 = QVBoxLayout(RenameDialog)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.banner_label = QLabel(RenameDialog)
@@ -350,7 +351,7 @@ class Ui_RenameDialog(object):
         sizePolicy1.setHeightForWidth(self.poster_label.sizePolicy().hasHeightForWidth())
         self.poster_label.setSizePolicy(sizePolicy1)
         self.poster_label.setMinimumSize(QSize(0, 0))
-        self.poster_label.setMaximumSize(QSize(189, 300))
+        self.poster_label.setMaximumSize(QSize(16777215, 16777215))
         self.poster_label.setFrameShape(QFrame.Shape.StyledPanel)
         self.poster_label.setScaledContents(False)
         self.poster_label.setAlignment(Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
@@ -360,40 +361,40 @@ class Ui_RenameDialog(object):
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.checkBox = QCheckBox(RenameDialog)
-        self.checkBox.setObjectName(u"checkBox")
-        self.checkBox.setChecked(False)
-        self.checkBox.setTristate(False)
+        self.save_poster_checkBox = QCheckBox(RenameDialog)
+        self.save_poster_checkBox.setObjectName(u"save_poster_checkBox")
+        self.save_poster_checkBox.setChecked(False)
+        self.save_poster_checkBox.setTristate(False)
 
-        self.verticalLayout_3.addWidget(self.checkBox)
+        self.verticalLayout_3.addWidget(self.save_poster_checkBox)
 
-        self.lineEdit = QLineEdit(RenameDialog)
-        self.lineEdit.setObjectName(u"lineEdit")
-        self.lineEdit.setEnabled(False)
+        self.save_poster_lineEdit = QLineEdit(RenameDialog)
+        self.save_poster_lineEdit.setObjectName(u"save_poster_lineEdit")
+        self.save_poster_lineEdit.setEnabled(False)
 
-        self.verticalLayout_3.addWidget(self.lineEdit)
+        self.verticalLayout_3.addWidget(self.save_poster_lineEdit)
 
 
         self.verticalLayout_4.addLayout(self.verticalLayout_3)
 
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.checkBox_2 = QCheckBox(RenameDialog)
-        self.checkBox_2.setObjectName(u"checkBox_2")
+        self.save_banner_checkBox = QCheckBox(RenameDialog)
+        self.save_banner_checkBox.setObjectName(u"save_banner_checkBox")
 
-        self.verticalLayout_2.addWidget(self.checkBox_2)
+        self.verticalLayout_2.addWidget(self.save_banner_checkBox)
 
-        self.lineEdit_2 = QLineEdit(RenameDialog)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-        self.lineEdit_2.setEnabled(False)
+        self.save_banner_lineEdit = QLineEdit(RenameDialog)
+        self.save_banner_lineEdit.setObjectName(u"save_banner_lineEdit")
+        self.save_banner_lineEdit.setEnabled(False)
 
-        self.verticalLayout_2.addWidget(self.lineEdit_2)
+        self.verticalLayout_2.addWidget(self.save_banner_lineEdit)
 
         self.verticalLayout_2.setStretch(0, 3)
 
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
 
-        self.verticalSpacer = QSpacerItem(20, 5, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
+        self.verticalSpacer = QSpacerItem(20, 120, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
 
         self.verticalLayout_4.addItem(self.verticalSpacer)
 
@@ -483,8 +484,10 @@ class Ui_RenameDialog(object):
         ___qtreewidgetitem = self.preview_treeWidget.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("RenameDialog", u"Folder", None))
         self.poster_label.setText("")
-        self.checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save poster to folder", None))
-        self.checkBox_2.setText(QCoreApplication.translate("RenameDialog", u"Save banner to folder", None))
+        self.save_poster_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save poster to folder", None))
+        self.save_poster_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"File name", None))
+        self.save_banner_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save banner to folder", None))
+        self.save_banner_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"File name", None))
         self.template_label.setText(QCoreApplication.translate("RenameDialog", u"Template :", None))
         self.template_pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
     # retranslateUi

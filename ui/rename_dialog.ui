@@ -10,11 +10,17 @@
     <height>800</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>1000</width>
+    <height>800</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Rename</string>
   </property>
   <property name="sizeGripEnabled">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_6">
    <item>
@@ -380,8 +386,8 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>189</width>
-           <height>300</height>
+           <width>16777215</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="frameShape">
@@ -404,7 +410,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <widget class="QCheckBox" name="checkBox">
+          <widget class="QCheckBox" name="save_poster_checkBox">
            <property name="text">
             <string>Save poster to folder</string>
            </property>
@@ -417,9 +423,12 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit">
+          <widget class="QLineEdit" name="save_poster_lineEdit">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="placeholderText">
+            <string>File name</string>
            </property>
           </widget>
          </item>
@@ -428,16 +437,19 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2" stretch="3,0">
          <item>
-          <widget class="QCheckBox" name="checkBox_2">
+          <widget class="QCheckBox" name="save_banner_checkBox">
            <property name="text">
             <string>Save banner to folder</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="lineEdit_2">
+          <widget class="QLineEdit" name="save_banner_lineEdit">
            <property name="enabled">
             <bool>false</bool>
+           </property>
+           <property name="placeholderText">
+            <string>File name</string>
            </property>
           </widget>
          </item>
@@ -454,7 +466,7 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>5</height>
+           <height>120</height>
           </size>
          </property>
         </spacer>
