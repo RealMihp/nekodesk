@@ -12,6 +12,8 @@ from core.utils import *
 from core.api.anilist_api import *
 from core.logic import FileScanner
 
+VIDEO_EXTS = ('.mp4', '.mkv', '.avi')
+PATH_ROLE = 32
 
 class RenameWindow(QDialog):
     def __init__(self, parent=None, title_data: dict = {}, folder_path: str = ""):
@@ -19,17 +21,25 @@ class RenameWindow(QDialog):
         self.ui = Ui_RenameDialog()
         self.ui.setupUi(self)
         self.imgmClient = ImageManager()
-
+        self.history = []
+        self.forward_stack = []
         self.title_data = title_data
         self.folder_path = folder_path
+        self.current_dir = folder_path
 
         self.save_poster_file_name = 'poster'   # get from settings
         self.save_banner_file_name = 'banner'   # get from settings
 
+        self.populate_tree(folder_path)
         self.insert_data()
         
         self.ui.save_poster_checkBox.toggled.connect(lambda: self.handle_checkboxes('save_poster_checkBox'))
         self.ui.save_banner_checkBox.toggled.connect(lambda: self.handle_checkboxes('save_banner_checkBox'))
+        self.ui.show_only_video_files_checkBox.toggled.connect(lambda: self.populate_tree(self.current_dir))
+        self.ui.preview_treeWidget.itemDoubleClicked.connect(self.open_item)
+        self.ui.back_pushButton.pressed.connect(self.back)
+        self.ui.refresh_pushButton.pressed.connect(self.refresh)
+        self.ui.forward_pushButton.pressed.connect(self.forward)
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
 
@@ -123,5 +133,71 @@ class RenameWindow(QDialog):
                 if os.path.abspath(banner_src) != os.path.abspath(banner_dst):
                     shutil.copy2(banner_src, banner_dst)
 
+    def populate_tree(self, folder_path):
+        widget = self.ui.preview_treeWidget
+        items = FileScanner.get_items(folder_path)
 
+        only_video = self.ui.show_only_video_files_checkBox.isChecked()
+        current_dir = folder_path
+        widget.headerItem().setText(0, current_dir)
         
+
+        widget.clear()
+        for data in items:
+            if only_video and not data['name'].endswith(VIDEO_EXTS):
+                continue
+            item = QTreeWidgetItem(widget)
+            item.setText(0, data['name'])
+            item.setData(0, PATH_ROLE, data['path'])
+            
+            # icons
+            icon_type = QStyle.SP_DirIcon if data['is_dir'] else QStyle.SP_FileIcon
+            item.setIcon(0, self.style().standardIcon(icon_type))
+
+            self.ui.back_pushButton.setEnabled(len(self.history) > 0)
+            self.ui.forward_pushButton.setEnabled(len(self.forward_stack) > 0)
+            
+            self.ui.refresh_pushButton.setEnabled(True if current_dir else False)
+        
+    def open_item(self, item, column):
+        if item:
+            path = item.data(0, PATH_ROLE)
+            if path:
+                if os.path.isdir(path):
+                    current_dir = self.ui.preview_treeWidget.headerItem().text(0)
+                    self.current_dir = path
+                    if current_dir:
+                        self.history.append(current_dir)
+                        self.forward_stack.clear()
+                    self.populate_tree(path)
+                else:
+                    self.open_file(path)
+
+    def open_file(self, path):
+        file_url = QUrl.fromLocalFile(path)
+        QDesktopServices.openUrl(file_url)
+
+    def back(self):
+        if self.history:
+            current_dir = self.ui.preview_treeWidget.headerItem().text(0)
+            last_folder = self.history.pop()
+            self.forward_stack.append(current_dir)
+            self.populate_tree(last_folder)
+            self.current_dir = last_folder
+            
+    
+    def refresh(self):
+        current_dir = self.ui.preview_treeWidget.headerItem().text(0)
+        self.current_dir = current_dir
+        if current_dir:
+            self.populate_tree(current_dir)
+            self.ui.preview_treeWidget.scrollToTop()
+
+    def forward(self):
+        if self.forward_stack:
+            current_dir = self.ui.preview_treeWidget.headerItem().text(0)
+            self.history.append(current_dir)
+            
+            next_folder = self.forward_stack.pop()
+            self.populate_tree(next_folder)
+            self.current_dir = next_folder

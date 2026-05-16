@@ -28,8 +28,8 @@ class Ui_RenameDialog(object):
         RenameDialog.resize(1000, 800)
         RenameDialog.setMaximumSize(QSize(1000, 800))
         RenameDialog.setSizeGripEnabled(False)
-        self.verticalLayout_6 = QVBoxLayout(RenameDialog)
-        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_7 = QVBoxLayout(RenameDialog)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.banner_label = QLabel(RenameDialog)
         self.banner_label.setObjectName(u"banner_label")
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Expanding)
@@ -42,12 +42,12 @@ class Ui_RenameDialog(object):
         self.banner_label.setFrameShape(QFrame.Shape.StyledPanel)
         self.banner_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.verticalLayout_6.addWidget(self.banner_label)
+        self.verticalLayout_7.addWidget(self.banner_label)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.verticalLayout_5 = QVBoxLayout()
-        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.verticalLayout_6 = QVBoxLayout()
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.title_horizontalLayout = QHBoxLayout()
         self.title_horizontalLayout.setObjectName(u"title_horizontalLayout")
         self.title_label = QLabel(RenameDialog)
@@ -61,10 +61,17 @@ class Ui_RenameDialog(object):
         self.title_horizontalLayout.addWidget(self.title_lineEdit)
 
 
-        self.verticalLayout_5.addLayout(self.title_horizontalLayout)
+        self.verticalLayout_6.addLayout(self.title_horizontalLayout)
 
-        self.main_horizontalLayout = QHBoxLayout()
-        self.main_horizontalLayout.setObjectName(u"main_horizontalLayout")
+        self.line = QFrame(RenameDialog)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.Shape.VLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_6.addWidget(self.line)
+
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.season_num_horizontalLayout = QHBoxLayout()
@@ -302,44 +309,77 @@ class Ui_RenameDialog(object):
         self.verticalLayout.addLayout(self.episodes_verticalLayout)
 
 
-        self.main_horizontalLayout.addLayout(self.verticalLayout)
+        self.horizontalLayout.addLayout(self.verticalLayout)
 
         self.main_line = QFrame(RenameDialog)
         self.main_line.setObjectName(u"main_line")
         self.main_line.setFrameShape(QFrame.Shape.VLine)
         self.main_line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.main_horizontalLayout.addWidget(self.main_line)
+        self.horizontalLayout.addWidget(self.main_line)
 
-        self.preview_verticalLayout = QVBoxLayout()
-        self.preview_verticalLayout.setObjectName(u"preview_verticalLayout")
+        self.verticalLayout_5 = QVBoxLayout()
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
         self.preview_label = QLabel(RenameDialog)
         self.preview_label.setObjectName(u"preview_label")
 
-        self.preview_verticalLayout.addWidget(self.preview_label)
+        self.verticalLayout_5.addWidget(self.preview_label)
+
+        self.btn_frame = QFrame(RenameDialog)
+        self.btn_frame.setObjectName(u"btn_frame")
+        self.btn_frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.btn_frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_2 = QHBoxLayout(self.btn_frame)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.back_pushButton = QPushButton(self.btn_frame)
+        self.back_pushButton.setObjectName(u"back_pushButton")
+        self.back_pushButton.setEnabled(False)
+
+        self.horizontalLayout_2.addWidget(self.back_pushButton)
+
+        self.forward_pushButton = QPushButton(self.btn_frame)
+        self.forward_pushButton.setObjectName(u"forward_pushButton")
+        self.forward_pushButton.setEnabled(False)
+
+        self.horizontalLayout_2.addWidget(self.forward_pushButton)
+
+        self.refresh_pushButton = QPushButton(self.btn_frame)
+        self.refresh_pushButton.setObjectName(u"refresh_pushButton")
+        self.refresh_pushButton.setEnabled(False)
+
+        self.horizontalLayout_2.addWidget(self.refresh_pushButton)
+
+
+        self.verticalLayout_5.addWidget(self.btn_frame)
 
         self.preview_treeWidget = QTreeWidget(RenameDialog)
         self.preview_treeWidget.setObjectName(u"preview_treeWidget")
 
-        self.preview_verticalLayout.addWidget(self.preview_treeWidget)
+        self.verticalLayout_5.addWidget(self.preview_treeWidget)
 
+        self.show_only_video_files_checkBox = QCheckBox(RenameDialog)
+        self.show_only_video_files_checkBox.setObjectName(u"show_only_video_files_checkBox")
 
-        self.main_horizontalLayout.addLayout(self.preview_verticalLayout)
+        self.verticalLayout_5.addWidget(self.show_only_video_files_checkBox)
 
-        self.main_horizontalLayout.setStretch(0, 1)
-        self.main_horizontalLayout.setStretch(2, 2)
-
-        self.verticalLayout_5.addLayout(self.main_horizontalLayout)
-
+        self.verticalLayout_5.setStretch(2, 4)
 
         self.horizontalLayout.addLayout(self.verticalLayout_5)
 
-        self.line = QFrame(RenameDialog)
-        self.line.setObjectName(u"line")
-        self.line.setFrameShape(QFrame.Shape.VLine)
-        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+        self.horizontalLayout.setStretch(0, 2)
+        self.horizontalLayout.setStretch(2, 4)
 
-        self.horizontalLayout.addWidget(self.line)
+        self.verticalLayout_6.addLayout(self.horizontalLayout)
+
+
+        self.horizontalLayout_3.addLayout(self.verticalLayout_6)
+
+        self.line_2 = QFrame(RenameDialog)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.Shape.VLine)
+        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.horizontalLayout_3.addWidget(self.line_2)
 
         self.verticalLayout_4 = QVBoxLayout()
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
@@ -390,6 +430,11 @@ class Ui_RenameDialog(object):
 
         self.verticalLayout_2.addWidget(self.save_banner_lineEdit)
 
+        self.rename_folder_checkBox = QCheckBox(RenameDialog)
+        self.rename_folder_checkBox.setObjectName(u"rename_folder_checkBox")
+
+        self.verticalLayout_2.addWidget(self.rename_folder_checkBox)
+
         self.verticalLayout_2.setStretch(0, 3)
 
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
@@ -400,20 +445,19 @@ class Ui_RenameDialog(object):
 
         self.verticalLayout_4.setStretch(0, 4)
 
-        self.horizontalLayout.addLayout(self.verticalLayout_4)
+        self.horizontalLayout_3.addLayout(self.verticalLayout_4)
 
-        self.horizontalLayout.setStretch(0, 4)
-        self.horizontalLayout.setStretch(1, 4)
-        self.horizontalLayout.setStretch(2, 1)
+        self.horizontalLayout_3.setStretch(0, 4)
+        self.horizontalLayout_3.setStretch(2, 1)
 
-        self.verticalLayout_6.addLayout(self.horizontalLayout)
+        self.verticalLayout_7.addLayout(self.horizontalLayout_3)
 
         self.bottom_line = QFrame(RenameDialog)
         self.bottom_line.setObjectName(u"bottom_line")
         self.bottom_line.setFrameShape(QFrame.Shape.HLine)
         self.bottom_line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.verticalLayout_6.addWidget(self.bottom_line)
+        self.verticalLayout_7.addWidget(self.bottom_line)
 
         self.template_horizontalLayout = QHBoxLayout()
         self.template_horizontalLayout.setObjectName(u"template_horizontalLayout")
@@ -428,19 +472,39 @@ class Ui_RenameDialog(object):
 
         self.template_horizontalLayout.addWidget(self.template_pushButton)
 
+        self.template_lineEdit = QLineEdit(RenameDialog)
+        self.template_lineEdit.setObjectName(u"template_lineEdit")
+
+        self.template_horizontalLayout.addWidget(self.template_lineEdit)
+
         self.template_horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.template_horizontalLayout.addItem(self.template_horizontalSpacer)
 
+        self.template_horizontalLayout.setStretch(0, 1)
+        self.template_horizontalLayout.setStretch(1, 1)
+        self.template_horizontalLayout.setStretch(2, 10)
+        self.template_horizontalLayout.setStretch(3, 10)
 
-        self.verticalLayout_6.addLayout(self.template_horizontalLayout)
+        self.verticalLayout_7.addLayout(self.template_horizontalLayout)
 
         self.buttonbox_horizontalLayout = QHBoxLayout()
         self.buttonbox_horizontalLayout.setObjectName(u"buttonbox_horizontalLayout")
-        self.template_lineEdit = QLineEdit(RenameDialog)
-        self.template_lineEdit.setObjectName(u"template_lineEdit")
+        self.folder_name_label = QLabel(RenameDialog)
+        self.folder_name_label.setObjectName(u"folder_name_label")
 
-        self.buttonbox_horizontalLayout.addWidget(self.template_lineEdit)
+        self.buttonbox_horizontalLayout.addWidget(self.folder_name_label)
+
+        self.folder_name_pushButton = QPushButton(RenameDialog)
+        self.folder_name_pushButton.setObjectName(u"folder_name_pushButton")
+        self.folder_name_pushButton.setMaximumSize(QSize(30, 30))
+
+        self.buttonbox_horizontalLayout.addWidget(self.folder_name_pushButton)
+
+        self.folder_name_lineEdit = QLineEdit(RenameDialog)
+        self.folder_name_lineEdit.setObjectName(u"folder_name_lineEdit")
+
+        self.buttonbox_horizontalLayout.addWidget(self.folder_name_lineEdit)
 
         self.buttonBox = QDialogButtonBox(RenameDialog)
         self.buttonBox.setObjectName(u"buttonBox")
@@ -449,10 +513,12 @@ class Ui_RenameDialog(object):
 
         self.buttonbox_horizontalLayout.addWidget(self.buttonBox)
 
-        self.buttonbox_horizontalLayout.setStretch(0, 2)
+        self.buttonbox_horizontalLayout.setStretch(0, 1)
         self.buttonbox_horizontalLayout.setStretch(1, 1)
+        self.buttonbox_horizontalLayout.setStretch(2, 10)
+        self.buttonbox_horizontalLayout.setStretch(3, 10)
 
-        self.verticalLayout_6.addLayout(self.buttonbox_horizontalLayout)
+        self.verticalLayout_7.addLayout(self.buttonbox_horizontalLayout)
 
 
         self.retranslateUi(RenameDialog)
@@ -481,14 +547,21 @@ class Ui_RenameDialog(object):
         self.episodes_in_folder_label.setText(QCoreApplication.translate("RenameDialog", u"(?? in folder)", None))
         self.start_from_label.setText(QCoreApplication.translate("RenameDialog", u"Start from :", None))
         self.preview_label.setText(QCoreApplication.translate("RenameDialog", u"Preview", None))
+        self.back_pushButton.setText(QCoreApplication.translate("RenameDialog", u"\u2b60", None))
+        self.forward_pushButton.setText(QCoreApplication.translate("RenameDialog", u"\u2b62", None))
+        self.refresh_pushButton.setText(QCoreApplication.translate("RenameDialog", u"\u27f3", None))
         ___qtreewidgetitem = self.preview_treeWidget.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("RenameDialog", u"Folder", None))
+        self.show_only_video_files_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Show only video files", None))
         self.poster_label.setText("")
         self.save_poster_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save poster to folder", None))
         self.save_poster_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"File name", None))
         self.save_banner_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save banner to folder", None))
         self.save_banner_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"File name", None))
+        self.rename_folder_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename folder", None))
         self.template_label.setText(QCoreApplication.translate("RenameDialog", u"Template :", None))
         self.template_pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
+        self.folder_name_label.setText(QCoreApplication.translate("RenameDialog", u"Folder name :", None))
+        self.folder_name_pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
     # retranslateUi
 
