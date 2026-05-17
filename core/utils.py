@@ -134,3 +134,33 @@ class ImageManager:
         pixmap.fill(color)
         
         return pixmap
+    
+class FileManager:
+    def __init__(self):
+        ...
+
+    def rename_file(self, old_path, new_name):
+        folder = os.path.dirname(old_path)
+
+        new_path = os.path.join(folder, new_name).replace('\\', '/')
+
+        # Rename
+        if os.path.exists(old_path):
+            os.rename(old_path, new_path)
+
+    def rename_folder(self, old_folder_path, new_folder_name):
+        parent_dir = os.path.dirname(old_folder_path)
+
+        new_folder_path = os.path.join(parent_dir, new_folder_name).replace('\\', '/')
+
+        if os.path.exists(old_folder_path) and os.path.isdir(old_folder_path):
+            if not os.path.exists(new_folder_path):
+                try:
+                    os.rename(old_folder_path, new_folder_path)
+                    print(f"Folder successfully renamed:\n{old_folder_path} -> {new_folder_path}")
+                except Exception as e:
+                    print(f"Rename error:\n{old_folder_path} : {e}")
+            else:
+                print(f"Error: {new_folder_path} is already exists!")
+        else:
+            print(f"Error: {old_folder_path} does not exists!")

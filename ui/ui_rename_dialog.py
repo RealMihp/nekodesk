@@ -216,6 +216,22 @@ class Ui_RenameDialog(object):
 
         self.verticalLayout.addWidget(self.left_line)
 
+        self.country_horizontalLayout = QHBoxLayout()
+        self.country_horizontalLayout.setObjectName(u"country_horizontalLayout")
+        self.country_horizontalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
+        self.country_label = QLabel(RenameDialog)
+        self.country_label.setObjectName(u"country_label")
+
+        self.country_horizontalLayout.addWidget(self.country_label)
+
+        self.country_lineEdit = QLineEdit(RenameDialog)
+        self.country_lineEdit.setObjectName(u"country_lineEdit")
+
+        self.country_horizontalLayout.addWidget(self.country_lineEdit)
+
+
+        self.verticalLayout.addLayout(self.country_horizontalLayout)
+
         self.score_horizontalLayout = QHBoxLayout()
         self.score_horizontalLayout.setObjectName(u"score_horizontalLayout")
         self.score_label = QLabel(RenameDialog)
@@ -399,8 +415,36 @@ class Ui_RenameDialog(object):
 
         self.verticalLayout_4.addWidget(self.poster_label)
 
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.rename_subs_checkBox = QCheckBox(RenameDialog)
+        self.rename_subs_checkBox.setObjectName(u"rename_subs_checkBox")
+
+        self.verticalLayout_2.addWidget(self.rename_subs_checkBox)
+
+        self.rename_dubs_checkBox = QCheckBox(RenameDialog)
+        self.rename_dubs_checkBox.setObjectName(u"rename_dubs_checkBox")
+
+        self.verticalLayout_2.addWidget(self.rename_dubs_checkBox)
+
+        self.rename_folder_checkBox = QCheckBox(RenameDialog)
+        self.rename_folder_checkBox.setObjectName(u"rename_folder_checkBox")
+
+        self.verticalLayout_2.addWidget(self.rename_folder_checkBox)
+
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.save_banner_checkBox = QCheckBox(RenameDialog)
+        self.save_banner_checkBox.setObjectName(u"save_banner_checkBox")
+
+        self.verticalLayout_3.addWidget(self.save_banner_checkBox)
+
+        self.save_banner_lineEdit = QLineEdit(RenameDialog)
+        self.save_banner_lineEdit.setObjectName(u"save_banner_lineEdit")
+        self.save_banner_lineEdit.setEnabled(False)
+
+        self.verticalLayout_3.addWidget(self.save_banner_lineEdit)
+
         self.save_poster_checkBox = QCheckBox(RenameDialog)
         self.save_poster_checkBox.setObjectName(u"save_poster_checkBox")
         self.save_poster_checkBox.setChecked(False)
@@ -415,27 +459,8 @@ class Ui_RenameDialog(object):
         self.verticalLayout_3.addWidget(self.save_poster_lineEdit)
 
 
-        self.verticalLayout_4.addLayout(self.verticalLayout_3)
+        self.verticalLayout_2.addLayout(self.verticalLayout_3)
 
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.save_banner_checkBox = QCheckBox(RenameDialog)
-        self.save_banner_checkBox.setObjectName(u"save_banner_checkBox")
-
-        self.verticalLayout_2.addWidget(self.save_banner_checkBox)
-
-        self.save_banner_lineEdit = QLineEdit(RenameDialog)
-        self.save_banner_lineEdit.setObjectName(u"save_banner_lineEdit")
-        self.save_banner_lineEdit.setEnabled(False)
-
-        self.verticalLayout_2.addWidget(self.save_banner_lineEdit)
-
-        self.rename_folder_checkBox = QCheckBox(RenameDialog)
-        self.rename_folder_checkBox.setObjectName(u"rename_folder_checkBox")
-
-        self.verticalLayout_2.addWidget(self.rename_folder_checkBox)
-
-        self.verticalLayout_2.setStretch(0, 3)
 
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
 
@@ -541,6 +566,7 @@ class Ui_RenameDialog(object):
         self.source_label.setText(QCoreApplication.translate("RenameDialog", u"Source :", None))
         self.resolution_label.setText(QCoreApplication.translate("RenameDialog", u"Resolution :", None))
         self.fansub_label.setText(QCoreApplication.translate("RenameDialog", u"Fansub Group :", None))
+        self.country_label.setText(QCoreApplication.translate("RenameDialog", u"Country : ", None))
         self.score_label.setText(QCoreApplication.translate("RenameDialog", u"Score :", None))
         self.status_label.setText(QCoreApplication.translate("RenameDialog", u"Status :", None))
         self.episodes_label.setText(QCoreApplication.translate("RenameDialog", u"Episodes :  ", None))
@@ -554,11 +580,13 @@ class Ui_RenameDialog(object):
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("RenameDialog", u"Folder", None))
         self.show_only_video_files_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Show only video files", None))
         self.poster_label.setText("")
-        self.save_poster_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save poster to folder", None))
-        self.save_poster_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"File name", None))
+        self.rename_subs_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename subtitle files", None))
+        self.rename_dubs_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename audio files", None))
+        self.rename_folder_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename folder", None))
         self.save_banner_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save banner to folder", None))
         self.save_banner_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"File name", None))
-        self.rename_folder_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename folder", None))
+        self.save_poster_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save poster to folder", None))
+        self.save_poster_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"File name", None))
         self.template_label.setText(QCoreApplication.translate("RenameDialog", u"Template :", None))
         self.template_pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
         self.folder_name_label.setText(QCoreApplication.translate("RenameDialog", u"Folder name :", None))

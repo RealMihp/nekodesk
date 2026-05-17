@@ -1,5 +1,6 @@
 import PySide6
 from PySide6.QtWidgets import *
+import anitopy
 from core.logic import FileScanner
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtCore import QUrl
@@ -13,6 +14,8 @@ from core.api.anilist_api import *
 from core.logic import FileScanner
 
 VIDEO_EXTS = ('.mp4', '.mkv', '.avi')
+SUB_EXTS = ('.ass', '.srt', '.ssa', '.vtt')
+DUB_EXTS = ('.mka', '.mp3', '.aac', '.ac3', '.flac')
 PATH_ROLE = 32
 
 class RenameWindow(QDialog):
@@ -21,6 +24,7 @@ class RenameWindow(QDialog):
         self.ui = Ui_RenameDialog()
         self.ui.setupUi(self)
         self.imgmClient = ImageManager()
+        self.filemClient = FileManager()
         self.history = []
         self.forward_stack = []
         self.title_data = title_data
@@ -201,3 +205,83 @@ class RenameWindow(QDialog):
             next_folder = self.forward_stack.pop()
             self.populate_tree(next_folder)
             self.current_dir = next_folder
+
+
+    def rename(self):
+        # Files
+        items = FileScanner.get_items(self.folder_path)
+        exts = VIDEO_EXTS
+        exts = exts + SUB_EXTS if self.ui.rename_subs_checkBox.isChecked() else exts
+        exts = exts + DUB_EXTS if self.ui.rename_dubs_checkBox.isChecked() else exts
+
+        eps_num = int(self.ui.episodes_lineEdit.text())
+        start_from_ep = int(self.ui.start_from_lineEdit.text())
+        eps_tuple = tuple(range(start_from_ep, eps_num + 1))
+        eps_dict = {} 
+
+        for data in items:
+            file_name = data['name']
+            file_path = data['path']
+            
+            if file_name.lower().endswith(exts):
+                parsed_data = anitopy.parse(file_name)
+                
+                if parsed_data and parsed_data.get('episode_number'):
+                    parsed_ep = int(parsed_data.get('episode_number'))
+                
+                    ext = os.path.splitext(file_name)[1]
+                    
+                    base_new_name = self.generate_name(self.ui.template_lineEdit.text(), parsed_ep)
+                    new_name = base_new_name + ext
+                    
+                    eps_dict[parsed_ep] = (file_path, new_name)
+
+        # Rename
+        for ep, (old_path, new_name) in eps_dict.items():
+            if ep in eps_tuple:
+                self.filemClient.rename_file(old_path, new_name)
+
+        # Folder
+        if self.ui.rename_folder_checkBox.isChecked():
+            new_folder_name = self.generate_name(self.ui.folder_name_lineEdit.text())
+            self.filemClient.rename_folder(self.folder_path, new_folder_name)
+
+
+    def generate_name(self, template: str = '', episode: int = 0) -> str:
+        ui = self.ui
+        # Title
+        template = template.replace('{title}', ui.title_lineEdit.text())
+        # Season
+        template = template.replace('{season_num}', ui.season_num_lineEdit.text())
+        template = template.replace('{season}', ui.season_lineEdit.text())
+        template = template.replace('{year}', ui.season_year_lineEdit.text())
+        # Type
+        template = template.replace('{type}', ui.type_lineEdit.text())
+        # Studio
+        template = template.replace('{studio}', ui.studio_lineEdit.text())
+        # Duration
+        template = template.replace('{duration}', ui.duration_lineEdit.text())
+        # Source
+        template = template.replace('{source}', ui.source_lineEdit.text())
+        # Resolution
+        template = template.replace('{resolution}', ui.resolution_lineEdit.text())
+        # Height
+        template = template.replace('{height}', ui.resolution_lineEdit.text().split('x')[-1])
+        # Width
+        template = template.replace('{height}', ui.resolution_lineEdit.text().split('x')[0])
+        # Fansub group
+        template = template.replace('{fansub}', ui.fansub_lineEdit.text())
+        # Score
+        template = template.replace('{score}', ui.score_lineEdit.text())
+        # Status
+        template = template.replace('{status}', ui.status_lineEdit.text())
+        # Episodes
+        template = template.replace('{episodes}', ui.episodes_lineEdit.text())
+        # Country
+        template = template.replace('{country}', ui.country_lineEdit.text())
+
+        # Episode
+        template = template.replace('{episode}', str(episode))
+
+        return template
+

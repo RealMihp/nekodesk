@@ -222,7 +222,7 @@ class MainWindow(QMainWindow):
         
         if dialog.exec(): 
             print(f"Rename dialog OK")
-           
+            dialog.rename()
         else:
             print("Rename dialog Cancel")
 
