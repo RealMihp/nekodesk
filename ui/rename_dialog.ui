@@ -506,23 +506,6 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <widget class="QCheckBox" name="save_banner_checkBox">
-             <property name="text">
-              <string>Save banner to folder</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="save_banner_lineEdit">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="placeholderText">
-              <string>File name</string>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QCheckBox" name="save_poster_checkBox">
              <property name="text">
               <string>Save poster to folder</string>
@@ -537,6 +520,23 @@
            </item>
            <item>
             <widget class="QLineEdit" name="save_poster_lineEdit">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="placeholderText">
+              <string>File name</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QCheckBox" name="save_banner_checkBox">
+             <property name="text">
+              <string>Save banner to folder</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="save_banner_lineEdit">
              <property name="enabled">
               <bool>false</bool>
              </property>

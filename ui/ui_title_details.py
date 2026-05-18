@@ -154,7 +154,7 @@ class Ui_details_widget(object):
         self.synonyms_scrollAreaWidgetContents.setObjectName(u"synonyms_scrollAreaWidgetContents")
         self.synonyms_scrollAreaWidgetContents.setGeometry(QRect(0, 0, 556, 35))
         self.synonyms_scrollAreaWidgetContents.setMaximumSize(QSize(16777215, 16777215))
-        self.synonyms_scrollAreaWidgetContents.setAutoFillBackground(False)
+        self.synonyms_scrollAreaWidgetContents.setAutoFillBackground(True)
         self.verticalLayout_2 = QVBoxLayout(self.synonyms_scrollAreaWidgetContents)
         self.verticalLayout_2.setSpacing(0)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -264,8 +264,8 @@ class Ui_details_widget(object):
         self.desc_scrollArea.setWidgetResizable(True)
         self.desc_scrollAreaWidgetContents = QWidget()
         self.desc_scrollAreaWidgetContents.setObjectName(u"desc_scrollAreaWidgetContents")
-        self.desc_scrollAreaWidgetContents.setGeometry(QRect(0, 0, 556, 171))
-        self.desc_scrollAreaWidgetContents.setAutoFillBackground(False)
+        self.desc_scrollAreaWidgetContents.setGeometry(QRect(0, 0, 556, 189))
+        self.desc_scrollAreaWidgetContents.setAutoFillBackground(True)
         self.verticalLayout = QVBoxLayout(self.desc_scrollAreaWidgetContents)
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -282,8 +282,6 @@ class Ui_details_widget(object):
 
         self.desc_verticalLayout.addWidget(self.desc_scrollArea)
 
-        self.desc_verticalLayout.setStretch(0, 1)
-        self.desc_verticalLayout.setStretch(1, 1)
         self.desc_verticalLayout.setStretch(2, 5)
 
         self.verticalLayout_4.addLayout(self.desc_verticalLayout)

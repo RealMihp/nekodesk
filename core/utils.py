@@ -148,7 +148,7 @@ class FileManager:
         if os.path.exists(old_path):
             os.rename(old_path, new_path)
 
-    def rename_folder(self, old_folder_path, new_folder_name):
+    def rename_folder(self, old_folder_path, new_folder_name) -> str | None:
         parent_dir = os.path.dirname(old_folder_path)
 
         new_folder_path = os.path.join(parent_dir, new_folder_name).replace('\\', '/')
@@ -158,6 +158,7 @@ class FileManager:
                 try:
                     os.rename(old_folder_path, new_folder_path)
                     print(f"Folder successfully renamed:\n{old_folder_path} -> {new_folder_path}")
+                    return new_folder_path
                 except Exception as e:
                     print(f"Rename error:\n{old_folder_path} : {e}")
             else:

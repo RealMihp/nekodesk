@@ -31,8 +31,11 @@ class RenameWindow(QDialog):
         self.folder_path = folder_path
         self.current_dir = folder_path
 
-        self.save_poster_file_name = 'poster'   # get from settings
-        self.save_banner_file_name = 'banner'   # get from settings
+        # get from settings
+        self.template = '{title} S{season_num}E{episode} [{source} {quality}]'
+        self.folder_name = '{title} S{season_num} [{source} {quality}]'
+        self.save_poster_file_name = 'poster'
+        self.save_banner_file_name = 'banner'   
 
         self.populate_tree(folder_path)
         self.insert_data()
@@ -87,7 +90,12 @@ class RenameWindow(QDialog):
         self.ui.status_lineEdit.setText(data.get('status', ''))
         self.ui.resolution_lineEdit.setText(resolution)
         self.ui.source_lineEdit.setText(source)
+        self.ui.country_lineEdit.setText(data.get('origin_country'))
 
+        self.ui.template_lineEdit.setText(self.template)
+        self.ui.folder_name_lineEdit.setText(self.folder_name)
+        self.ui.save_poster_lineEdit.setText(self.save_poster_file_name)
+        self.ui.save_banner_lineEdit.setText(self.save_banner_file_name)
 
         poster_link = data.get('poster_large_link')
         poster_color = data.get('poster_color')
@@ -121,19 +129,27 @@ class RenameWindow(QDialog):
         banner_link = self.title_data.get('banner_link')
         
         imgmClient = ImageManager(posters_path=self.folder_path)
-
-        if poster_link:
+        # Poster
+        if self.ui.save_poster_checkBox.isChecked() and poster_link:
             poster_src = imgmClient.get_poster(poster_link, return_pixmap=False, is_temp=False)
             if poster_src:
-                poster_dst = os.path.join(self.folder_path, os.path.basename(poster_src)).replace('\\', '/')
+                _, poster_src_ext = os.path.splitext(poster_src)
+                
+                poster_name = (self.ui.save_poster_lineEdit.text() or 'poster') + poster_src_ext
+                poster_dst = os.path.join(self.folder_path, poster_name).replace('\\', '/')
 
                 if os.path.abspath(poster_src) != os.path.abspath(poster_dst):
                     shutil.copy2(poster_src, poster_dst)
 
-        if banner_link:
+        # Banner
+        if self.ui.save_banner_checkBox.isChecked() and banner_link:
             banner_src = imgmClient.get_poster(banner_link, return_pixmap=False, is_temp=False)
             if banner_src:
-                banner_dst = os.path.join(self.folder_path, os.path.basename(banner_src)).replace('\\', '/')
+                _, banner_src_ext = os.path.splitext(banner_src)
+                
+                banner_name = (self.ui.save_banner_lineEdit.text() or 'banner') + banner_src_ext
+                banner_dst = os.path.join(self.folder_path, banner_name).replace('\\', '/')
+
                 if os.path.abspath(banner_src) != os.path.abspath(banner_dst):
                     shutil.copy2(banner_src, banner_dst)
 
@@ -217,7 +233,7 @@ class RenameWindow(QDialog):
         eps_num = int(self.ui.episodes_lineEdit.text())
         start_from_ep = int(self.ui.start_from_lineEdit.text())
         eps_tuple = tuple(range(start_from_ep, eps_num + 1))
-        eps_dict = {} 
+        rename_queue = []
 
         for data in items:
             file_name = data['name']
@@ -227,32 +243,40 @@ class RenameWindow(QDialog):
                 parsed_data = anitopy.parse(file_name)
                 
                 if parsed_data and parsed_data.get('episode_number'):
-                    parsed_ep = int(parsed_data.get('episode_number'))
-                
-                    ext = os.path.splitext(file_name)[1]
-                    
-                    base_new_name = self.generate_name(self.ui.template_lineEdit.text(), parsed_ep)
-                    new_name = base_new_name + ext
-                    
-                    eps_dict[parsed_ep] = (file_path, new_name)
+                    try:
+                        parsed_ep = int(parsed_data.get('episode_number'))
+                    except ValueError:
+                        continue
+                    if parsed_ep in eps_tuple:
+                        ext = os.path.splitext(file_name)[1]
+                        
+                        base_new_name = self.generate_name(self.ui.template_lineEdit.text(), parsed_ep)
+                        new_name = base_new_name + ext
+                        
+                        rename_queue.append((file_path, new_name))
 
         # Rename
-        for ep, (old_path, new_name) in eps_dict.items():
-            if ep in eps_tuple:
+        for old_path, new_name in rename_queue:
                 self.filemClient.rename_file(old_path, new_name)
 
         # Folder
         if self.ui.rename_folder_checkBox.isChecked():
             new_folder_name = self.generate_name(self.ui.folder_name_lineEdit.text())
-            self.filemClient.rename_folder(self.folder_path, new_folder_name)
+            new_folder_path = self.filemClient.rename_folder(self.folder_path, new_folder_name)
+
+            if new_folder_path:
+                self.folder_path = new_folder_path
+
+        self.save_pictures()
 
 
     def generate_name(self, template: str = '', episode: int = 0) -> str:
         ui = self.ui
+        episodes = ui.episodes_lineEdit.text()
         # Title
         template = template.replace('{title}', ui.title_lineEdit.text())
         # Season
-        template = template.replace('{season_num}', ui.season_num_lineEdit.text())
+        template = template.replace('{season_num}', ui.season_num_lineEdit.text().zfill(2))
         template = template.replace('{season}', ui.season_lineEdit.text())
         template = template.replace('{year}', ui.season_year_lineEdit.text())
         # Type
@@ -269,6 +293,11 @@ class RenameWindow(QDialog):
         template = template.replace('{height}', ui.resolution_lineEdit.text().split('x')[-1])
         # Width
         template = template.replace('{height}', ui.resolution_lineEdit.text().split('x')[0])
+        # Quality
+        if 'p' not in ui.resolution_lineEdit.text():
+            template = template.replace('{quality}', ui.resolution_lineEdit.text().split('x')[-1]+'p')
+        else:
+            template = template.replace('{quality}', ui.resolution_lineEdit.text())
         # Fansub group
         template = template.replace('{fansub}', ui.fansub_lineEdit.text())
         # Score
@@ -276,12 +305,15 @@ class RenameWindow(QDialog):
         # Status
         template = template.replace('{status}', ui.status_lineEdit.text())
         # Episodes
-        template = template.replace('{episodes}', ui.episodes_lineEdit.text())
+        template = template.replace('{episodes}', episodes)
         # Country
         template = template.replace('{country}', ui.country_lineEdit.text())
+        template = template.replace('{country_full}', ui.country_lineEdit.text())
 
         # Episode
-        template = template.replace('{episode}', str(episode))
+        padding = max(2, len(episodes))
+        formatted_ep = str(episode).zfill(padding)
+        template = template.replace('{episode}', formatted_ep)
 
         return template
 

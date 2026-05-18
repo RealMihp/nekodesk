@@ -338,7 +338,7 @@
                    </size>
                   </property>
                   <property name="autoFillBackground">
-                   <bool>false</bool>
+                   <bool>true</bool>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_2">
                    <property name="spacing">
@@ -454,7 +454,7 @@
               </layout>
              </item>
              <item>
-              <layout class="QVBoxLayout" name="desc_verticalLayout" stretch="1,1,5">
+              <layout class="QVBoxLayout" name="desc_verticalLayout" stretch="0,0,5">
                <property name="spacing">
                 <number>2</number>
                </property>
@@ -561,11 +561,11 @@
                     <x>0</x>
                     <y>0</y>
                     <width>556</width>
-                    <height>171</height>
+                    <height>189</height>
                    </rect>
                   </property>
                   <property name="autoFillBackground">
-                   <bool>false</bool>
+                   <bool>true</bool>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout">
                    <property name="spacing">
