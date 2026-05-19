@@ -41,8 +41,8 @@ class Title_detailsWindow(QWidget):
         synonyms = ", ".join([s for s in syn_list if s]) or 'N/A'
         format = f"Type: {d.get('format', 'N/A')}"
         eps = f"Episodes: {d.get('episodes', 'N/A')}"
-        status = f"Status: {d.get('status', 'N/A')}"
-        score = f"Avg. Score: {d.get('score', 'N/A')}%"
+        status = f"Status: {d.get('status', 'N/A')}".replace('_', ' ')
+        score = f"Avg. Score: {d.get('score', 'N/A')}%" if d.get('score') != 'None' else 'N/A'
         season = f"Season: {d.get('season') or ''} {d.get('season_year') or ''}".strip() or 'Season: N/A'
         genres = f"Genres: {d.get('genres', 'N/A')}"
         studio = f"Studio: {d.get('studio', 'N/A')}"

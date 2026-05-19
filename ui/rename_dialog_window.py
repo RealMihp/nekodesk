@@ -5,7 +5,7 @@ from core.logic import FileScanner
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtCore import QUrl
 
-import sys, os, shutil
+import sys, os, shutil, re
 
 from ui.ui_rename_dialog import *
 from core.db import *
@@ -70,7 +70,7 @@ class RenameWindow(QDialog):
         title_native = data.get('title_native')
         title_english = data.get('title_english')
 
-        title = title_romaji or title_native or title_english
+        title = title_romaji or title_native or title_english or ''
 
         self.ui.fansub_lineEdit.setText(first_group)
 
@@ -78,7 +78,7 @@ class RenameWindow(QDialog):
         self.ui.episodes_in_folder_label.setText(eps_in_folder_str)
         
         self.ui.title_lineEdit.setText(title)
-        self.ui.season_num_lineEdit.setText('1')
+        self.ui.season_num_lineEdit.setText(str(self.extract_season(title)))
         self.ui.season_lineEdit.setText(data.get('season', ''))
         self.ui.season_year_lineEdit.setText(str(data.get('season_year', '')))
         self.ui.type_lineEdit.setText(data.get('format', '').capitalize() if data.get('format', '') == 'MOVIE' else data.get('format', ''))
@@ -117,6 +117,30 @@ class RenameWindow(QDialog):
 
         self.ui.banner_label.setPixmap(banner)
         self.ui.poster_label.setPixmap(poster)
+
+
+    def extract_season(self, text: str) -> int:
+        patterns = [
+            r'\s+(\d+)$',
+            r'[sS](\d+)\b',                         # S2, s02
+            r'[sS]eason\s*(\d+)',                   # Season 2, season02
+            r'[тТ][вВ]-(\d+)',                      # ТВ-2, тв-02
+            r'(\d+)\s*(?:season|сезон|nd|rd|th|st)' # 2nd Season, 3 сезон
+        ]
+        
+        for pattern in patterns:
+            match = re.search(pattern, text)
+            if match:
+                val = int(match.group(1))
+                if 1 <= val <= 10:
+                    return val
+                continue
+            
+        k_on_match = re.search(r'[a-zA-Zа-яА-Я]+(!+)', text)
+        if k_on_match and len(k_on_match.group(1)) == 2:
+            return 2
+            
+        return 1
         
     def handle_checkboxes(self, checkbox):
         if checkbox == 'save_poster_checkBox':
