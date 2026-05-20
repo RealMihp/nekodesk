@@ -577,13 +577,16 @@
     </widget>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="template_horizontalLayout" stretch="1,1,10,10">
+    <layout class="QHBoxLayout" name="template_horizontalLayout" stretch="1,10,0,10">
      <item>
       <widget class="QLabel" name="template_label">
        <property name="text">
         <string>Template :</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="template_lineEdit"/>
      </item>
      <item>
       <widget class="QPushButton" name="template_pushButton">
@@ -597,9 +600,6 @@
         <string>?</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="template_lineEdit"/>
      </item>
      <item>
       <spacer name="template_horizontalSpacer">
@@ -617,11 +617,18 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="buttonbox_horizontalLayout" stretch="1,1,10,10">
+    <layout class="QHBoxLayout" name="buttonbox_horizontalLayout" stretch="1,10,0,10">
      <item>
       <widget class="QLabel" name="folder_name_label">
        <property name="text">
         <string>Folder name :</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="folder_name_lineEdit">
+       <property name="enabled">
+        <bool>false</bool>
        </property>
       </widget>
      </item>
@@ -637,9 +644,6 @@
         <string>?</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="folder_name_lineEdit"/>
      </item>
      <item>
       <widget class="QDialogButtonBox" name="buttonBox">

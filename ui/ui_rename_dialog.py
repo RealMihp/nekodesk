@@ -491,24 +491,23 @@ class Ui_RenameDialog(object):
 
         self.template_horizontalLayout.addWidget(self.template_label)
 
+        self.template_lineEdit = QLineEdit(RenameDialog)
+        self.template_lineEdit.setObjectName(u"template_lineEdit")
+
+        self.template_horizontalLayout.addWidget(self.template_lineEdit)
+
         self.template_pushButton = QPushButton(RenameDialog)
         self.template_pushButton.setObjectName(u"template_pushButton")
         self.template_pushButton.setMaximumSize(QSize(30, 30))
 
         self.template_horizontalLayout.addWidget(self.template_pushButton)
 
-        self.template_lineEdit = QLineEdit(RenameDialog)
-        self.template_lineEdit.setObjectName(u"template_lineEdit")
-
-        self.template_horizontalLayout.addWidget(self.template_lineEdit)
-
         self.template_horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.template_horizontalLayout.addItem(self.template_horizontalSpacer)
 
         self.template_horizontalLayout.setStretch(0, 1)
-        self.template_horizontalLayout.setStretch(1, 1)
-        self.template_horizontalLayout.setStretch(2, 10)
+        self.template_horizontalLayout.setStretch(1, 10)
         self.template_horizontalLayout.setStretch(3, 10)
 
         self.verticalLayout_7.addLayout(self.template_horizontalLayout)
@@ -520,16 +519,17 @@ class Ui_RenameDialog(object):
 
         self.buttonbox_horizontalLayout.addWidget(self.folder_name_label)
 
+        self.folder_name_lineEdit = QLineEdit(RenameDialog)
+        self.folder_name_lineEdit.setObjectName(u"folder_name_lineEdit")
+        self.folder_name_lineEdit.setEnabled(False)
+
+        self.buttonbox_horizontalLayout.addWidget(self.folder_name_lineEdit)
+
         self.folder_name_pushButton = QPushButton(RenameDialog)
         self.folder_name_pushButton.setObjectName(u"folder_name_pushButton")
         self.folder_name_pushButton.setMaximumSize(QSize(30, 30))
 
         self.buttonbox_horizontalLayout.addWidget(self.folder_name_pushButton)
-
-        self.folder_name_lineEdit = QLineEdit(RenameDialog)
-        self.folder_name_lineEdit.setObjectName(u"folder_name_lineEdit")
-
-        self.buttonbox_horizontalLayout.addWidget(self.folder_name_lineEdit)
 
         self.buttonBox = QDialogButtonBox(RenameDialog)
         self.buttonBox.setObjectName(u"buttonBox")
@@ -539,8 +539,7 @@ class Ui_RenameDialog(object):
         self.buttonbox_horizontalLayout.addWidget(self.buttonBox)
 
         self.buttonbox_horizontalLayout.setStretch(0, 1)
-        self.buttonbox_horizontalLayout.setStretch(1, 1)
-        self.buttonbox_horizontalLayout.setStretch(2, 10)
+        self.buttonbox_horizontalLayout.setStretch(1, 10)
         self.buttonbox_horizontalLayout.setStretch(3, 10)
 
         self.verticalLayout_7.addLayout(self.buttonbox_horizontalLayout)

@@ -42,6 +42,7 @@ class RenameWindow(QDialog):
         
         self.ui.save_poster_checkBox.toggled.connect(lambda: self.handle_checkboxes('save_poster_checkBox'))
         self.ui.save_banner_checkBox.toggled.connect(lambda: self.handle_checkboxes('save_banner_checkBox'))
+        self.ui.rename_folder_checkBox.toggled.connect(lambda: self.handle_checkboxes('rename_folder_checkBox'))
         self.ui.show_only_video_files_checkBox.toggled.connect(lambda: self.populate_tree(self.current_dir))
         self.ui.preview_treeWidget.itemDoubleClicked.connect(self.open_item)
         self.ui.back_pushButton.pressed.connect(self.back)
@@ -147,6 +148,8 @@ class RenameWindow(QDialog):
             self.ui.save_poster_lineEdit.setEnabled(self.ui.save_poster_checkBox.isChecked())
         elif checkbox == 'save_banner_checkBox':
             self.ui.save_banner_lineEdit.setEnabled(self.ui.save_banner_checkBox.isChecked())
+        elif checkbox == 'rename_folder_checkBox':
+            self.ui.folder_name_lineEdit.setEnabled(self.ui.rename_folder_checkBox.isChecked())
     
     def save_pictures(self):
         poster_link = self.title_data.get('poster_large_link')
