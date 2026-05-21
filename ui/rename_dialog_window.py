@@ -33,7 +33,7 @@ class RenameWindow(QDialog):
 
         # get from settings
         self.template = '{title} S{season_num}E{episode} [{source} {quality}]'
-        self.folder_name = '{title} S{season_num} [{source} {quality}]'
+        self.folder_name = '{title} S{season_num} [{source}] [{quality}]'
         self.save_poster_file_name = 'poster'
         self.save_banner_file_name = 'banner'   
 
@@ -43,11 +43,40 @@ class RenameWindow(QDialog):
         self.ui.save_poster_checkBox.toggled.connect(lambda: self.handle_checkboxes('save_poster_checkBox'))
         self.ui.save_banner_checkBox.toggled.connect(lambda: self.handle_checkboxes('save_banner_checkBox'))
         self.ui.rename_folder_checkBox.toggled.connect(lambda: self.handle_checkboxes('rename_folder_checkBox'))
+        self.ui.rename_subs_checkBox.toggled.connect(lambda: self.handle_checkboxes('rename_subs_checkBox'))
+        self.ui.rename_dubs_checkBox.toggled.connect(lambda: self.handle_checkboxes('rename_dubs_checkBox'))
         self.ui.show_only_video_files_checkBox.toggled.connect(lambda: self.populate_tree(self.current_dir))
         self.ui.preview_treeWidget.itemDoubleClicked.connect(self.open_item)
         self.ui.back_pushButton.pressed.connect(self.back)
         self.ui.refresh_pushButton.pressed.connect(self.refresh)
         self.ui.forward_pushButton.pressed.connect(self.forward)
+        self.ui.preview_checkBox.toggled.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+
+        self.ui.title_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.season_num_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.season_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.season_year_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.type_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.studio_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.duration_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.source_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.resolution_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.fansub_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.country_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.score_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.status_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.episodes_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.start_from_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+
+        self.ui.template_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.folder_name_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+
+        self.ui.save_poster_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+        self.ui.save_banner_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+
+
+
+
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
 
@@ -150,6 +179,11 @@ class RenameWindow(QDialog):
             self.ui.save_banner_lineEdit.setEnabled(self.ui.save_banner_checkBox.isChecked())
         elif checkbox == 'rename_folder_checkBox':
             self.ui.folder_name_lineEdit.setEnabled(self.ui.rename_folder_checkBox.isChecked())
+        elif checkbox == 'rename_subs_checkBox':
+            pass
+        elif checkbox == 'rename_dubs_checkBox':
+            pass
+        self.populate_tree(self.ui.path_lineEdit.text())
     
     def save_pictures(self):
         poster_link = self.title_data.get('poster_large_link')
@@ -181,37 +215,113 @@ class RenameWindow(QDialog):
                     shutil.copy2(banner_src, banner_dst)
 
     def populate_tree(self, folder_path):
+        preview = self.ui.preview_checkBox.isChecked()
         widget = self.ui.preview_treeWidget
         items = FileScanner.get_items(folder_path)
-
-        only_video = self.ui.show_only_video_files_checkBox.isChecked()
         current_dir = folder_path
-        widget.headerItem().setText(0, current_dir)
-        
 
+        self.ui.path_lineEdit.setText(folder_path)
+        
+        
+        only_video = self.ui.show_only_video_files_checkBox.isChecked()
+        widget.headerItem().setText(0, 'Folder')
         widget.clear()
-        for data in items:
-            if only_video and not data['name'].endswith(VIDEO_EXTS):
-                continue
-            item = QTreeWidgetItem(widget)
-            item.setText(0, data['name'])
-            item.setData(0, PATH_ROLE, data['path'])
+
+        preview_map = {}
+
+        if preview:
+            exts = VIDEO_EXTS
+            exts = exts + SUB_EXTS if self.ui.rename_subs_checkBox.isChecked() else exts
+            exts = exts + DUB_EXTS if self.ui.rename_dubs_checkBox.isChecked() else exts
             
-            # icons
+            eps_num = int(self.ui.episodes_lineEdit.text())
+            start_from_ep = int(self.ui.start_from_lineEdit.text())
+            eps_tuple = tuple(range(start_from_ep, eps_num + 1))
+
+            for data in items:
+                file_name = data['name']
+                file_path = data['path']
+
+                if file_name.lower().endswith(exts):
+                    parsed_data = anitopy.parse(file_name)
+                    if parsed_data and parsed_data.get('episode_number'):
+                        try:
+                            parsed_ep = int(parsed_data.get('episode_number'))
+                        except ValueError:
+                            continue
+                        
+                        if parsed_ep in eps_tuple:
+                            ext = os.path.splitext(file_name)[1]
+                            base_new_name = self.generate_name(self.ui.template_lineEdit.text(), parsed_ep)
+                            new_name = base_new_name + ext
+                            
+                            preview_map[file_path] = os.path.basename(new_name)
+
+            # Picters preview
+            if self.ui.save_poster_checkBox.isChecked():
+                poster_file_name = self.ui.save_poster_lineEdit.text()
+                poster_path = os.path.join(self.folder_path, poster_file_name).replace('\\', '/')
+                preview_map[poster_path] = os.path.basename(poster_file_name)
+            if self.ui.save_banner_checkBox.isChecked():
+                banner_file_name = self.ui.save_banner_lineEdit.text()
+                banner_path = os.path.join(self.folder_path, banner_file_name).replace('\\', '/')
+                preview_map[banner_path] = os.path.basename(banner_file_name)
+
+
+
+        for data in items:
+            if only_video and not data['name'].lower().endswith(VIDEO_EXTS):
+                continue
+
+            item = QTreeWidgetItem(widget)
+            item.setData(0, PATH_ROLE, data['path'])
+
+            if preview and data['path'] in preview_map:
+                item.setText(0, preview_map[data['path']])
+            else:
+                item.setText(0, data['name'])
+
             icon_type = QStyle.SP_DirIcon if data['is_dir'] else QStyle.SP_FileIcon
             item.setIcon(0, self.style().standardIcon(icon_type))
 
-            self.ui.back_pushButton.setEnabled(len(self.history) > 0)
-            self.ui.forward_pushButton.setEnabled(len(self.forward_stack) > 0)
+        if preview and self.ui.save_poster_checkBox.isChecked() and folder_path == self.folder_path:
+                poster_name = self.ui.save_poster_lineEdit.text()
+                item = QTreeWidgetItem(widget)
+                item.setText(0, poster_name)
+
+                poster_path = os.path.join(self.folder_path, poster_name).replace('\\', '/')
+                item.setData(0, PATH_ROLE, poster_path)
+                item.setIcon(0, self.style().standardIcon(QStyle.SP_FileIcon))
+
+        if preview and self.ui.save_banner_checkBox.isChecked() and folder_path == self.folder_path:
+            banner_name = self.ui.save_banner_lineEdit.text()
+            item = QTreeWidgetItem(widget)
+            item.setText(0, banner_name)
+
+            banner_path = os.path.join(self.folder_path, banner_name).replace('\\', '/')
+            item.setData(0, PATH_ROLE, banner_path)
+            item.setIcon(0, self.style().standardIcon(QStyle.SP_FileIcon))
+
+        self.ui.back_pushButton.setEnabled(len(self.history) > 0)
+        self.ui.forward_pushButton.setEnabled(len(self.forward_stack) > 0)
             
-            self.ui.refresh_pushButton.setEnabled(True if current_dir else False)
+        self.ui.refresh_pushButton.setEnabled(True if current_dir else False)
+
+        # Header text
+        if preview and self.ui.rename_folder_checkBox.isChecked() and folder_path == self.folder_path:
+            preview_folder_name = self.generate_name(self.ui.folder_name_lineEdit.text())
+            widget.setHeaderLabel(preview_folder_name)
+        else:
+            widget.setHeaderLabel(os.path.basename(folder_path))
+
+
         
     def open_item(self, item, column):
         if item:
             path = item.data(0, PATH_ROLE)
             if path:
                 if os.path.isdir(path):
-                    current_dir = self.ui.preview_treeWidget.headerItem().text(0)
+                    current_dir = self.ui.path_lineEdit.text()
                     self.current_dir = path
                     if current_dir:
                         self.history.append(current_dir)
@@ -226,7 +336,7 @@ class RenameWindow(QDialog):
 
     def back(self):
         if self.history:
-            current_dir = self.ui.preview_treeWidget.headerItem().text(0)
+            current_dir = self.ui.path_lineEdit.text()
             last_folder = self.history.pop()
             self.forward_stack.append(current_dir)
             self.populate_tree(last_folder)
@@ -234,7 +344,7 @@ class RenameWindow(QDialog):
             
     
     def refresh(self):
-        current_dir = self.ui.preview_treeWidget.headerItem().text(0)
+        current_dir = self.ui.path_lineEdit.text()
         self.current_dir = current_dir
         if current_dir:
             self.populate_tree(current_dir)
@@ -242,7 +352,7 @@ class RenameWindow(QDialog):
 
     def forward(self):
         if self.forward_stack:
-            current_dir = self.ui.preview_treeWidget.headerItem().text(0)
+            current_dir = self.ui.path_lineEdit.text()
             self.history.append(current_dir)
             
             next_folder = self.forward_stack.pop()
@@ -324,7 +434,7 @@ class RenameWindow(QDialog):
         if 'p' not in ui.resolution_lineEdit.text():
             template = template.replace('{quality}', ui.resolution_lineEdit.text().split('x')[-1]+'p')
         else:
-            template = template.replace('{quality}', ui.resolution_lineEdit.text())
+            template = template.replace('{quality}', ui.resolution_lineEdit.text().split('x')[-1])
         # Fansub group
         template = template.replace('{fansub}', ui.fansub_lineEdit.text())
         # Score

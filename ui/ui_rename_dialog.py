@@ -336,10 +336,11 @@ class Ui_RenameDialog(object):
 
         self.verticalLayout_5 = QVBoxLayout()
         self.verticalLayout_5.setObjectName(u"verticalLayout_5")
-        self.preview_label = QLabel(RenameDialog)
-        self.preview_label.setObjectName(u"preview_label")
+        self.path_lineEdit = QLineEdit(RenameDialog)
+        self.path_lineEdit.setObjectName(u"path_lineEdit")
+        self.path_lineEdit.setReadOnly(True)
 
-        self.verticalLayout_5.addWidget(self.preview_label)
+        self.verticalLayout_5.addWidget(self.path_lineEdit)
 
         self.btn_frame = QFrame(RenameDialog)
         self.btn_frame.setObjectName(u"btn_frame")
@@ -373,10 +374,20 @@ class Ui_RenameDialog(object):
 
         self.verticalLayout_5.addWidget(self.preview_treeWidget)
 
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.preview_checkBox = QCheckBox(RenameDialog)
+        self.preview_checkBox.setObjectName(u"preview_checkBox")
+
+        self.horizontalLayout_4.addWidget(self.preview_checkBox)
+
         self.show_only_video_files_checkBox = QCheckBox(RenameDialog)
         self.show_only_video_files_checkBox.setObjectName(u"show_only_video_files_checkBox")
 
-        self.verticalLayout_5.addWidget(self.show_only_video_files_checkBox)
+        self.horizontalLayout_4.addWidget(self.show_only_video_files_checkBox)
+
+
+        self.verticalLayout_5.addLayout(self.horizontalLayout_4)
 
         self.verticalLayout_5.setStretch(2, 4)
 
@@ -571,12 +582,13 @@ class Ui_RenameDialog(object):
         self.episodes_label.setText(QCoreApplication.translate("RenameDialog", u"Episodes :  ", None))
         self.episodes_in_folder_label.setText(QCoreApplication.translate("RenameDialog", u"(?? in folder)", None))
         self.start_from_label.setText(QCoreApplication.translate("RenameDialog", u"Start from :", None))
-        self.preview_label.setText(QCoreApplication.translate("RenameDialog", u"Preview", None))
+        self.path_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"Path", None))
         self.back_pushButton.setText(QCoreApplication.translate("RenameDialog", u"\u2b60", None))
         self.forward_pushButton.setText(QCoreApplication.translate("RenameDialog", u"\u2b62", None))
         self.refresh_pushButton.setText(QCoreApplication.translate("RenameDialog", u"\u27f3", None))
         ___qtreewidgetitem = self.preview_treeWidget.headerItem()
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("RenameDialog", u"Folder", None))
+        self.preview_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Preview", None))
         self.show_only_video_files_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Show only video files", None))
         self.poster_label.setText("")
         self.rename_subs_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename subtitle files", None))

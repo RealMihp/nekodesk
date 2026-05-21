@@ -364,9 +364,12 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,4,0">
            <item>
-            <widget class="QLabel" name="preview_label">
-             <property name="text">
-              <string>Preview</string>
+            <widget class="QLineEdit" name="path_lineEdit">
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+             <property name="placeholderText">
+              <string>Path</string>
              </property>
             </widget>
            </item>
@@ -422,11 +425,22 @@
             </widget>
            </item>
            <item>
-            <widget class="QCheckBox" name="show_only_video_files_checkBox">
-             <property name="text">
-              <string>Show only video files</string>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <widget class="QCheckBox" name="preview_checkBox">
+               <property name="text">
+                <string>Preview</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="show_only_video_files_checkBox">
+               <property name="text">
+                <string>Show only video files</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>
