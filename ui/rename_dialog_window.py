@@ -74,7 +74,8 @@ class RenameWindow(QDialog):
         self.ui.save_poster_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
         self.ui.save_banner_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
 
-
+        self.ui.template_pushButton.pressed.connect(self.show_template_info)
+        self.ui.folder_name_pushButton.pressed.connect(self.show_template_info)
 
 
         self.ui.buttonBox.accepted.connect(self.accept)
@@ -512,7 +513,7 @@ class RenameWindow(QDialog):
         # Height
         template = template.replace('{height}', ui.resolution_lineEdit.text().split('x')[-1])
         # Width
-        template = template.replace('{height}', ui.resolution_lineEdit.text().split('x')[0])
+        template = template.replace('{width}', ui.resolution_lineEdit.text().split('x')[0])
         # Quality
         if 'p' not in ui.resolution_lineEdit.text():
             template = template.replace('{quality}', ui.resolution_lineEdit.text().split('x')[-1]+'p')
@@ -528,7 +529,6 @@ class RenameWindow(QDialog):
         template = template.replace('{episodes}', episodes)
         # Country
         template = template.replace('{country}', ui.country_lineEdit.text())
-        template = template.replace('{country_full}', ui.country_lineEdit.text())
 
         # Episode
         padding = max(2, len(episodes))
@@ -537,3 +537,36 @@ class RenameWindow(QDialog):
 
         return template
 
+    def show_template_info(self):
+        ui = self.ui
+        episodes = ui.episodes_lineEdit.text()
+        padding = max(2, len(episodes))
+        formatted_ep = str(ui.start_from_lineEdit.text()).zfill(padding)
+
+        if 'p' not in ui.resolution_lineEdit.text():
+            quality = ui.resolution_lineEdit.text().split('x')[-1]+'p'
+        else:
+            quality = ui.resolution_lineEdit.text().split('x')[-1]
+
+        text = 'You can use these variables to automatically insert title information.\n\n' + \
+            '{title} → ' + f'{ui.title_lineEdit.text()}\n' + \
+            '{season_num} → ' + f'{ui.season_num_lineEdit.text().zfill(2)}\n' + \
+            '{season} → ' + f'{ui.season_lineEdit.text()}\n' + \
+            '{year} → ' + f'{ui.season_year_lineEdit.text()}\n' + \
+            '{type} → ' + f'{ui.type_lineEdit.text()}\n' + \
+            '{studio} → ' + f'{ui.studio_lineEdit.text()}\n' + \
+            '{duration} → ' + f'{ui.duration_lineEdit.text()}\n' + \
+            '{source} → ' + f'{ui.source_lineEdit.text()}\n' + \
+            '{resolution} → ' + f'{ui.resolution_lineEdit.text()}\n' + \
+            '{height} → ' + f'{ui.resolution_lineEdit.text().split('x')[-1]}\n' + \
+            '{width} → ' + f'{ui.resolution_lineEdit.text().split('x')[0]}\n' + \
+            '{quality} → ' + f'{quality}\n' + \
+            '{fansub} → ' + f'{ui.fansub_lineEdit.text()}\n' + \
+            '{score} → ' + f'{ui.score_lineEdit.text()}\n' + \
+            '{status} → ' + f'{ui.status_lineEdit.text()}\n' + \
+            '{episodes} → ' + f'{ui.episodes_lineEdit.text()}\n' + \
+            '{country} → ' + f'{ui.country_lineEdit.text()}\n' + \
+            '{episode} → ' + f'{formatted_ep}'
+        
+
+        QMessageBox.information(self, "Template info", text)
