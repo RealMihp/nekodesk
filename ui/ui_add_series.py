@@ -52,18 +52,6 @@ class Ui_AddSeriesWindow(object):
 
         self.horizontalLayout.addWidget(self.MAL_radioButton)
 
-        self.TVDB_radioButton = QRadioButton(self.engine_select_frame)
-        self.TVDB_radioButton.setObjectName(u"TVDB_radioButton")
-        self.TVDB_radioButton.setEnabled(False)
-
-        self.horizontalLayout.addWidget(self.TVDB_radioButton)
-
-        self.TMDB_radioButton = QRadioButton(self.engine_select_frame)
-        self.TMDB_radioButton.setObjectName(u"TMDB_radioButton")
-        self.TMDB_radioButton.setEnabled(False)
-
-        self.horizontalLayout.addWidget(self.TMDB_radioButton)
-
 
         self.verticalLayout_2.addWidget(self.engine_select_frame)
 
@@ -199,7 +187,7 @@ class Ui_AddSeriesWindow(object):
 
         self.retranslateUi(AddSeriesWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(AddSeriesWindow)
@@ -209,12 +197,10 @@ class Ui_AddSeriesWindow(object):
         AddSeriesWindow.setWindowTitle(QCoreApplication.translate("AddSeriesWindow", u"Add series", None))
         self.AniList_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"AniList", None))
         self.MAL_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"MAL", None))
-        self.TVDB_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"TVDB", None))
-        self.TMDB_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"TMDB", None))
         self.scan_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Scan folder", None))
         self.scan_folder_browse_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Browse", None))
         self.scan_start_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Start scan", None))
-        self.confirm_series_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Confirm series to search", None))
+        self.confirm_series_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Results", None))
         self.scan_add_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Add selected", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.scan_tab), QCoreApplication.translate("AddSeriesWindow", u"Scan", None))
         self.search_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))

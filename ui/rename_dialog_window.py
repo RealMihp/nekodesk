@@ -227,13 +227,53 @@ class RenameWindow(QDialog):
         widget.headerItem().setText(0, 'Folder')
         widget.clear()
 
+        exts = VIDEO_EXTS
+        exts = exts + SUB_EXTS if self.ui.rename_subs_checkBox.isChecked() else exts
+        exts = exts + DUB_EXTS if self.ui.rename_dubs_checkBox.isChecked() else exts
+            
+        
+        # subs & dubs
+        allitems = items.copy()
+        if self.ui.rename_subs_checkBox.isChecked():
+            for data in items:
+                if 'sub' in data['name'].lower() and data['is_dir'] and folder_path == data['path']:
+                    subfiles = []
+                    subitems = FileScanner.get_items(data['path'])
+                    
+                    for subitem in subitems:
+                        if subitem['name'].lower().endswith(SUB_EXTS) and folder_path == subitem['path']:
+                            subfiles.append(subitem)
+                        
+                        elif subitem['is_dir']:
+                            nested_items = FileScanner.get_items(subitem['path'])
+                            for nested_item in nested_items:
+                                if nested_item['name'].lower().endswith(SUB_EXTS) and folder_path == nested_item['path']:
+                                    subfiles.append(nested_item)
+                    
+                    allitems.extend(subfiles)
+        if self.ui.rename_dubs_checkBox.isChecked():
+            for data in items:
+                if any(word in data['name'].lower() for word in ('dub', 'sound')) and data['is_dir'] and folder_path == data['path']:
+                    dubfiles = []
+                    dubitems = FileScanner.get_items(data['path'])
+                    
+                    for dubitem in dubitems:
+                        if dubitem['name'].lower().endswith(DUB_EXTS) and folder_path == data['path']:
+                            dubfiles.append(dubitem)
+                        
+                        elif dubitem['is_dir']:
+                            nested_items = FileScanner.get_items(dubitem['path'])
+                            for nested_item in nested_items:
+                                if nested_item['name'].lower().endswith(DUB_EXTS) and folder_path == data['path']:
+                                    dubfiles.append(nested_item)
+                    
+                    allitems.extend(dubfiles)
+        
+        items = allitems
+
         preview_map = {}
 
         if preview:
-            exts = VIDEO_EXTS
-            exts = exts + SUB_EXTS if self.ui.rename_subs_checkBox.isChecked() else exts
-            exts = exts + DUB_EXTS if self.ui.rename_dubs_checkBox.isChecked() else exts
-            
             eps_num = int(self.ui.episodes_lineEdit.text())
             start_from_ep = int(self.ui.start_from_lineEdit.text())
             eps_tuple = tuple(range(start_from_ep, eps_num + 1))
@@ -363,9 +403,49 @@ class RenameWindow(QDialog):
     def rename(self):
         # Files
         items = FileScanner.get_items(self.folder_path)
+    
         exts = VIDEO_EXTS
         exts = exts + SUB_EXTS if self.ui.rename_subs_checkBox.isChecked() else exts
         exts = exts + DUB_EXTS if self.ui.rename_dubs_checkBox.isChecked() else exts
+
+        # subs & dubs
+        allitems = items.copy()
+        if self.ui.rename_subs_checkBox.isChecked():
+            for data in items:
+                if 'sub' in data['name'].lower() and data['is_dir']:
+                    subfiles = []
+                    subitems = FileScanner.get_items(data['path'])
+                    
+                    for subitem in subitems:
+                        if subitem['name'].lower().endswith(SUB_EXTS):
+                            subfiles.append(subitem)
+                        
+                        elif subitem['is_dir']:
+                            nested_items = FileScanner.get_items(subitem['path'])
+                            for nested_item in nested_items:
+                                if nested_item['name'].lower().endswith(SUB_EXTS):
+                                    subfiles.append(nested_item)
+                    
+                    allitems.extend(subfiles)
+        if self.ui.rename_dubs_checkBox.isChecked():
+            for data in items:
+                if any(word in data['name'].lower() for word in ('dub', 'sound')) and data['is_dir']:
+                    dubfiles = []
+                    dubitems = FileScanner.get_items(data['path'])
+                    
+                    for dubitem in dubitems:
+                        if dubitem['name'].lower().endswith(DUB_EXTS):
+                            dubfiles.append(dubitem)
+                        
+                        elif dubitem['is_dir']:
+                            nested_items = FileScanner.get_items(dubitem['path'])
+                            for nested_item in nested_items:
+                                if nested_item['name'].lower().endswith(DUB_EXTS):
+                                    dubfiles.append(nested_item)
+                    
+                    allitems.extend(dubfiles)
+        
+        items = allitems
 
         eps_num = int(self.ui.episodes_lineEdit.text())
         start_from_ep = int(self.ui.start_from_lineEdit.text())
@@ -389,12 +469,15 @@ class RenameWindow(QDialog):
                         
                         base_new_name = self.generate_name(self.ui.template_lineEdit.text(), parsed_ep)
                         new_name = base_new_name + ext
+
+                        file_dir = os.path.dirname(file_path)
+                        new_file_path = os.path.join(file_dir, new_name).replace('\\', '/')
                         
-                        rename_queue.append((file_path, new_name))
+                        rename_queue.append((file_path, new_file_path))
 
         # Rename
-        for old_path, new_name in rename_queue:
-                self.filemClient.rename_file(old_path, new_name)
+        for old_path, new_path in rename_queue:
+                self.filemClient.rename_file(old_path, new_path)
 
         # Folder
         if self.ui.rename_folder_checkBox.isChecked():

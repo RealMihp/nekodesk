@@ -52,33 +52,13 @@
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QRadioButton" name="TVDB_radioButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>TVDB</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="TMDB_radioButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="text">
-            <string>TMDB</string>
-           </property>
-          </widget>
-         </item>
         </layout>
        </widget>
       </item>
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="scan_tab">
          <attribute name="title">
@@ -139,7 +119,7 @@
              <item>
               <widget class="QLabel" name="confirm_series_label">
                <property name="text">
-                <string>Confirm series to search</string>
+                <string>Results</string>
                </property>
               </widget>
              </item>
