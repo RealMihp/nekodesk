@@ -55,6 +55,7 @@ class LibraryDB:
                     format TEXT,
                     status TEXT,
                     origin_country TEXT,
+                    season_num INTEGER,
                     season TEXT,
                     season_year INTEGER,
                     episodes INTEGER,
@@ -75,20 +76,21 @@ class LibraryDB:
             ''')
             
     
-    def add_title(self, title_data: dict):
+    def add_title(self, title_data: dict, client = None):
         """
         Saves metadata to the library table.
         title_data: A list containing all the info from API.
+        client: API client.
         """
         #title_data = title_data[number]
         d = title_data
 
         with sqlite3.connect(self.db_path) as conn:
             query = '''
-                INSERT OR REPLACE INTO library (anilist_id, mal_id, title_romaji, title_english, title_native, desc, format, status, origin_country, season,
+                INSERT OR REPLACE INTO library (anilist_id, mal_id, title_romaji, title_english, title_native, desc, format, status, origin_country,season_num, season,
                 season_year, episodes, duration, genres, synonyms, score, is_adult, poster_color, poster_small_link, poster_large_link, poster_small_path, poster_large_path,
                 banner_link, banner_path, studio
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             '''
             
             medium = d.get('coverImage', {}).get('medium')
@@ -100,6 +102,62 @@ class LibraryDB:
             path_small = paths.get(medium, (None, None))[1]
             path_extraLarge = paths.get(extraLarge, (None, None))[1]
             path_banner = paths.get(banner, (None, None))[1]
+            
+            format = d.get('format')
+            season_num = 1 if format in ('TV', 'TV_SHORT', 'MOVIE') else 0
+            sequels = set()
+            prequels = set()
+
+            relations_data = d.get('relations', {})
+            if isinstance(relations_data, dict):
+                relations = relations_data.get('edges', [])
+            else:
+                relations = []
+
+            relations_set = set()
+            if relations:
+                for relation in relations:
+                    relationType = relation.get('relationType') 
+                    relation_node = relation.get('node', {})
+                    relation_id = relation_node.get('id')
+                    relation_type = relation_node.get('type')
+                    relation_format = relation_node.get('format')
+
+                    if relationType:
+                        relations_set.add(relationType)
+                        if relation_type == 'ANIME' and relation_id:
+                            if relationType == 'SEQUEL':
+                                sequels.add(relation_id)
+                            elif relationType == 'PREQUEL':
+                                prequels.add(relation_id)
+            
+            if prequels:
+                # Turn into a list so that we can go through it and change it as we go
+                prequels_list = list(prequels)
+                
+                for prequel_id in prequels_list:
+                    result = client.get_title(prequel_id)
+                    if result:
+                        p_format = result[0].get('format')
+                        if p_format in ('TV', 'TV_SHORT'):
+                            season_num += 1
+                        
+                        relations_data = result[0].get('relations', {})
+                        if isinstance(relations_data, dict):
+                            p_relations = relations_data.get('edges', [])
+                        else:
+                            p_relations = []
+
+                        if p_relations:
+                            for p_rel in p_relations:
+                                p_type = p_rel.get('relationType')
+                                p_node = p_rel.get('node', {})
+                                
+                                if p_type == 'PREQUEL' and p_node.get('type') == 'ANIME':
+                                    next_id = p_node.get('id')
+                                    if next_id and next_id not in prequels_list:
+                                        prequels_list.append(next_id)
+            
 
             
             values = (
@@ -109,9 +167,10 @@ class LibraryDB:
                 d.get('title', {}).get('english'),
                 d.get('title', {}).get('native'),
                 d.get('description'),
-                d.get('format'),
+                format,
                 d.get('status').capitalize() if d.get('status') else None,
                 d.get('countryOfOrigin'),
+                season_num,
                 d.get('season').capitalize() if d.get('season') else None,
                 d.get('seasonYear'),
                 d.get('episodes'),

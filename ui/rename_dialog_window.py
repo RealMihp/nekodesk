@@ -99,7 +99,12 @@ class RenameWindow(QDialog):
         source = local_data.get('source', '')
         title_romaji = data.get('title_romaji')
         title_native = data.get('title_native')
-        title_english = data.get('title_english')
+        title_english = data.get('title_english') 
+        format = data.get('format', '')
+        if format == 'MOVIE':
+            format = 'Movie'
+        elif format == 'TV_SHORT':
+            format = 'TV Short'
 
         title = title_romaji or title_native or title_english or ''
 
@@ -109,10 +114,11 @@ class RenameWindow(QDialog):
         self.ui.episodes_in_folder_label.setText(eps_in_folder_str)
         
         self.ui.title_lineEdit.setText(title)
-        self.ui.season_num_lineEdit.setText(str(self.extract_season(title)))
+        #self.ui.season_num_lineEdit.setText(str(self.extract_season(title)))
+        self.ui.season_num_lineEdit.setText(str(data.get('season_num', '')))
         self.ui.season_lineEdit.setText(data.get('season', ''))
         self.ui.season_year_lineEdit.setText(str(data.get('season_year', '')))
-        self.ui.type_lineEdit.setText(data.get('format', '').capitalize() if data.get('format', '') == 'MOVIE' else data.get('format', ''))
+        self.ui.type_lineEdit.setText(format)
         self.ui.studio_lineEdit.setText(data.get('studio', ''))
         self.ui.duration_lineEdit.setText(str(data.get('duration', '')))
         self.ui.episodes_lineEdit.setText(str(data.get('episodes', '')))
@@ -157,6 +163,7 @@ class RenameWindow(QDialog):
             r'[sS]eason\s*(\d+)',                   # Season 2, season02
             r'[тТ][вВ]-(\d+)',                      # ТВ-2, тв-02
             r'(\d+)\s*(?:season|сезон|nd|rd|th|st)' # 2nd Season, 3 сезон
+            r'\s+(?:II|III|IV|V|VI|VII)\b'          # II, III
         ]
         
         for pattern in patterns:
@@ -166,6 +173,14 @@ class RenameWindow(QDialog):
                 if 1 <= val <= 10:
                     return val
                 continue
+
+        if re.search(r'\s+NEXT\b', text, re.IGNORECASE): # NEXT, Next, next
+            return 2
+
+        roman_match = re.search(r'\s+(II|III|IV|V|VI|VII)\b', text)
+        if roman_match:
+            roman_to_int = {'II': 2, 'III': 3, 'IV': 4, 'V': 5, 'VI': 6, 'VII': 7}
+            return roman_to_int[roman_match.group(1)]
             
         k_on_match = re.search(r'[a-zA-Zа-яА-Я]+(!+)', text)
         if k_on_match and len(k_on_match.group(1)) == 2:

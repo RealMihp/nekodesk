@@ -57,6 +57,59 @@ class Ui_AddSeriesWindow(object):
 
         self.tabWidget = QTabWidget(self.frame)
         self.tabWidget.setObjectName(u"tabWidget")
+        self.search_tab = QWidget()
+        self.search_tab.setObjectName(u"search_tab")
+        self.horizontalLayout_4 = QHBoxLayout(self.search_tab)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.frame_4 = QFrame(self.search_tab)
+        self.frame_4.setObjectName(u"frame_4")
+        self.frame_4.setFrameShape(QFrame.Shape.StyledPanel)
+        self.frame_4.setFrameShadow(QFrame.Shadow.Raised)
+        self.verticalLayout = QVBoxLayout(self.frame_4)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.search_label = QLabel(self.frame_4)
+        self.search_label.setObjectName(u"search_label")
+
+        self.verticalLayout.addWidget(self.search_label)
+
+        self.search_frame = QFrame(self.frame_4)
+        self.search_frame.setObjectName(u"search_frame")
+        self.search_frame.setFrameShape(QFrame.Shape.StyledPanel)
+        self.search_frame.setFrameShadow(QFrame.Shadow.Raised)
+        self.horizontalLayout_2 = QHBoxLayout(self.search_frame)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.search_lineEdit = QLineEdit(self.search_frame)
+        self.search_lineEdit.setObjectName(u"search_lineEdit")
+
+        self.horizontalLayout_2.addWidget(self.search_lineEdit)
+
+        self.search_pushButton = QPushButton(self.search_frame)
+        self.search_pushButton.setObjectName(u"search_pushButton")
+        self.search_pushButton.setEnabled(False)
+
+        self.horizontalLayout_2.addWidget(self.search_pushButton)
+
+
+        self.verticalLayout.addWidget(self.search_frame)
+
+        self.search_treeWidget = QTreeWidget(self.frame_4)
+        __qtreewidgetitem = QTreeWidgetItem()
+        __qtreewidgetitem.setText(0, u"Results")
+        self.search_treeWidget.setHeaderItem(__qtreewidgetitem)
+        self.search_treeWidget.setObjectName(u"search_treeWidget")
+
+        self.verticalLayout.addWidget(self.search_treeWidget)
+
+        self.search_add_pushButton = QPushButton(self.frame_4)
+        self.search_add_pushButton.setObjectName(u"search_add_pushButton")
+        self.search_add_pushButton.setEnabled(False)
+
+        self.verticalLayout.addWidget(self.search_add_pushButton)
+
+
+        self.horizontalLayout_4.addWidget(self.frame_4)
+
+        self.tabWidget.addTab(self.search_tab, "")
         self.scan_tab = QWidget()
         self.scan_tab.setObjectName(u"scan_tab")
         self.horizontalLayout_5 = QHBoxLayout(self.scan_tab)
@@ -119,59 +172,6 @@ class Ui_AddSeriesWindow(object):
         self.horizontalLayout_5.addWidget(self.scan_frame)
 
         self.tabWidget.addTab(self.scan_tab, "")
-        self.search_tab = QWidget()
-        self.search_tab.setObjectName(u"search_tab")
-        self.horizontalLayout_4 = QHBoxLayout(self.search_tab)
-        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
-        self.frame_4 = QFrame(self.search_tab)
-        self.frame_4.setObjectName(u"frame_4")
-        self.frame_4.setFrameShape(QFrame.Shape.StyledPanel)
-        self.frame_4.setFrameShadow(QFrame.Shadow.Raised)
-        self.verticalLayout = QVBoxLayout(self.frame_4)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.search_label = QLabel(self.frame_4)
-        self.search_label.setObjectName(u"search_label")
-
-        self.verticalLayout.addWidget(self.search_label)
-
-        self.search_frame = QFrame(self.frame_4)
-        self.search_frame.setObjectName(u"search_frame")
-        self.search_frame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.search_frame.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout_2 = QHBoxLayout(self.search_frame)
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
-        self.search_lineEdit = QLineEdit(self.search_frame)
-        self.search_lineEdit.setObjectName(u"search_lineEdit")
-
-        self.horizontalLayout_2.addWidget(self.search_lineEdit)
-
-        self.search_pushButton = QPushButton(self.search_frame)
-        self.search_pushButton.setObjectName(u"search_pushButton")
-        self.search_pushButton.setEnabled(False)
-
-        self.horizontalLayout_2.addWidget(self.search_pushButton)
-
-
-        self.verticalLayout.addWidget(self.search_frame)
-
-        self.search_treeWidget = QTreeWidget(self.frame_4)
-        __qtreewidgetitem = QTreeWidgetItem()
-        __qtreewidgetitem.setText(0, u"Results")
-        self.search_treeWidget.setHeaderItem(__qtreewidgetitem)
-        self.search_treeWidget.setObjectName(u"search_treeWidget")
-
-        self.verticalLayout.addWidget(self.search_treeWidget)
-
-        self.search_add_pushButton = QPushButton(self.frame_4)
-        self.search_add_pushButton.setObjectName(u"search_add_pushButton")
-        self.search_add_pushButton.setEnabled(False)
-
-        self.verticalLayout.addWidget(self.search_add_pushButton)
-
-
-        self.horizontalLayout_4.addWidget(self.frame_4)
-
-        self.tabWidget.addTab(self.search_tab, "")
 
         self.verticalLayout_2.addWidget(self.tabWidget)
 
@@ -197,15 +197,15 @@ class Ui_AddSeriesWindow(object):
         AddSeriesWindow.setWindowTitle(QCoreApplication.translate("AddSeriesWindow", u"Add series", None))
         self.AniList_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"AniList", None))
         self.MAL_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"MAL", None))
+        self.search_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
+        self.search_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
+        self.search_add_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Add selected", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.search_tab), QCoreApplication.translate("AddSeriesWindow", u"Search", None))
         self.scan_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Scan folder", None))
         self.scan_folder_browse_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Browse", None))
         self.scan_start_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Start scan", None))
         self.confirm_series_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Results", None))
         self.scan_add_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Add selected", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.scan_tab), QCoreApplication.translate("AddSeriesWindow", u"Scan", None))
-        self.search_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
-        self.search_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
-        self.search_add_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Add selected", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.search_tab), QCoreApplication.translate("AddSeriesWindow", u"Search", None))
     # retranslateUi
 

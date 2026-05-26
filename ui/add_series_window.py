@@ -22,6 +22,7 @@ class AddSeriesWindow(QDialog):
         self.ui.setupUi(self)
         self.ldbclient = LibraryDB()
         self.search_data_cache = []
+        self.ALclient = AniListClient()
 
         self.ui.AniList_radioButton.setChecked(True)
         self.ui.search_pushButton.pressed.connect(self.populate_search_tree)
@@ -45,7 +46,7 @@ class AddSeriesWindow(QDialog):
         self.ui.search_treeWidget.setIconSize(QSize(64, 96))
 
         if self.ui.AniList_radioButton.isChecked():
-            client = AniListClient()
+            client = self.ALclient
             results = client.search_title(query)
             
             if not results:
@@ -89,4 +90,4 @@ class AddSeriesWindow(QDialog):
         index = self.ui.search_treeWidget.indexOfTopLevelItem(item)
         
         if 0 <= index < len(self.search_data_cache):
-            self.ldbclient.add_title(self.search_data_cache[index])
+            self.ldbclient.add_title(self.search_data_cache[index], self.ALclient)

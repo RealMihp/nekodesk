@@ -6,7 +6,7 @@ class AniListClient:
         self.session = requests.Session()
         self.query = '''
         query ($id: Int, $search: String, $isMain: Boolean) {
-            Page (page: 1, perPage: 10) {
+            Page (page: 1, perPage: 15) {
                 pageInfo {
                 total
                 hasNextPage
@@ -47,6 +47,22 @@ class AniListClient:
                     site
                     url
                 }
+                  relations {
+                    edges {
+                      relationType
+                      node {
+                        id
+                        idMal
+                        title {
+                          romaji
+                          native
+                          english
+                        }
+                        type
+                        format
+                      }
+                    }
+                  }
                 }
             }
             }
