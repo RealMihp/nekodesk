@@ -3,7 +3,7 @@ from PySide6.QtWidgets import *
 import anitopy
 from core.logic import FileScanner
 from PySide6.QtGui import QDesktopServices
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QUrl, QTimer
 
 import sys, os, shutil, re
 
@@ -25,6 +25,24 @@ class RenameWindow(QDialog):
         self.ui.setupUi(self)
         self.imgmClient = ImageManager()
         self.filemClient = FileManager()
+
+        self.preview_timer = QTimer(self)
+        self.preview_timer.setSingleShot(True)
+        self.preview_timer.setInterval(300)     # Interval
+        self.preview_timer.timeout.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
+
+        fields = [
+            self.ui.title_lineEdit, self.ui.season_num_lineEdit, self.ui.season_lineEdit,
+            self.ui.season_year_lineEdit, self.ui.type_lineEdit, self.ui.studio_lineEdit,
+            self.ui.duration_lineEdit, self.ui.source_lineEdit, self.ui.resolution_lineEdit,
+            self.ui.fansub_lineEdit, self.ui.country_lineEdit, self.ui.score_lineEdit,
+            self.ui.status_lineEdit, self.ui.episodes_lineEdit, self.ui.start_from_lineEdit,
+            self.ui.template_lineEdit, self.ui.folder_name_lineEdit,
+            self.ui.save_poster_lineEdit, self.ui.save_banner_lineEdit
+            ]
+        for field in fields:
+            field.textChanged.connect(self.preview_timer.start)
+
         self.history = []
         self.forward_stack = []
         self.title_data = title_data
@@ -52,27 +70,6 @@ class RenameWindow(QDialog):
         self.ui.forward_pushButton.pressed.connect(self.forward)
         self.ui.preview_checkBox.toggled.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
 
-        self.ui.title_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.season_num_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.season_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.season_year_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.type_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.studio_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.duration_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.source_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.resolution_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.fansub_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.country_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.score_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.status_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.episodes_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.start_from_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-
-        self.ui.template_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.folder_name_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-
-        self.ui.save_poster_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
-        self.ui.save_banner_lineEdit.textChanged.connect(lambda: self.populate_tree(self.ui.path_lineEdit.text()))
 
         self.ui.template_pushButton.pressed.connect(self.show_template_info)
         self.ui.folder_name_pushButton.pressed.connect(self.show_template_info)
@@ -246,6 +243,8 @@ class RenameWindow(QDialog):
         exts = VIDEO_EXTS
         exts = exts + SUB_EXTS if self.ui.rename_subs_checkBox.isChecked() else exts
         exts = exts + DUB_EXTS if self.ui.rename_dubs_checkBox.isChecked() else exts
+
+        is_movie = self.ui.type_lineEdit.text().strip().upper() == 'MOVIE'
             
         
         # subs & dubs
@@ -290,9 +289,16 @@ class RenameWindow(QDialog):
         preview_map = {}
 
         if preview:
-            eps_num = int(self.ui.episodes_lineEdit.text())
-            start_from_ep = int(self.ui.start_from_lineEdit.text())
-            eps_tuple = tuple(range(start_from_ep, eps_num + 1))
+            try:
+                eps_num = int(self.ui.episodes_lineEdit.text())
+            except ValueError:
+                eps_num = 0
+            try:
+                start_from_ep = int(self.ui.start_from_lineEdit.text())
+            except ValueError:
+                start_from_ep = 0
+            end_ep = start_from_ep + eps_num - 1
+            eps_tuple = tuple(range(start_from_ep, end_ep + 1))
 
             for data in items:
                 file_name = data['name']
@@ -300,13 +306,23 @@ class RenameWindow(QDialog):
 
                 if file_name.lower().endswith(exts):
                     parsed_data = anitopy.parse(file_name)
-                    if parsed_data and parsed_data.get('episode_number'):
-                        try:
-                            parsed_ep = int(parsed_data.get('episode_number'))
-                        except ValueError:
-                            continue
+                    raw_episode = parsed_data.get('episode_number')
+
+                    if parsed_data and (raw_episode or is_movie):
+                        if raw_episode:
+                            if isinstance(raw_episode, list):
+                                raw_episode = raw_episode[0] if raw_episode else 1
+                            try:
+                                parsed_ep = int(raw_episode)
+                            except ValueError:
+                                parsed_ep = 1
+                        else:
+                            try:
+                                parsed_ep = int(self.ui.start_from_lineEdit.text())
+                            except ValueError:
+                                parsed_ep = 1
                         
-                        if parsed_ep in eps_tuple:
+                        if is_movie or (parsed_ep in eps_tuple):
                             ext = os.path.splitext(file_name)[1]
                             base_new_name = self.generate_name(self.ui.template_lineEdit.text(), parsed_ep)
                             new_name = base_new_name + ext
@@ -530,7 +546,7 @@ class RenameWindow(QDialog):
         # Width
         template = template.replace('{width}', ui.resolution_lineEdit.text().split('x')[0])
         # Quality
-        if 'p' not in ui.resolution_lineEdit.text():
+        if ui.resolution_lineEdit.text() and 'p' not in ui.resolution_lineEdit.text():
             template = template.replace('{quality}', ui.resolution_lineEdit.text().split('x')[-1]+'p')
         else:
             template = template.replace('{quality}', ui.resolution_lineEdit.text().split('x')[-1])

@@ -1,6 +1,5 @@
 from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem
-from PySide6.QtCore import Qt
-
+from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import *
 
 
@@ -36,13 +35,22 @@ class FilesTree(QTreeWidget):
 
         target_path = target_item.data(0, PATH_ROLE)
 
-        source_item = event.source().currentItem()
+        source_widget = event.source()
+        if not source_widget:
+            event.ignore()
+            return
+            
+        source_item = source_widget.currentItem()
         if not source_item:
+            event.ignore()
             return
             
         title_id = source_item.data(0, Qt.UserRole)
 
-        self.window().open_rename_dialog(title_id, target_path)
+        event.accept()
+
+        
+        QTimer.singleShot(0, lambda: self.window().open_rename_dialog(title_id, target_path))
         
 
         event.accept()
