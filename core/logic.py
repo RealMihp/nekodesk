@@ -1,4 +1,5 @@
 import os, anitopy
+import re
 from pathlib import Path
 from core.db import *
 
@@ -6,6 +7,10 @@ from core.db import *
 VIDEO_EXTS = ('.mp4', '.mkv', '.avi')
 BLACKLIST = {'SP', 'OVA', 'NC', 'OP', 'ED', 'NCED', 'NCOP'}
 SOURCES = ('BDRIP', 'BDREMUX', 'REMUX', 'BDMV', 'WEB-DL', 'WEBRIP', 'HDTVRIP', 'DVDRIP', 'HDRIP')
+
+STRICT_GARBAGE = {"sub", "subs", "sound", "font", "fonts", "nadpisi", "bonus", "extra", 
+                            "scans", "scan", "artbook", "artwork", "metadata", "subtitles", "ost",
+                            'op', 'ed', 'ncop', 'nced', 'menu', 'credits', 'creditless'}
 class FileScanner:
     
 
@@ -138,4 +143,63 @@ class FileScanner:
             'resolution': res_val,
             'source': src_val
         }
+    
+    @staticmethod
+    def scan_folder(folder) -> list:
+        if not os.path.isdir(folder):
+                return
+            
+        clean_titles = set()
+
+        for root, dirs, files in os.walk(folder):
+            dirs[:] = [d for d in dirs if d.lower() not in STRICT_GARBAGE and not any(w in d.lower() for w in ("rus sub", "eng sub", "fonts"))]
+
+            for item in files:
+                if item.lower().endswith(('.ttf', '.otf', '.ttc', '.ass', '.srt', '.txt', '.png', '.jpg', '.jpeg', '.ini', '.parts')):
+                    continue
+
+                parsed = anitopy.parse(item)
+                if parsed and parsed.get('anime_title'):
+                    title = parsed.get('anime_title').strip(" -.")
+
+                    if len(title) >= 3 and title.lower() not in STRICT_GARBAGE:
+                        clean_titles = set(clean_titles)
+                        clean_titles.add(title)
+
+        clean_titles.discard('')
+
+        return sorted(list(clean_titles))
+    
+    @staticmethod 
+    def clean_and_deduplicate_titles(titles_list: list) -> set:
+        seen_normalized = set()
+        final_titles = set()
         
+        for title in titles_list:
+            t = title.strip()
+            if not t:
+                continue
+                
+            if t.lower() in STRICT_GARBAGE or any(f" {w}" in t.lower() for w in STRICT_GARBAGE):
+                continue
+                
+            # 01, 02.
+            t = re.sub(r'^\d+[\s\.]+', '', t)
+            
+            # "XX серия", "XX серии"
+            t = re.sub(r'\d+\s*сери[яи]', '', t, flags=re.IGNORECASE)
+            
+            # TV, TV-1, TV-2
+            t = re.sub(r'\bTV[-_]?\d*\b', '', t, flags=re.IGNORECASE)
+
+            t = ' '.join(t.split()).strip(" -.")
+
+            if len(t) < 3 or t.lower() in STRICT_GARBAGE:
+                continue
+                
+            norm_key = t.lower()
+            if norm_key not in seen_normalized:
+                seen_normalized.add(norm_key)
+                final_titles.add(t)
+                
+        return final_titles

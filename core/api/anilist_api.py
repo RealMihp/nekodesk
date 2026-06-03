@@ -81,10 +81,10 @@ class AniListClient:
                 return media_list 
             else:
                 print(f"API error: {response.status_code}")
-                return None
+                response.raise_for_status()
         except Exception as e:
             print(f"Request error: {e}")
-            return None
+            raise e
         
     def get_title(self, anilist_id: int):
         query = self.query 
@@ -105,7 +105,7 @@ class AniListClient:
                 return media_list
             else:
                 print(f"API error: {response.status_code}")
-                return None
+                raise e
         except Exception as e:
             print(f"Request error: {e}")
-            return None
+            raise e

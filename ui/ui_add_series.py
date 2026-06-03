@@ -17,15 +17,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QAbstractItemView, QApplication, QDialog,
     QDialogButtonBox, QFrame, QHBoxLayout, QHeaderView,
-    QLabel, QLineEdit, QListWidget, QListWidgetItem,
-    QPushButton, QRadioButton, QSizePolicy, QTabWidget,
-    QTreeWidget, QTreeWidgetItem, QVBoxLayout, QWidget)
+    QLabel, QLineEdit, QPushButton, QRadioButton,
+    QSizePolicy, QTabWidget, QTreeWidget, QTreeWidgetItem,
+    QVBoxLayout, QWidget)
 
 class Ui_AddSeriesWindow(object):
     def setupUi(self, AddSeriesWindow):
         if not AddSeriesWindow.objectName():
             AddSeriesWindow.setObjectName(u"AddSeriesWindow")
-        AddSeriesWindow.resize(723, 559)
+        AddSeriesWindow.resize(750, 900)
         self.verticalLayout_3 = QVBoxLayout(AddSeriesWindow)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.frame = QFrame(AddSeriesWindow)
@@ -94,9 +94,13 @@ class Ui_AddSeriesWindow(object):
 
         self.search_treeWidget = QTreeWidget(self.frame_4)
         __qtreewidgetitem = QTreeWidgetItem()
-        __qtreewidgetitem.setText(0, u"Results")
+        __qtreewidgetitem.setText(0, u"Title")
         self.search_treeWidget.setHeaderItem(__qtreewidgetitem)
         self.search_treeWidget.setObjectName(u"search_treeWidget")
+        self.search_treeWidget.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.search_treeWidget.setSortingEnabled(True)
+        self.search_treeWidget.header().setProperty(u"showSortIndicator", True)
+        self.search_treeWidget.header().setStretchLastSection(False)
 
         self.verticalLayout.addWidget(self.search_treeWidget)
 
@@ -133,6 +137,7 @@ class Ui_AddSeriesWindow(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.scan_folder_lineEdit = QLineEdit(self.select_folder_frame)
         self.scan_folder_lineEdit.setObjectName(u"scan_folder_lineEdit")
+        self.scan_folder_lineEdit.setEnabled(False)
 
         self.horizontalLayout_3.addWidget(self.scan_folder_lineEdit)
 
@@ -156,11 +161,15 @@ class Ui_AddSeriesWindow(object):
 
         self.verticalLayout_4.addWidget(self.confirm_series_label)
 
-        self.scan_results_listWidget = QListWidget(self.scan_frame)
-        self.scan_results_listWidget.setObjectName(u"scan_results_listWidget")
-        self.scan_results_listWidget.setSelectionMode(QAbstractItemView.SelectionMode.MultiSelection)
+        self.scan_results_treeWidget = QTreeWidget(self.scan_frame)
+        self.scan_results_treeWidget.setObjectName(u"scan_results_treeWidget")
+        self.scan_results_treeWidget.setDefaultDropAction(Qt.DropAction.IgnoreAction)
+        self.scan_results_treeWidget.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
+        self.scan_results_treeWidget.setSortingEnabled(True)
+        self.scan_results_treeWidget.setSupportedDragActions(Qt.DropAction.IgnoreAction)
+        self.scan_results_treeWidget.header().setStretchLastSection(False)
 
-        self.verticalLayout_4.addWidget(self.scan_results_listWidget)
+        self.verticalLayout_4.addWidget(self.scan_results_treeWidget)
 
         self.scan_add_pushButton = QPushButton(self.scan_frame)
         self.scan_add_pushButton.setObjectName(u"scan_add_pushButton")
@@ -175,11 +184,21 @@ class Ui_AddSeriesWindow(object):
 
         self.verticalLayout_2.addWidget(self.tabWidget)
 
+        self.horizontalLayout_6 = QHBoxLayout()
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.statusbar_label = QLabel(self.frame)
+        self.statusbar_label.setObjectName(u"statusbar_label")
+
+        self.horizontalLayout_6.addWidget(self.statusbar_label)
+
         self.buttonBox = QDialogButtonBox(self.frame)
         self.buttonBox.setObjectName(u"buttonBox")
         self.buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
 
-        self.verticalLayout_2.addWidget(self.buttonBox)
+        self.horizontalLayout_6.addWidget(self.buttonBox)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_6)
 
 
         self.verticalLayout_3.addWidget(self.frame)
@@ -199,13 +218,21 @@ class Ui_AddSeriesWindow(object):
         self.MAL_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"MAL", None))
         self.search_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
         self.search_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
+        ___qtreewidgetitem = self.search_treeWidget.headerItem()
+        ___qtreewidgetitem.setText(2, QCoreApplication.translate("AddSeriesWindow", u"Status", None))
+        ___qtreewidgetitem.setText(1, QCoreApplication.translate("AddSeriesWindow", u"Year", None))
         self.search_add_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Add selected", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.search_tab), QCoreApplication.translate("AddSeriesWindow", u"Search", None))
         self.scan_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Scan folder", None))
         self.scan_folder_browse_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Browse", None))
         self.scan_start_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Start scan", None))
         self.confirm_series_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Results", None))
+        ___qtreewidgetitem1 = self.scan_results_treeWidget.headerItem()
+        ___qtreewidgetitem1.setText(2, QCoreApplication.translate("AddSeriesWindow", u"Status", None))
+        ___qtreewidgetitem1.setText(1, QCoreApplication.translate("AddSeriesWindow", u"Year", None))
+        ___qtreewidgetitem1.setText(0, QCoreApplication.translate("AddSeriesWindow", u"Title", None))
         self.scan_add_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Add selected", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.scan_tab), QCoreApplication.translate("AddSeriesWindow", u"Scan", None))
+        self.statusbar_label.setText("")
     # retranslateUi
 

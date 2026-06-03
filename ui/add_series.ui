@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>723</width>
-    <height>559</height>
+    <width>750</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -108,9 +108,31 @@
              </item>
              <item>
               <widget class="QTreeWidget" name="search_treeWidget">
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+               </property>
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+               <attribute name="headerShowSortIndicator" stdset="0">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="headerStretchLastSection">
+                <bool>false</bool>
+               </attribute>
                <column>
                 <property name="text">
-                 <string notr="true">Results</string>
+                 <string notr="true">Title</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Year</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Status</string>
                 </property>
                </column>
               </widget>
@@ -161,7 +183,11 @@
                </property>
                <layout class="QHBoxLayout" name="horizontalLayout_3">
                 <item>
-                 <widget class="QLineEdit" name="scan_folder_lineEdit"/>
+                 <widget class="QLineEdit" name="scan_folder_lineEdit">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
                 </item>
                 <item>
                  <widget class="QPushButton" name="scan_folder_browse_pushButton">
@@ -194,10 +220,37 @@
               </widget>
              </item>
              <item>
-              <widget class="QListWidget" name="scan_results_listWidget">
-               <property name="selectionMode">
-                <enum>QAbstractItemView::SelectionMode::MultiSelection</enum>
+              <widget class="QTreeWidget" name="scan_results_treeWidget">
+               <property name="defaultDropAction">
+                <enum>Qt::DropAction::IgnoreAction</enum>
                </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+               </property>
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="supportedDragActions">
+                <set>Qt::DropAction::IgnoreAction</set>
+               </property>
+               <attribute name="headerStretchLastSection">
+                <bool>false</bool>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string>Title</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Year</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Status</string>
+                </property>
+               </column>
               </widget>
              </item>
              <item>
@@ -218,11 +271,22 @@
        </widget>
       </item>
       <item>
-       <widget class="QDialogButtonBox" name="buttonBox">
-        <property name="standardButtons">
-         <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="statusbar_label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDialogButtonBox" name="buttonBox">
+          <property name="standardButtons">
+           <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
