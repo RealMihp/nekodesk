@@ -33,6 +33,7 @@ class MainWindow(QMainWindow):
 
         self.ui.library_treeWidget.header().setSectionResizeMode(0, QHeaderView.Stretch)
         self.ui.library_treeWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        self.ui.library_treeWidget.sortByColumn(0, Qt.AscendingOrder)
 
         self.ui.library_treeWidget.customContextMenuRequested.connect(self.show_library_context_menu)
         self.ui.actionSelect_folder.triggered.connect(self.select_folder)
@@ -101,12 +102,6 @@ class MainWindow(QMainWindow):
                 db.set("offline_mode", "True")
             else:
                 db.set("offline_mode", "False")
-            if dialog.ui.theme_light_radioButton.isChecked():
-                db.set("theme", "Light")
-            elif dialog.ui.theme_dark_radioButton.isChecked():
-                db.set("theme", "Dark")
-            else:
-                db.set("theme", "System")
             
             print("Changed settings")
         else:
