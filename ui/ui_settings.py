@@ -17,8 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QDialog,
     QDialogButtonBox, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QRadioButton, QSizePolicy,
-    QTabWidget, QVBoxLayout, QWidget)
+    QLineEdit, QPushButton, QSizePolicy, QTabWidget,
+    QVBoxLayout, QWidget)
 
 class Ui_SettingsWindow(object):
     def setupUi(self, SettingsWindow):
@@ -29,48 +29,6 @@ class Ui_SettingsWindow(object):
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.settings_tabWidget = QTabWidget(SettingsWindow)
         self.settings_tabWidget.setObjectName(u"settings_tabWidget")
-        self.appearance_tab = QWidget()
-        self.appearance_tab.setObjectName(u"appearance_tab")
-        self.verticalLayout_7 = QVBoxLayout(self.appearance_tab)
-        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.verticalLayout_2 = QVBoxLayout()
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.theme_label = QLabel(self.appearance_tab)
-        self.theme_label.setObjectName(u"theme_label")
-
-        self.verticalLayout_2.addWidget(self.theme_label)
-
-        self.theme_select_frame = QFrame(self.appearance_tab)
-        self.theme_select_frame.setObjectName(u"theme_select_frame")
-        self.theme_select_frame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.theme_select_frame.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout_3 = QHBoxLayout(self.theme_select_frame)
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.theme_system_radioButton = QRadioButton(self.theme_select_frame)
-        self.theme_system_radioButton.setObjectName(u"theme_system_radioButton")
-        self.theme_system_radioButton.setEnabled(True)
-
-        self.horizontalLayout_3.addWidget(self.theme_system_radioButton)
-
-        self.theme_light_radioButton = QRadioButton(self.theme_select_frame)
-        self.theme_light_radioButton.setObjectName(u"theme_light_radioButton")
-        self.theme_light_radioButton.setEnabled(True)
-
-        self.horizontalLayout_3.addWidget(self.theme_light_radioButton)
-
-        self.theme_dark_radioButton = QRadioButton(self.theme_select_frame)
-        self.theme_dark_radioButton.setObjectName(u"theme_dark_radioButton")
-        self.theme_dark_radioButton.setEnabled(True)
-
-        self.horizontalLayout_3.addWidget(self.theme_dark_radioButton)
-
-
-        self.verticalLayout_2.addWidget(self.theme_select_frame)
-
-
-        self.verticalLayout_7.addLayout(self.verticalLayout_2)
-
-        self.settings_tabWidget.addTab(self.appearance_tab, "")
         self.general_tab = QWidget()
         self.general_tab.setObjectName(u"general_tab")
         self.verticalLayout_3 = QVBoxLayout(self.general_tab)
@@ -236,7 +194,7 @@ class Ui_SettingsWindow(object):
         self.settings_buttonBox.accepted.connect(SettingsWindow.accept)
         self.settings_buttonBox.rejected.connect(SettingsWindow.reject)
 
-        self.settings_tabWidget.setCurrentIndex(1)
+        self.settings_tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(SettingsWindow)
@@ -244,11 +202,6 @@ class Ui_SettingsWindow(object):
 
     def retranslateUi(self, SettingsWindow):
         SettingsWindow.setWindowTitle(QCoreApplication.translate("SettingsWindow", u"Settings", None))
-        self.theme_label.setText(QCoreApplication.translate("SettingsWindow", u"Theme", None))
-        self.theme_system_radioButton.setText(QCoreApplication.translate("SettingsWindow", u"System", None))
-        self.theme_light_radioButton.setText(QCoreApplication.translate("SettingsWindow", u"Light", None))
-        self.theme_dark_radioButton.setText(QCoreApplication.translate("SettingsWindow", u"Dark", None))
-        self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.appearance_tab), QCoreApplication.translate("SettingsWindow", u"Appearance", None))
         self.files_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Files Template :", None))
         self.files_template_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
         self.folder_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Folder Template :", None))

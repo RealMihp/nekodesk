@@ -29,14 +29,9 @@ class SettingsWindow(QDialog):
         else:
             self.ui.offline_mode_checkBox.setChecked(False)
 
-        if db.get("theme") and db.get("theme") == 'System':
-            self.ui.theme_system_radioButton.setChecked(True)
-        elif db.get("theme") and db.get("theme") == 'Light':
-            self.ui.theme_light_radioButton.setChecked(True)
-        elif db.get("theme") and db.get("theme") == 'Dark':
-            self.ui.theme_dark_radioButton.setChecked(True)
         
-        
+
         self.ui.settings_buttonBox.accepted.connect(self.accept)
         self.ui.settings_buttonBox.rejected.connect(self.reject)
+
         
