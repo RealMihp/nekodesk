@@ -171,35 +171,46 @@ class FileScanner:
         return sorted(list(clean_titles))
     
     @staticmethod 
-    def clean_and_deduplicate_titles(titles_list: list) -> set:
+    def clean_and_deduplicate_titles(titles_list: list) -> list:
+        """Cleans and deduplicates scanning results preserving order."""
         seen_normalized = set()
-        final_titles = set()
+        final_titles = []
+        
+        episode_pattern = re.compile(
+            r'\s+\d+(?:-\d+)?\s*(?:сери[яииа]|эпизод[ы]?|ep(?:isode)?s?)?$|\s+(?:сери[яииа]|эпизод[ы]?|ep(?:isode)?s?)$', 
+            flags=re.IGNORECASE
+        )
+        
+        leading_num_pattern = re.compile(r'^\d+[\s\.-]+')
+        
+        service_markers_pattern = re.compile(
+            r'\s+[\(\[\{-]?(?:sp|special|ova|op|ed|ncop|nced|bd|bdbox|remux|bdremux|comments)[\)\]\}]?$', 
+            flags=re.IGNORECASE
+        )
         
         for title in titles_list:
+            if not isinstance(title, str):
+                continue
             t = title.strip()
-            if not t:
+            if not t or t.lower() in STRICT_GARBAGE:
                 continue
                 
-            if t.lower() in STRICT_GARBAGE or any(f" {w}" in t.lower() for w in STRICT_GARBAGE):
-                continue
-                
-            # 01, 02.
-            t = re.sub(r'^\d+[\s\.]+', '', t)
+            cleaned = episode_pattern.sub('', t)
+            cleaned = leading_num_pattern.sub('', cleaned)
+            cleaned = service_markers_pattern.sub('', cleaned)
             
-            # "XX серия", "XX серии"
-            t = re.sub(r'\d+\s*сери[яи]', '', t, flags=re.IGNORECASE)
+            cleaned = ' '.join(cleaned.split()).strip(" -.,_[]()+-")
             
-            # TV, TV-1, TV-2
-            t = re.sub(r'\bTV[-_]?\d*\b', '', t, flags=re.IGNORECASE)
-
-            t = ' '.join(t.split()).strip(" -.")
-
-            if len(t) < 3 or t.lower() in STRICT_GARBAGE:
+            if len(cleaned) < 3:
+                cleaned = ' '.join(t.split()).strip(" -.,_[]()")
+                
+            if len(cleaned) < 3 or cleaned.lower() in STRICT_GARBAGE:
                 continue
                 
-            norm_key = t.lower()
+            norm_key = "".join(cleaned.lower().split())
+            
             if norm_key not in seen_normalized:
                 seen_normalized.add(norm_key)
-                final_titles.add(t)
+                final_titles.append(cleaned)
                 
         return final_titles

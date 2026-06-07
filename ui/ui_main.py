@@ -118,6 +118,9 @@ class Ui_MainWindow(object):
         self.library_treeWidget = QTreeWidget(self.right_frame)
         self.library_treeWidget.setObjectName(u"library_treeWidget")
         self.library_treeWidget.setDragEnabled(True)
+        self.library_treeWidget.setSortingEnabled(True)
+        self.library_treeWidget.setHeaderHidden(False)
+        self.library_treeWidget.header().setStretchLastSection(False)
 
         self.verticalLayout_2.addWidget(self.library_treeWidget)
 
@@ -180,7 +183,9 @@ class Ui_MainWindow(object):
         ___qtreewidgetitem.setText(0, QCoreApplication.translate("MainWindow", u"Folder", None))
         self.addSeries_pushButton.setText(QCoreApplication.translate("MainWindow", u"Add series", None))
         ___qtreewidgetitem1 = self.library_treeWidget.headerItem()
-        ___qtreewidgetitem1.setText(0, QCoreApplication.translate("MainWindow", u"Library", None))
+        ___qtreewidgetitem1.setText(2, QCoreApplication.translate("MainWindow", u"Episodes", None))
+        ___qtreewidgetitem1.setText(1, QCoreApplication.translate("MainWindow", u"Year", None))
+        ___qtreewidgetitem1.setText(0, QCoreApplication.translate("MainWindow", u"Title", None))
         self.menuLibrary.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuTools.setTitle(QCoreApplication.translate("MainWindow", u"Tools", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))

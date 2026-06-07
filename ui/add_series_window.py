@@ -5,7 +5,7 @@ from PySide6.QtWidgets import QTreeWidgetItem
 from core.logic import FileScanner
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtCore import QUrl, QThread, Signal
-
+from rapidfuzz import fuzz
 import sys, os
 
 from PySide6.QtWidgets import *
@@ -70,7 +70,7 @@ class AddSeriesWindow(QDialog):
             results = client.search_title(query)
             
             if not results:
-                self.ui.statusbar_label.setText("Nothing found :(")
+                self.ui.statusbar_label.setText(r"Nothing found (っ- ‸ - ς)")
                 return
             
             self.search_data_cache = results
@@ -122,7 +122,7 @@ class AddSeriesWindow(QDialog):
 
     def populate_scan_tree(self, titles):
         if not titles:
-            self.ui.statusbar_label.setText("")
+            self.ui.statusbar_label.setText(r"Nothing new to add ¯\_(ツ)_/¯")
             return
         self.scan_data_cache = titles
         imgm = self.ImageManager
@@ -198,9 +198,6 @@ class AddSeriesWindow(QDialog):
             lambda title: self.ui.statusbar_label.setText(f"Searching: {title}...")
         )
         self.scan_worker.finished.connect(self.on_scan_finished)
-        self.scan_worker.rate_limit.connect(
-            lambda title: self.ui.statusbar_label.setText(f"API Rate limit exceeded. Waiting for 60 sec...")
-        )
         
         self.scan_worker.start()
 
@@ -221,43 +218,50 @@ class AddSeriesWindow(QDialog):
 class LibraryScanWorker(QThread):
     finished = Signal(list)
     progress = Signal(str)
-    rate_limit = Signal(str)
+
+    # TO ADD: check already existing titles in libary to not overwhelm API
+
+
 
     def __init__(self, folder_path, client):
         super().__init__()
         self.folder_path = folder_path
         self.client = client
+        self.ldbClient = LibraryDB()
 
     def run(self):
         titles = FileScanner.scan_folder(self.folder_path)
-        print(titles)
+
+        library = self.ldbClient.get_all_titles()
+        romaji_titles = {title.get('title_romaji', '').lower() for title in library if title.get('title_romaji')}
+        existing_ids = {str(title.get('anilist_id')) for title in library if title.get('anilist_id')}
         
         found_titles = []
         if titles:
             unique_titles = FileScanner.clean_and_deduplicate_titles(titles)
-            
+            print('unique_titles')
+            print(unique_titles)
             for title in unique_titles:
                 self.progress.emit(title)
+                title_lower = title.lower()
+                if any(fuzz.ratio(title_lower, r_title) >= 85 for r_title in romaji_titles):
+                    print(f"Skipping (already in Library): {title}")
+                    continue 
 
-                time.sleep(0.8) 
-                
-                retries = 3
-                while retries > 0:
-                    try:
-                        result = self.client.search_title(title)
-                        if result:
+                time.sleep(1)
+                print(f"Searching: {title}")
+                try:
+                    result = self.client.search_title(title)
+                    
+                    if result:
+                        title_data = result[0] if isinstance(result, list) else result
+                        if title_data and str(title_data.get('id')) not in existing_ids:
                             found_titles.append(result)
-                        break 
-                        
-                    except Exception as e:
-                        if "429" in str(e):
-                            print(f"Rate limit exceeded for {title}. Wait 60 sec.")
-                            self.rate_limit.emit(title)
-                            time.sleep(61)
-                            retries -= 1
                         else:
-                            print(f"Error for {title}: {e}")
-                            break
+                            print(f"Not showing (already in Library): {title}")
+                        
+                except Exception as e:
+                    print(f"Critical error for {title}: {e}")
                     
         self.finished.emit(found_titles)
         

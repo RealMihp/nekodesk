@@ -183,11 +183,11 @@ class LibraryDB:
             for prequel_id in prequels_list:
                 result = client.get_title(prequel_id)
                 if result:
-                    p_format = result[0].get('format')
+                    p_format = result.get('format')
                     if p_format in ('TV', 'TV_SHORT'):
                         season_num += 1
                     
-                    relations_data = result[0].get('relations', {})
+                    relations_data = result.get('relations', {})
                     if isinstance(relations_data, dict):
                         p_relations = relations_data.get('edges', [])
                     else:

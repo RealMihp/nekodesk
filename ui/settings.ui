@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>638</width>
     <height>484</height>
    </rect>
   </property>
@@ -17,17 +17,160 @@
    <item>
     <widget class="QTabWidget" name="settings_tabWidget">
      <property name="currentIndex">
-      <number>2</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="appearance_tab">
       <attribute name="title">
        <string>Appearance</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_7">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="theme_label">
+           <property name="text">
+            <string>Theme</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QFrame" name="theme_select_frame">
+           <property name="frameShape">
+            <enum>QFrame::Shape::StyledPanel</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Shadow::Raised</enum>
+           </property>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QRadioButton" name="theme_system_radioButton">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>System</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="theme_light_radioButton">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>Light</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="theme_dark_radioButton">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>Dark</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="general_tab">
       <attribute name="title">
        <string>General</string>
       </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QVBoxLayout" name="files_template_verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="files_template_horizontalLayout">
+           <item>
+            <widget class="QLabel" name="files_template_label">
+             <property name="text">
+              <string>Files Template :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="files_template_pushButton">
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>?</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="files_template_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="folder_template_verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="folder_template_horizontalLayout">
+           <item>
+            <widget class="QLabel" name="folder_template_label">
+             <property name="text">
+              <string>Folder Template :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="folder_template_pushButton">
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>?</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="folder_template_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="offline_mode_horizontalLayout">
+         <item>
+          <widget class="QCheckBox" name="offline_mode_checkBox">
+           <property name="text">
+            <string>Offline mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="offline_mode_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>?</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
      <widget class="QWidget" name="services_tab">
       <attribute name="title">
@@ -48,7 +191,7 @@
             <item>
              <widget class="QLabel" name="serviceAniList_label">
               <property name="text">
-               <string>AniList API Key</string>
+               <string>AniList</string>
               </property>
              </widget>
             </item>
@@ -95,7 +238,7 @@
             <item>
              <widget class="QLabel" name="serviceMAL_label">
               <property name="text">
-               <string>MAL API Key</string>
+               <string>MyAnimeList (MAL)</string>
               </property>
              </widget>
             </item>
@@ -124,70 +267,6 @@
              </layout>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="serviceTVDB_frame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_2">
-          <item>
-           <widget class="QLabel" name="serviceTVDB_label">
-            <property name="text">
-             <string>TVDB API Key</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="serviceTVDB_lineEdit">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="echoMode">
-             <enum>QLineEdit::EchoMode::Password</enum>
-            </property>
-            <property name="clearButtonEnabled">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="serviceTMDB_frame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QLabel" name="serviceTMDB_label">
-            <property name="text">
-             <string>TMDB API Key</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="serviceTMDB_lineEdit">
-            <property name="text">
-             <string/>
-            </property>
-            <property name="echoMode">
-             <enum>QLineEdit::EchoMode::Password</enum>
-            </property>
-            <property name="clearButtonEnabled">
-             <bool>true</bool>
-            </property>
-           </widget>
           </item>
          </layout>
         </widget>

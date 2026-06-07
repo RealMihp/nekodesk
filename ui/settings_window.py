@@ -19,17 +19,24 @@ class SettingsWindow(QDialog):
         self.ui.setupUi(self)
 
         db = SettingsDB()
-        self.ui.serviceTVDB_lineEdit.setText(db.get("tvdb_key", self.ui.serviceTVDB_lineEdit.text()))
-        self.ui.serviceTMDB_lineEdit.setText(db.get("tmdb_key", self.ui.serviceTMDB_lineEdit.text()))
         self.ui.serviceAniList_lineEdit.setText(db.get("anilist_token", self.ui.serviceAniList_lineEdit.text()))
         self.ui.serviceMAL_lineEdit.setText(db.get("mal_token", self.ui.serviceMAL_lineEdit.text()))
+        self.ui.files_template_lineEdit.setText(db.get("files_template", self.ui.files_template_lineEdit.text()))
+        self.ui.folder_template_lineEdit.setText(db.get("folder_template", self.ui.folder_template_lineEdit.text()))
+
+        if db.get("offline_mode") and db.get("offline_mode") == 'True':
+            self.ui.offline_mode_checkBox.setChecked(True)
+        else:
+            self.ui.offline_mode_checkBox.setChecked(False)
+
+        if db.get("theme") and db.get("theme") == 'System':
+            self.ui.theme_system_radioButton.setChecked(True)
+        elif db.get("theme") and db.get("theme") == 'Light':
+            self.ui.theme_light_radioButton.setChecked(True)
+        elif db.get("theme") and db.get("theme") == 'Dark':
+            self.ui.theme_dark_radioButton.setChecked(True)
+        
         
         self.ui.settings_buttonBox.accepted.connect(self.accept)
         self.ui.settings_buttonBox.rejected.connect(self.reject)
         
-
-    def save_key(self, service):
-        if service == "tvdb" and service == "tmdb":
-            key = self.ui.serviceTVDB_lineEdit.text()
-            db = SettingsDB()
-            db.set(service, key)

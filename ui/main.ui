@@ -127,9 +127,28 @@
          <property name="dragEnabled">
           <bool>true</bool>
          </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+         <property name="headerHidden">
+          <bool>false</bool>
+         </property>
+         <attribute name="headerStretchLastSection">
+          <bool>false</bool>
+         </attribute>
          <column>
           <property name="text">
-           <string>Library</string>
+           <string>Title</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Year</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Episodes</string>
           </property>
          </column>
         </widget>

@@ -31,6 +31,7 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.ui.library_treeWidget.header().setSectionResizeMode(0, QHeaderView.Stretch)
         self.ui.library_treeWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
 
         self.ui.library_treeWidget.customContextMenuRequested.connect(self.show_library_context_menu)
@@ -92,10 +93,20 @@ class MainWindow(QMainWindow):
 
         if dialog.exec():
             db = SettingsDB()
-            db.set("tvdb_key", dialog.ui.serviceTVDB_lineEdit.text())
-            db.set("tmdb_key", dialog.ui.serviceTMDB_lineEdit.text())
             db.set("anilist_token", dialog.ui.serviceAniList_lineEdit.text())
             db.set("mal_token", dialog.ui.serviceMAL_lineEdit.text())
+            db.set("files_template", dialog.ui.files_template_lineEdit.text())
+            db.set("folder_template", dialog.ui.folder_template_lineEdit.text())
+            if dialog.ui.offline_mode_checkBox.isChecked():
+                db.set("offline_mode", "True")
+            else:
+                db.set("offline_mode", "False")
+            if dialog.ui.theme_light_radioButton.isChecked():
+                db.set("theme", "Light")
+            elif dialog.ui.theme_dark_radioButton.isChecked():
+                db.set("theme", "Dark")
+            else:
+                db.set("theme", "System")
             
             print("Changed settings")
         else:
@@ -193,9 +204,10 @@ class MainWindow(QMainWindow):
         for title in titles:
             name = title.get('title_romaji') or "Unknown"
             status = title.get('status') or "N/A"
-            episodes = str(title.get('episodes') or "?")
+            year = str(title.get('season_year')) or "N/A"
+            episodes = str(title.get('episodes')).zfill(2) or "?"
             
-            item = QTreeWidgetItem([name, status, episodes])
+            item = QTreeWidgetItem([name, year, episodes])
 
             path = title.get('poster_small_path')
             if path and os.path.exists(path):
@@ -208,6 +220,10 @@ class MainWindow(QMainWindow):
                     item.setIcon(0, QIcon(pix))
 
             item.setData(0, Qt.ItemDataRole.UserRole, title.get('anilist_id'))
+
+            header = widget.header()
+            header.setSectionResizeMode(1, QHeaderView.ResizeToContents)
+            header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
 
             widget.addTopLevelItem(item)
         imgmClient = ImageManager()

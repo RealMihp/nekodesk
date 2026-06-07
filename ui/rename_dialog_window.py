@@ -25,6 +25,7 @@ class RenameWindow(QDialog):
         self.ui.setupUi(self)
         self.imgmClient = ImageManager()
         self.filemClient = FileManager()
+        self.settings_db = SettingsDB()
 
         self.preview_timer = QTimer(self)
         self.preview_timer.setSingleShot(True)
@@ -50,8 +51,8 @@ class RenameWindow(QDialog):
         self.current_dir = folder_path
 
         # get from settings
-        self.template = '{title} S{season_num}E{episode} [{source} {quality}]'
-        self.folder_name = '{title} S{season_num} [{source}] [{quality}]'
+        self.template = self.settings_db.get("files_template")
+        self.folder_name = self.settings_db.get("folder_template")
         self.save_poster_file_name = 'poster'
         self.save_banner_file_name = 'banner'   
 
