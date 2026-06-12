@@ -7,6 +7,7 @@ from PySide6.QtCore import QUrl
 import sys, os
 
 from PySide6.QtWidgets import *
+from ui.about_window import AboutWindow
 from ui.title_details_window import Title_detailsWindow
 from ui.rename_dialog_window import RenameWindow
 from ui.ui_main import *
@@ -14,6 +15,7 @@ from ui.add_series_window import *
 from ui.settings_window import *
 from ui.ui_settings import *
 from ui.widgets import FilesTree
+from core.utils import PreferencesManager
 
 
 PATH_ROLE = 32
@@ -27,6 +29,7 @@ class MainWindow(QMainWindow):
         self.history = []
         self.forward_stack = []
         self.ldbclient = LibraryDB()
+        self.prefManager = PreferencesManager()
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
@@ -44,6 +47,7 @@ class MainWindow(QMainWindow):
         self.ui.forward_pushButton.pressed.connect(self.forward)
         self.ui.addSeries_pushButton.pressed.connect(self.show_addseries)
         self.ui.actionSettings.triggered.connect(self.show_settings)
+        self.ui.actionAbout.triggered.connect(self.show_about)
 
         self.ui.files_treeWidget.setDragDropOverwriteMode(False)
         self.ui.library_treeWidget.setDragEnabled(True)
@@ -56,6 +60,11 @@ class MainWindow(QMainWindow):
         self.details_window = Title_detailsWindow(self, anilist_id)
         
         self.details_window.show()
+
+    def show_about(self, anilist_id: str):
+        self.about_window = AboutWindow(self)
+        
+        self.about_window.show()
         
     def show_library_context_menu(self, pos):
         item = self.ui.library_treeWidget.itemAt(pos)
@@ -102,7 +111,9 @@ class MainWindow(QMainWindow):
                 db.set("offline_mode", "True")
             else:
                 db.set("offline_mode", "False")
-            
+            title_lang_priority = f'{dialog.ui.lang_priority_1_comboBox.currentText()},{dialog.ui.lang_priority_2_comboBox.currentText()},{dialog.ui.lang_priority_3_comboBox.currentText()}'
+            db.set("title_lang_priority", title_lang_priority)
+            self.refresh_library()
             print("Changed settings")
         else:
             print("Canceled changing settings")
@@ -197,7 +208,7 @@ class MainWindow(QMainWindow):
         titles = self.ldbclient.get_all_titles()
 
         for title in titles:
-            name = title.get('title_romaji') or "Unknown"
+            name = self.prefManager.get_title_title(title.get("anilist_id")) or 'Unknown'
             status = title.get('status') or "N/A"
             year = str(title.get('season_year')) or "N/A"
             episodes = str(title.get('episodes')).zfill(2) or "?"

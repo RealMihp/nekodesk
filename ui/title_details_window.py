@@ -22,13 +22,12 @@ class Title_detailsWindow(QWidget):
         self.anilist_id = anilist_id
         self.ldbClient = LibraryDB()
         self.imgmClient = ImageManager()
-        
+        self.prefManager = PreferencesManager()
         self.ui.buttonBox.accepted.connect(self.close)
         self.ui.buttonBox.rejected.connect(self.close)
         self.render_details()
 
     def render_details(self):
-        # romaji-only for now
         if not self.anilist_id: return
         d = self.ldbClient.get_title(self.anilist_id)
         if not d: return
@@ -36,9 +35,9 @@ class Title_detailsWindow(QWidget):
         title_native = d.get('title_native')
         title_english = d.get('title_english')
 
-        title = title_romaji or title_native or title_english or 'Unknown'
-        syn_list = [d.get('title_native'), d.get('title_english'), d.get('synonyms')]
-        synonyms = ", ".join([s for s in syn_list if s]) or 'N/A'
+        title = self.prefManager.get_title_title(d.get('anilist_id')) or 'Unknown'
+        syn_list = set([title_romaji, title_native, title_english, d.get('synonyms')])
+        synonyms = ", ".join([s for s in syn_list if s != title and s]) or 'N/A'
         format = f"Type: {d.get('format', 'N/A')}"
         eps = f"Episodes: {d.get('episodes', 'N/A')}"
         status = f"Status: {d.get('status', 'N/A')}".replace('_', ' ')

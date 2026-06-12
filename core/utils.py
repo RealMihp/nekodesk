@@ -3,6 +3,7 @@ import shutil
 import requests
 from PySide6.QtGui import QColor, QIcon, QPixmap
 
+
 class ImageManager:
     def __init__(self, posters_path="data\\posters", temp_posters_path = "data\\temp\\posters"):
         """
@@ -160,3 +161,32 @@ class FileManager:
                 print(f"Error: {new_folder_path} is already exists!")
         else:
             print(f"Error: {old_folder_path} does not exists!")
+
+class PreferencesManager:
+    def __init__(self):
+        from core.db import SettingsDB, LibraryDB
+        self.ldb = LibraryDB()
+        self.sdb = SettingsDB()
+        
+    def get_title_title(self, anilist_id: str) -> str:
+        if not anilist_id:
+            return None
+        title_lang_priority = self.sdb.get("title_lang_priority", "Romaji,English,Native").split(",")
+        title_data = self.ldb.get_title(anilist_id)
+        title_langs = {
+            "romaji": title_data.get("title_romaji"),
+            "english": title_data.get("title_english"),
+            "native": title_data.get("title_native")
+        }
+
+        for lang in title_lang_priority:
+            lang_key = lang.lower()
+            title_value = title_langs.get(lang_key)
+
+            if title_value:
+                return title_value
+                
+        return title_langs["romaji"] or title_langs["english"] or title_langs["native"] or ""
+
+
+        

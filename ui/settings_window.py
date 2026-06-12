@@ -24,7 +24,12 @@ class SettingsWindow(QDialog):
         self.ui.files_template_lineEdit.setText(db.get("files_template", self.ui.files_template_lineEdit.text()))
         self.ui.folder_template_lineEdit.setText(db.get("folder_template", self.ui.folder_template_lineEdit.text()))
 
-        if db.get("offline_mode") and db.get("offline_mode") == 'True':
+        title_lang_priority = db.get("title_lang_priority", "Romaji,English,Native").split(",")
+        self.ui.lang_priority_1_comboBox.setCurrentText(title_lang_priority[0])
+        self.ui.lang_priority_2_comboBox.setCurrentText(title_lang_priority[1])
+        self.ui.lang_priority_3_comboBox.setCurrentText(title_lang_priority[2])
+
+        if db.get("offline_mode") and db.get("offline_mode") == "True":
             self.ui.offline_mode_checkBox.setChecked(True)
         else:
             self.ui.offline_mode_checkBox.setChecked(False)

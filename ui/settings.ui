@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>638</width>
-    <height>484</height>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,6 +30,11 @@
           <layout class="QHBoxLayout" name="files_template_horizontalLayout">
            <item>
             <widget class="QLabel" name="files_template_label">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
               <string>Files Template :</string>
              </property>
@@ -61,6 +66,11 @@
           <layout class="QHBoxLayout" name="folder_template_horizontalLayout">
            <item>
             <widget class="QLabel" name="folder_template_label">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
              <property name="text">
               <string>Folder Template :</string>
              </property>
@@ -87,9 +97,147 @@
         </layout>
        </item>
        <item>
+        <layout class="QVBoxLayout" name="verticalLayout_9">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="lang_priority_label">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Title language priority :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="lang_priority_pushButton">
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>?</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_2">
+             <item>
+              <widget class="QLabel" name="lang_priority_1_label">
+               <property name="text">
+                <string>#1</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="lang_priority_1_comboBox">
+               <item>
+                <property name="text">
+                 <string>Romaji</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>English</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Native</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_7">
+             <item>
+              <widget class="QLabel" name="lang_priority_2_label">
+               <property name="text">
+                <string>#2</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="lang_priority_2_comboBox">
+               <property name="currentText">
+                <string>English</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Romaji</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>English</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Native</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_8">
+             <item>
+              <widget class="QLabel" name="lang_priority_3_label">
+               <property name="text">
+                <string>#3</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QComboBox" name="lang_priority_3_comboBox">
+               <property name="currentText">
+                <string>Native</string>
+               </property>
+               <item>
+                <property name="text">
+                 <string>Romaji</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>English</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Native</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="offline_mode_horizontalLayout">
          <item>
           <widget class="QCheckBox" name="offline_mode_checkBox">
+           <property name="font">
+            <font>
+             <bold>false</bold>
+            </font>
+           </property>
            <property name="text">
             <string>Offline mode</string>
            </property>
@@ -236,8 +384,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>257</x>
+     <y>474</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -252,8 +400,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>325</x>
+     <y>474</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

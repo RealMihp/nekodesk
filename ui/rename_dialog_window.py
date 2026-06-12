@@ -26,6 +26,7 @@ class RenameWindow(QDialog):
         self.imgmClient = ImageManager()
         self.filemClient = FileManager()
         self.settings_db = SettingsDB()
+        self.prefManager = PreferencesManager()
 
         self.preview_timer = QTimer(self)
         self.preview_timer.setSingleShot(True)
@@ -104,7 +105,7 @@ class RenameWindow(QDialog):
         elif format == 'TV_SHORT':
             format = 'TV Short'
 
-        title = title_romaji or title_native or title_english or ''
+        title = self.prefManager.get_title_title(data.get('anilist_id')) or title_romaji or title_native or title_english
 
         self.ui.fansub_lineEdit.setText(first_group)
 
