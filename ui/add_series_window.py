@@ -23,11 +23,14 @@ class AddSeriesWindow(QDialog):
         self.ui = Ui_AddSeriesWindow()
         self.ui.setupUi(self)
         self.ldbClient = LibraryDB()
+        self.sdb = SettingsDB()
         self.search_data_cache = []
         self.scan_data_cache = []
         self.ALclient = AniListClient()
         self.session = self.ALclient.session
         self.ImageManager = ImageManager()
+        self.prefManager = PreferencesManager()
+        self.title_lang_priority = self.sdb.get("title_lang_priority", "Romaji,English,Native").split(",")
         
 
         self.ui.scan_results_treeWidget.sortByColumn(0, Qt.AscendingOrder)
@@ -80,7 +83,26 @@ class AddSeriesWindow(QDialog):
             posters_map = imgm.get_posters(links, session=self.session, is_temp=True)
 
             for result in results:
-                title = result.get('title', {}).get('romaji') or "Unknown Title"
+                title = None
+                title_langs = {
+                    "romaji": result.get('title', {}).get('romaji'),
+                    "english": result.get('title', {}).get('english'),
+                    "native": result.get('title', {}).get('native')
+                }
+                print(self.title_lang_priority)
+                print(title_langs)
+
+                for lang in self.title_lang_priority:
+                    lang_key = lang.lower()
+                    title_value = title_langs.get(lang_key)
+
+                    if title_value:
+                        title = title_value
+                        break
+
+                if not title:
+                    title = "Unknown Title"
+                
                 year = str(result.get('seasonYear') or "N/A")
                 status = result.get('status') or "Unknown"
                 status = status.capitalize()
@@ -134,7 +156,24 @@ class AddSeriesWindow(QDialog):
         self.ui.scan_results_treeWidget.setIconSize(QSize(64, 96))
 
         for result in titles:
-                title = result.get('title', {}).get('romaji') or "Unknown Title"
+                title = None
+                title_langs = {
+                    "romaji": result.get('title', {}).get('romaji'),
+                    "english": result.get('title', {}).get('english'),
+                    "native": result.get('title', {}).get('native')
+                }
+
+                for lang in self.title_lang_priority:
+                    lang_key = lang.lower()
+                    title_value = title_langs.get(lang_key)
+
+                    if title_value:
+                        title = title_value
+                        break
+                    
+                if not title:
+                    title = "Unknown Title"
+
                 year = str(result.get('seasonYear') or "N/A")
                 status = result.get('status') or "Unknown"
                 status = status.capitalize()
@@ -218,10 +257,6 @@ class AddSeriesWindow(QDialog):
 class LibraryScanWorker(QThread):
     finished = Signal(list)
     progress = Signal(str)
-
-    # TO ADD: check already existing titles in libary to not overwhelm API
-
-
 
     def __init__(self, folder_path, client):
         super().__init__()
