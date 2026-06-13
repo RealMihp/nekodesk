@@ -16,9 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QComboBox,
-    QDialog, QDialogButtonBox, QFrame, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QTabWidget, QVBoxLayout, QWidget)
+    QDialog, QDialogButtonBox, QDoubleSpinBox, QFrame,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QSpacerItem, QTabWidget, QVBoxLayout,
+    QWidget)
 
 class Ui_SettingsWindow(object):
     def setupUi(self, SettingsWindow):
@@ -266,7 +267,112 @@ class Ui_SettingsWindow(object):
 
         self.verticalLayout_4.addWidget(self.serviceMAL_frame)
 
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_4.addItem(self.verticalSpacer_2)
+
         self.settings_tabWidget.addTab(self.services_tab, "")
+        self.qbit_tab = QWidget()
+        self.qbit_tab.setObjectName(u"qbit_tab")
+        self.verticalLayout_10 = QVBoxLayout(self.qbit_tab)
+        self.verticalLayout_10.setObjectName(u"verticalLayout_10")
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.qbit_checkBox = QCheckBox(self.qbit_tab)
+        self.qbit_checkBox.setObjectName(u"qbit_checkBox")
+
+        self.horizontalLayout_4.addWidget(self.qbit_checkBox)
+
+        self.qbit_pushButton = QPushButton(self.qbit_tab)
+        self.qbit_pushButton.setObjectName(u"qbit_pushButton")
+        self.qbit_pushButton.setMaximumSize(QSize(30, 30))
+
+        self.horizontalLayout_4.addWidget(self.qbit_pushButton)
+
+
+        self.verticalLayout_10.addLayout(self.horizontalLayout_4)
+
+        self.verticalLayout_11 = QVBoxLayout()
+        self.verticalLayout_11.setObjectName(u"verticalLayout_11")
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.ip_label = QLabel(self.qbit_tab)
+        self.ip_label.setObjectName(u"ip_label")
+
+        self.horizontalLayout_3.addWidget(self.ip_label)
+
+        self.ip_lineEdit = QLineEdit(self.qbit_tab)
+        self.ip_lineEdit.setObjectName(u"ip_lineEdit")
+        self.ip_lineEdit.setEnabled(False)
+
+        self.horizontalLayout_3.addWidget(self.ip_lineEdit)
+
+        self.port_label = QLabel(self.qbit_tab)
+        self.port_label.setObjectName(u"port_label")
+
+        self.horizontalLayout_3.addWidget(self.port_label)
+
+        self.port_doubleSpinBox = QDoubleSpinBox(self.qbit_tab)
+        self.port_doubleSpinBox.setObjectName(u"port_doubleSpinBox")
+        self.port_doubleSpinBox.setEnabled(False)
+        self.port_doubleSpinBox.setDecimals(0)
+        self.port_doubleSpinBox.setMinimum(1.000000000000000)
+        self.port_doubleSpinBox.setMaximum(9999.000000000000000)
+        self.port_doubleSpinBox.setValue(8080.000000000000000)
+
+        self.horizontalLayout_3.addWidget(self.port_doubleSpinBox)
+
+
+        self.verticalLayout_11.addLayout(self.horizontalLayout_3)
+
+        self.authentication_label = QLabel(self.qbit_tab)
+        self.authentication_label.setObjectName(u"authentication_label")
+        self.authentication_label.setFont(font)
+
+        self.verticalLayout_11.addWidget(self.authentication_label)
+
+        self.username_horizontalLayout = QHBoxLayout()
+        self.username_horizontalLayout.setObjectName(u"username_horizontalLayout")
+        self.username_label = QLabel(self.qbit_tab)
+        self.username_label.setObjectName(u"username_label")
+
+        self.username_horizontalLayout.addWidget(self.username_label)
+
+        self.username_lineEdit = QLineEdit(self.qbit_tab)
+        self.username_lineEdit.setObjectName(u"username_lineEdit")
+        self.username_lineEdit.setEnabled(False)
+
+        self.username_horizontalLayout.addWidget(self.username_lineEdit)
+
+
+        self.verticalLayout_11.addLayout(self.username_horizontalLayout)
+
+        self.password_horizontalLayout = QHBoxLayout()
+        self.password_horizontalLayout.setObjectName(u"password_horizontalLayout")
+        self.password_label = QLabel(self.qbit_tab)
+        self.password_label.setObjectName(u"password_label")
+
+        self.password_horizontalLayout.addWidget(self.password_label)
+
+        self.password_lineEdit = QLineEdit(self.qbit_tab)
+        self.password_lineEdit.setObjectName(u"password_lineEdit")
+        self.password_lineEdit.setEnabled(False)
+        self.password_lineEdit.setEchoMode(QLineEdit.EchoMode.Password)
+        self.password_lineEdit.setClearButtonEnabled(False)
+
+        self.password_horizontalLayout.addWidget(self.password_lineEdit)
+
+
+        self.verticalLayout_11.addLayout(self.password_horizontalLayout)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_11.addItem(self.verticalSpacer)
+
+
+        self.verticalLayout_10.addLayout(self.verticalLayout_11)
+
+        self.settings_tabWidget.addTab(self.qbit_tab, "")
 
         self.verticalLayout.addWidget(self.settings_tabWidget)
 
@@ -323,5 +429,15 @@ class Ui_SettingsWindow(object):
         self.serviceMAL_lineEdit.setText("")
         self.serviceMAL_Auth_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"Auth", None))
         self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.services_tab), QCoreApplication.translate("SettingsWindow", u"Services", None))
+        self.qbit_checkBox.setText(QCoreApplication.translate("SettingsWindow", u"Enable qBittorrent integration", None))
+        self.qbit_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
+        self.ip_label.setText(QCoreApplication.translate("SettingsWindow", u"IP address :", None))
+        self.ip_lineEdit.setText(QCoreApplication.translate("SettingsWindow", u"localhost", None))
+        self.port_label.setText(QCoreApplication.translate("SettingsWindow", u"Port :", None))
+        self.authentication_label.setText(QCoreApplication.translate("SettingsWindow", u"Authentication", None))
+        self.username_label.setText(QCoreApplication.translate("SettingsWindow", u"Username :", None))
+        self.username_lineEdit.setText(QCoreApplication.translate("SettingsWindow", u"admin", None))
+        self.password_label.setText(QCoreApplication.translate("SettingsWindow", u"Password :", None))
+        self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.qbit_tab), QCoreApplication.translate("SettingsWindow", u"qBittorent", None))
     # retranslateUi
 

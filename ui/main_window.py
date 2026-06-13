@@ -5,6 +5,7 @@ from PySide6.QtGui import QDesktopServices, QAction
 from PySide6.QtCore import QUrl
 
 import sys, os
+import keyring
 
 from PySide6.QtWidgets import *
 from ui.about_window import AboutWindow
@@ -113,6 +114,22 @@ class MainWindow(QMainWindow):
                 db.set("offline_mode", "False")
             title_lang_priority = f'{dialog.ui.lang_priority_1_comboBox.currentText()},{dialog.ui.lang_priority_2_comboBox.currentText()},{dialog.ui.lang_priority_3_comboBox.currentText()}'
             db.set("title_lang_priority", title_lang_priority)
+            if dialog.ui.qbit_checkBox.isChecked():
+                db.set("qbit", "True")
+            else:
+                db.set("qbit", "False")
+            db.set("qbit_ip", dialog.ui.ip_lineEdit.text())
+            try:
+                port_value = str(int(dialog.ui.port_doubleSpinBox.value()))
+                db.set("qbit_port", port_value)
+            except TypeError:
+                pass
+            db.set("qbit_port", port_value)
+            db.set("qbit_username", dialog.ui.username_lineEdit.text())
+            password = dialog.ui.password_lineEdit.text()
+            if password:
+                keyring.set_password("series-library-manager", dialog.ui.username_lineEdit.text(), password)
+
             self.refresh_library()
             print("Changed settings")
         else:
