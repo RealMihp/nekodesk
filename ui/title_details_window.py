@@ -38,7 +38,12 @@ class Title_detailsWindow(QWidget):
         title = self.prefManager.get_title_title(d.get('anilist_id')) or 'Unknown'
         syn_list = set([title_romaji, title_native, title_english, d.get('synonyms')])
         synonyms = ", ".join([s for s in syn_list if s != title and s]) or 'N/A'
-        format = f"Type: {d.get('format', 'N/A')}"
+        format = d.get('format', 'N/A')
+        if format == 'MOVIE':
+            format = 'Movie'
+        elif format == 'TV_SHORT':
+            format = 'TV Short'
+        format = f'Type: {format}'
         eps = f"Episodes: {d.get('episodes', 'N/A')}"
         status = f"Status: {d.get('status', 'N/A')}".replace('_', ' ')
         score = f"Avg. Score: {d.get('score', 'N/A')}%" if d.get('score') != 'None' else 'N/A'

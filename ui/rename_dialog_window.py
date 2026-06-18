@@ -1,7 +1,8 @@
 import PySide6
 from PySide6.QtWidgets import *
 import anitopy
-from core.logic import FileScanner
+import keyring
+from core.logic import FileScanner, qbit
 from PySide6.QtGui import QDesktopServices
 from PySide6.QtCore import QUrl, QTimer
 
@@ -27,6 +28,24 @@ class RenameWindow(QDialog):
         self.filemClient = FileManager()
         self.settings_db = SettingsDB()
         self.prefManager = PreferencesManager()
+        
+
+        self.qbit = self.settings_db.get('qbit', 'False')
+        if self.qbit == "True":
+            self.qbit = True
+            creds = {
+            "host": self.settings_db.get('qbit_ip'),
+            "port": int(self.settings_db.get("qbit_port")),
+            "username": self.settings_db.get("qbit_username"),
+            "password": keyring.get_password("series-library-manager", self.settings_db.get("qbit_username", "admin"))
+            }
+            
+            self.qbitClient = qbit(**creds)
+        else:
+            self.qbit = False
+            self.ui.torrent_widget.hide()
+            self.ui.rename_torrent_checkBox.hide()
+
 
         self.preview_timer = QTimer(self)
         self.preview_timer.setSingleShot(True)
@@ -40,7 +59,7 @@ class RenameWindow(QDialog):
             self.ui.fansub_lineEdit, self.ui.country_lineEdit, self.ui.score_lineEdit,
             self.ui.status_lineEdit, self.ui.episodes_lineEdit, self.ui.start_from_lineEdit,
             self.ui.template_lineEdit, self.ui.folder_name_lineEdit,
-            self.ui.save_poster_lineEdit, self.ui.save_banner_lineEdit
+            self.ui.save_poster_lineEdit, self.ui.save_banner_lineEdit, self.ui.torrent_name_lineEdit
             ]
         for field in fields:
             field.textChanged.connect(self.preview_timer.start)
@@ -75,14 +94,15 @@ class RenameWindow(QDialog):
 
         self.ui.template_pushButton.pressed.connect(self.show_template_info)
         self.ui.folder_name_pushButton.pressed.connect(self.show_template_info)
+        self.ui.torrent_name_pushButton.pressed.connect(self.show_template_info)
 
+        self.ui.rename_torrent_checkBox.toggled.connect(lambda: self.handle_checkboxes('rename_torrent_checkBox'))
+        
+        self.handle_checkboxes()
 
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)
 
-    def render_preview_tree(self):
-        """Render the preview treeWidget"""
-        ...
 
     def insert_data(self):
         """Insert data to lineEdits using self.title_data and names of video files in the folder"""
@@ -187,16 +207,24 @@ class RenameWindow(QDialog):
             
         return 1
         
-    def handle_checkboxes(self, checkbox):
-        if checkbox == 'save_poster_checkBox':
+    def handle_checkboxes(self, checkbox = None):
+        if not checkbox or checkbox == 'save_poster_checkBox':
             self.ui.save_poster_lineEdit.setEnabled(self.ui.save_poster_checkBox.isChecked())
-        elif checkbox == 'save_banner_checkBox':
+        if not checkbox or checkbox == 'save_banner_checkBox':
             self.ui.save_banner_lineEdit.setEnabled(self.ui.save_banner_checkBox.isChecked())
-        elif checkbox == 'rename_folder_checkBox':
-            self.ui.folder_name_lineEdit.setEnabled(self.ui.rename_folder_checkBox.isChecked())
-        elif checkbox == 'rename_subs_checkBox':
+        if not checkbox or checkbox == 'rename_folder_checkBox':
+            ischecked = self.ui.rename_folder_checkBox.isChecked()
+            self.ui.folder_name_lineEdit.setEnabled(ischecked)
+            self.ui.folder_name_label.setEnabled(ischecked)
+        if self.qbit and (not checkbox or checkbox == 'rename_torrent_checkBox'):
+            ischecked = self.ui.rename_torrent_checkBox.isChecked()
+            self.ui.torrent_name_label.setEnabled(ischecked)
+            self.ui.torrent_name_lineEdit.setEnabled(ischecked)
+            self.ui.torrent_name_arrow_label.setEnabled(ischecked)
+            self.ui.torrent_name_preview_label.setEnabled(ischecked)
+        if not checkbox or checkbox == 'rename_subs_checkBox':
             pass
-        elif checkbox == 'rename_dubs_checkBox':
+        if not checkbox or checkbox == 'rename_dubs_checkBox':
             pass
         self.populate_tree(self.ui.path_lineEdit.text())
     
@@ -210,8 +238,9 @@ class RenameWindow(QDialog):
             poster_src = imgmClient.get_poster(poster_link, return_pixmap=False, is_temp=False)
             if poster_src:
                 _, poster_src_ext = os.path.splitext(poster_src)
-                
-                poster_name = (self.ui.save_poster_lineEdit.text() or 'poster') + poster_src_ext
+                poster_name = (self.ui.save_poster_lineEdit.text() or 'poster')
+                poster_name = self.generate_name(poster_name)
+                poster_name = poster_name + poster_src_ext
                 poster_dst = os.path.join(self.folder_path, poster_name).replace('\\', '/')
 
                 if os.path.abspath(poster_src) != os.path.abspath(poster_dst):
@@ -223,7 +252,9 @@ class RenameWindow(QDialog):
             if banner_src:
                 _, banner_src_ext = os.path.splitext(banner_src)
                 
-                banner_name = (self.ui.save_banner_lineEdit.text() or 'banner') + banner_src_ext
+                banner_name = (self.ui.save_banner_lineEdit.text() or 'banner')
+                banner_name = self.generate_name(banner_name)
+                banner_name = banner_name + banner_src_ext
                 banner_dst = os.path.join(self.folder_path, banner_name).replace('\\', '/')
 
                 if os.path.abspath(banner_src) != os.path.abspath(banner_dst):
@@ -331,13 +362,13 @@ class RenameWindow(QDialog):
                             
                             preview_map[file_path] = os.path.basename(new_name)
 
-            # Picters preview
+            # Pictures preview
             if self.ui.save_poster_checkBox.isChecked():
-                poster_file_name = self.ui.save_poster_lineEdit.text()
+                poster_file_name = self.generate_name(self.ui.save_poster_lineEdit.text())
                 poster_path = os.path.join(self.folder_path, poster_file_name).replace('\\', '/')
                 preview_map[poster_path] = os.path.basename(poster_file_name)
             if self.ui.save_banner_checkBox.isChecked():
-                banner_file_name = self.ui.save_banner_lineEdit.text()
+                banner_file_name = self.generate_name(self.ui.save_banner_lineEdit.text())
                 banner_path = os.path.join(self.folder_path, banner_file_name).replace('\\', '/')
                 preview_map[banner_path] = os.path.basename(banner_file_name)
 
@@ -359,7 +390,7 @@ class RenameWindow(QDialog):
             item.setIcon(0, self.style().standardIcon(icon_type))
 
         if preview and self.ui.save_poster_checkBox.isChecked() and folder_path == self.folder_path:
-                poster_name = self.ui.save_poster_lineEdit.text()
+                poster_name = self.generate_name(self.ui.save_poster_lineEdit.text())
                 item = QTreeWidgetItem(widget)
                 item.setText(0, poster_name)
 
@@ -368,7 +399,7 @@ class RenameWindow(QDialog):
                 item.setIcon(0, self.style().standardIcon(QStyle.SP_FileIcon))
 
         if preview and self.ui.save_banner_checkBox.isChecked() and folder_path == self.folder_path:
-            banner_name = self.ui.save_banner_lineEdit.text()
+            banner_name = self.generate_name(self.ui.save_banner_lineEdit.text())   
             item = QTreeWidgetItem(widget)
             item.setText(0, banner_name)
 
@@ -388,6 +419,9 @@ class RenameWindow(QDialog):
         else:
             widget.setHeaderLabel(os.path.basename(folder_path))
 
+        if self.qbit:
+            torrent_name_preview = self.generate_name(self.ui.torrent_name_lineEdit.text())
+            self.ui.torrent_name_preview_label.setText(torrent_name_preview)
 
         
     def open_item(self, item, column):
@@ -509,17 +543,44 @@ class RenameWindow(QDialog):
                         
                         rename_queue.append((file_path, new_file_path))
 
-        # Rename
+        if self.qbit:
+            # Finding torrent
+            t = self.qbitClient.find_torrent_by_content_path(self.folder_path)
+            if not t:
+                print('Failed to find torrent')
+                return
+
+        # Files
         for old_path, new_path in rename_queue:
+            if self.qbit:
+                self.qbitClient.rename_torrent_file(t, old_path, new_path)
+                time.sleep(0.1)
+            else:
                 self.filemClient.rename_file(old_path, new_path)
+                time.sleep(0.1)
 
         # Folder
         if self.ui.rename_folder_checkBox.isChecked():
+            # Generating new folder name
             new_folder_name = self.generate_name(self.ui.folder_name_lineEdit.text())
-            new_folder_path = self.filemClient.rename_folder(self.folder_path, new_folder_name)
+            parent_dir = os.path.dirname(self.folder_path)
+            new_folder_path = os.path.join(parent_dir, new_folder_name).replace('\\', '/')
 
-            if new_folder_path:
-                self.folder_path = new_folder_path
+            if self.qbit:
+                renamed = self.qbitClient.rename_torrent_folder(t, self.folder_path, new_folder_path)
+                if renamed:
+                    self.folder_path = new_folder_path
+                else:
+                    print("qBit couldn't rename folder :(")
+            else:
+                new_folder_path = self.filemClient.rename_folder(self.folder_path, new_folder_name)
+                if new_folder_path:
+                    self.folder_path = new_folder_path
+
+        # Torrent name
+        if self.qbit and self.ui.rename_torrent_checkBox.isChecked():
+            new_t_name = self.generate_name(self.ui.torrent_name_lineEdit.text())
+            self.qbitClient.rename_torrent(t, new_t_name)
 
         self.save_pictures()
 
@@ -591,8 +652,8 @@ class RenameWindow(QDialog):
             '{duration} → ' + f'{ui.duration_lineEdit.text()}\n' + \
             '{source} → ' + f'{ui.source_lineEdit.text()}\n' + \
             '{resolution} → ' + f'{ui.resolution_lineEdit.text()}\n' + \
-            '{height} → ' + f'{ui.resolution_lineEdit.text().split('x')[-1]}\n' + \
-            '{width} → ' + f'{ui.resolution_lineEdit.text().split('x')[0]}\n' + \
+            "{height} → " + f"{ui.resolution_lineEdit.text().split('x')[-1]}\n" + \
+            "{width} → " + f"{ui.resolution_lineEdit.text().split('x')[0]}\n" + \
             '{quality} → ' + f'{quality}\n' + \
             '{fansub} → ' + f'{ui.fansub_lineEdit.text()}\n' + \
             '{score} → ' + f'{ui.score_lineEdit.text()}\n' + \

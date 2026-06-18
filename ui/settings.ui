@@ -171,7 +171,7 @@
              <item>
               <widget class="QComboBox" name="lang_priority_2_comboBox">
                <property name="currentText">
-                <string>English</string>
+                <string>Romaji</string>
                </property>
                <item>
                 <property name="text">
@@ -204,7 +204,7 @@
              <item>
               <widget class="QComboBox" name="lang_priority_3_comboBox">
                <property name="currentText">
-                <string>Native</string>
+                <string>Romaji</string>
                </property>
                <item>
                 <property name="text">
@@ -376,7 +376,7 @@
      </widget>
      <widget class="QWidget" name="qbit_tab">
       <attribute name="title">
-       <string>qBittorent</string>
+       <string>qBittorrent</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_10">
        <item>

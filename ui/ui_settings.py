@@ -412,13 +412,13 @@ class Ui_SettingsWindow(object):
         self.lang_priority_2_comboBox.setItemText(1, QCoreApplication.translate("SettingsWindow", u"English", None))
         self.lang_priority_2_comboBox.setItemText(2, QCoreApplication.translate("SettingsWindow", u"Native", None))
 
-        self.lang_priority_2_comboBox.setCurrentText(QCoreApplication.translate("SettingsWindow", u"English", None))
+        self.lang_priority_2_comboBox.setCurrentText(QCoreApplication.translate("SettingsWindow", u"Romaji", None))
         self.lang_priority_3_label.setText(QCoreApplication.translate("SettingsWindow", u"#3", None))
         self.lang_priority_3_comboBox.setItemText(0, QCoreApplication.translate("SettingsWindow", u"Romaji", None))
         self.lang_priority_3_comboBox.setItemText(1, QCoreApplication.translate("SettingsWindow", u"English", None))
         self.lang_priority_3_comboBox.setItemText(2, QCoreApplication.translate("SettingsWindow", u"Native", None))
 
-        self.lang_priority_3_comboBox.setCurrentText(QCoreApplication.translate("SettingsWindow", u"Native", None))
+        self.lang_priority_3_comboBox.setCurrentText(QCoreApplication.translate("SettingsWindow", u"Romaji", None))
         self.offline_mode_checkBox.setText(QCoreApplication.translate("SettingsWindow", u"Offline mode", None))
         self.offline_mode_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
         self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.general_tab), QCoreApplication.translate("SettingsWindow", u"General", None))
@@ -438,6 +438,6 @@ class Ui_SettingsWindow(object):
         self.username_label.setText(QCoreApplication.translate("SettingsWindow", u"Username :", None))
         self.username_lineEdit.setText(QCoreApplication.translate("SettingsWindow", u"admin", None))
         self.password_label.setText(QCoreApplication.translate("SettingsWindow", u"Password :", None))
-        self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.qbit_tab), QCoreApplication.translate("SettingsWindow", u"qBittorent", None))
+        self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.qbit_tab), QCoreApplication.translate("SettingsWindow", u"qBittorrent", None))
     # retranslateUi
 

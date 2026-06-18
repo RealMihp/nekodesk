@@ -226,11 +226,17 @@ class MainWindow(QMainWindow):
 
         for title in titles:
             name = self.prefManager.get_title_title(title.get("anilist_id")) or 'Unknown'
-            status = title.get('status') or "N/A"
-            year = str(title.get('season_year')) or "N/A"
+            status = title.get('status', 'N/A')
+            year = str(title.get('season_year', 'N/A'))
             episodes = str(title.get('episodes')).zfill(2) or "?"
+            format = str(title.get('format', 'N/A'))
+            if format == 'MOVIE' or format == 'SPECIAL':
+                format = format.capitalize()
+            elif format == 'TV_SHORT':
+                format = 'TV Short'
             
-            item = QTreeWidgetItem([name, year, episodes])
+            
+            item = QTreeWidgetItem([name, year, format, episodes])
 
             path = title.get('poster_small_path')
             if path and os.path.exists(path):

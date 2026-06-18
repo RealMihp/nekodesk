@@ -1,6 +1,8 @@
 import os, anitopy
 import re
 from pathlib import Path
+import qbittorrentapi
+
 from core.db import *
 
 
@@ -214,3 +216,125 @@ class FileScanner:
                 final_titles.append(cleaned)
                 
         return final_titles
+    
+class qbit:
+    def __init__(self, host : str = "localhost" , port: int = 8080,
+                  username: str = "admin", password: str = "adminadmin"):
+        conn_info = dict(
+        host=host,
+        port=port,
+        username=username,
+        password=password,
+    )
+        self.qbt_client = qbittorrentapi.Client(**conn_info)
+
+    def login(self) -> bool:
+        try:
+            self.qbt_client.auth_log_in()
+            print('Successfully authenticated qBit client')
+            return True
+        except qbittorrentapi.LoginFailed as e:
+            print('Failed to authenticate qBit client')
+            return False
+    
+    def logout(self) -> bool:
+        self.qbt_client.auth_log_out()
+        print('Successfully authenticated qBit client')
+        return True
+        
+    def get_all_torrents(self) -> list:
+        return self.qbt_client.torrents_info()
+    
+    def get_all_files(self, t:dict) -> list:
+            torrent_hash = t.get('infohash_v1')
+
+            files = self.qbt_client.torrents_files(torrent_hash)
+            
+            return list(files)
+    
+    def find_torrent_by_save_path(self, path: str) -> dict:
+        if not path:
+            return
+        path = path.lower().replace('\\', '/')
+        t_list = self.get_all_torrents()
+        for t in t_list:
+            if t.get('save_path').lower().replace('\\', '/') == path:
+                print('ЯЙЦА')
+                return dict(t)
+            
+    def find_torrent_by_content_path(self, path: str) -> dict:
+        if not path:
+            return
+        path = path.lower().replace('\\', '/')
+        t_list = self.get_all_torrents()
+        for t in t_list:
+            if t.get('content_path').lower().replace('\\', '/') == path:
+                return dict(t)
+
+    def rename_torrent(self, t: dict, new_name: str) -> bool:
+        hash = t.get('infohash_v1')
+        try:
+            self.qbt_client.torrents_rename(hash, new_name)
+            print('Successfully renamed torrent')
+        except FileNotFoundError:
+            print('Failed to rename torrent')
+            return False
+        
+    def rename_torrent_file(self, t: dict, old_path: str, new_path: str) -> bool:
+        t_hash = t.get('infohash_v1') or t.get('infohash_v2')
+        if not t_hash:
+            print('Failed to get torrent hash')
+            return False
+        
+        save_path = t.get('save_path')
+        rel_path = os.path.relpath(old_path, save_path) 
+        old_path = rel_path.replace('\\', '/')
+        rel_path = os.path.relpath(new_path, save_path) 
+        new_path = rel_path.replace('\\', '/')
+        
+        try:
+            self.qbt_client.torrents_rename_file(
+                torrent_hash=t_hash, 
+                old_path=old_path, 
+                new_path=new_path
+            )
+            print('Successfully renamed torrent file:\n' + old_path + '->' +  new_path)
+            return True
+        except Exception as e:
+            print(f'Failed to rename torrent file: {e}')
+            return False
+    
+    def rename_torrent_folder(self, t: dict, old_path: str, new_path: str) -> bool:
+        t_hash = t.get('infohash_v1') or t.get('infohash_v2')
+        if not t_hash:
+            print('Failed to get torrent hash')
+            return False
+            
+        save_path = t.get('save_path')
+        
+        rel_old = os.path.relpath(old_path, save_path).replace('\\', '/')
+        rel_new = os.path.relpath(new_path, save_path).replace('\\', '/')
+        
+        try:
+            self.qbt_client.torrents_rename_folder(
+                torrent_hash=t_hash, 
+                old_path=rel_old, 
+                new_path=rel_new
+            )
+            print('Successfully renamed torrent folder')
+            return True
+        except Exception as e:
+            print(f'Failed to rename torrent folder: {e}')
+            return False
+
+    def set_location(self, t: dict, location: str):
+        t_hash = t.get('infohash_v1') or t.get('infohash_v2')
+        try:
+            self.qbt_client.torrents_set_location(location, t_hash)
+            print('Successfully set location: ' + location)
+        except Exception as e:
+            print('Failed to set location: ' + location + ':\n' + e)
+
+
+
+    

@@ -443,6 +443,11 @@ class Ui_RenameDialog(object):
 
         self.verticalLayout_2.addWidget(self.rename_folder_checkBox)
 
+        self.rename_torrent_checkBox = QCheckBox(RenameDialog)
+        self.rename_torrent_checkBox.setObjectName(u"rename_torrent_checkBox")
+
+        self.verticalLayout_2.addWidget(self.rename_torrent_checkBox)
+
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.save_poster_checkBox = QCheckBox(RenameDialog)
@@ -513,34 +518,73 @@ class Ui_RenameDialog(object):
 
         self.template_horizontalLayout.addWidget(self.template_pushButton)
 
-        self.template_horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.template_horizontalLayout.addItem(self.template_horizontalSpacer)
-
-        self.template_horizontalLayout.setStretch(0, 1)
-        self.template_horizontalLayout.setStretch(1, 10)
-        self.template_horizontalLayout.setStretch(3, 10)
-
-        self.verticalLayout_7.addLayout(self.template_horizontalLayout)
-
-        self.buttonbox_horizontalLayout = QHBoxLayout()
-        self.buttonbox_horizontalLayout.setObjectName(u"buttonbox_horizontalLayout")
         self.folder_name_label = QLabel(RenameDialog)
         self.folder_name_label.setObjectName(u"folder_name_label")
 
-        self.buttonbox_horizontalLayout.addWidget(self.folder_name_label)
+        self.template_horizontalLayout.addWidget(self.folder_name_label)
 
         self.folder_name_lineEdit = QLineEdit(RenameDialog)
         self.folder_name_lineEdit.setObjectName(u"folder_name_lineEdit")
         self.folder_name_lineEdit.setEnabled(False)
 
-        self.buttonbox_horizontalLayout.addWidget(self.folder_name_lineEdit)
+        self.template_horizontalLayout.addWidget(self.folder_name_lineEdit)
 
         self.folder_name_pushButton = QPushButton(RenameDialog)
         self.folder_name_pushButton.setObjectName(u"folder_name_pushButton")
         self.folder_name_pushButton.setMaximumSize(QSize(30, 30))
 
-        self.buttonbox_horizontalLayout.addWidget(self.folder_name_pushButton)
+        self.template_horizontalLayout.addWidget(self.folder_name_pushButton)
+
+        self.template_horizontalLayout.setStretch(0, 1)
+        self.template_horizontalLayout.setStretch(1, 5)
+        self.template_horizontalLayout.setStretch(4, 5)
+
+        self.verticalLayout_7.addLayout(self.template_horizontalLayout)
+
+        self.buttonbox_horizontalLayout = QHBoxLayout()
+        self.buttonbox_horizontalLayout.setObjectName(u"buttonbox_horizontalLayout")
+        self.torrent_widget = QWidget(RenameDialog)
+        self.torrent_widget.setObjectName(u"torrent_widget")
+        self.torrent_widget.setMaximumSize(QSize(16777215, 26))
+        self.horizontalLayout_5 = QHBoxLayout(self.torrent_widget)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.torrent_name_label = QLabel(self.torrent_widget)
+        self.torrent_name_label.setObjectName(u"torrent_name_label")
+        self.torrent_name_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
+
+        self.horizontalLayout_5.addWidget(self.torrent_name_label)
+
+        self.torrent_name_lineEdit = QLineEdit(self.torrent_widget)
+        self.torrent_name_lineEdit.setObjectName(u"torrent_name_lineEdit")
+        self.torrent_name_lineEdit.setEnabled(False)
+
+        self.horizontalLayout_5.addWidget(self.torrent_name_lineEdit)
+
+        self.torrent_name_arrow_label = QLabel(self.torrent_widget)
+        self.torrent_name_arrow_label.setObjectName(u"torrent_name_arrow_label")
+        self.torrent_name_arrow_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
+
+        self.horizontalLayout_5.addWidget(self.torrent_name_arrow_label)
+
+        self.torrent_name_preview_label = QLabel(self.torrent_widget)
+        self.torrent_name_preview_label.setObjectName(u"torrent_name_preview_label")
+        self.torrent_name_preview_label.setEnabled(True)
+        self.torrent_name_preview_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
+
+        self.horizontalLayout_5.addWidget(self.torrent_name_preview_label)
+
+        self.torrent_name_pushButton = QPushButton(self.torrent_widget)
+        self.torrent_name_pushButton.setObjectName(u"torrent_name_pushButton")
+        self.torrent_name_pushButton.setMaximumSize(QSize(30, 30))
+
+        self.horizontalLayout_5.addWidget(self.torrent_name_pushButton)
+
+        self.horizontalLayout_5.setStretch(0, 1)
+        self.horizontalLayout_5.setStretch(1, 5)
+        self.horizontalLayout_5.setStretch(3, 5)
+
+        self.buttonbox_horizontalLayout.addWidget(self.torrent_widget)
 
         self.buttonBox = QDialogButtonBox(RenameDialog)
         self.buttonBox.setObjectName(u"buttonBox")
@@ -549,9 +593,8 @@ class Ui_RenameDialog(object):
 
         self.buttonbox_horizontalLayout.addWidget(self.buttonBox)
 
-        self.buttonbox_horizontalLayout.setStretch(0, 1)
-        self.buttonbox_horizontalLayout.setStretch(1, 10)
-        self.buttonbox_horizontalLayout.setStretch(3, 10)
+        self.buttonbox_horizontalLayout.setStretch(0, 4)
+        self.buttonbox_horizontalLayout.setStretch(1, 1)
 
         self.verticalLayout_7.addLayout(self.buttonbox_horizontalLayout)
 
@@ -594,6 +637,7 @@ class Ui_RenameDialog(object):
         self.rename_subs_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename subtitle files", None))
         self.rename_dubs_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename audio files", None))
         self.rename_folder_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename folder", None))
+        self.rename_torrent_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Rename torrent", None))
         self.save_poster_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save poster to folder", None))
         self.save_poster_lineEdit.setPlaceholderText(QCoreApplication.translate("RenameDialog", u"File name", None))
         self.save_banner_checkBox.setText(QCoreApplication.translate("RenameDialog", u"Save banner to folder", None))
@@ -602,5 +646,9 @@ class Ui_RenameDialog(object):
         self.template_pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
         self.folder_name_label.setText(QCoreApplication.translate("RenameDialog", u"Folder name :", None))
         self.folder_name_pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
+        self.torrent_name_label.setText(QCoreApplication.translate("RenameDialog", u"Torrent name :", None))
+        self.torrent_name_arrow_label.setText(QCoreApplication.translate("RenameDialog", u"->", None))
+        self.torrent_name_preview_label.setText("")
+        self.torrent_name_pushButton.setText(QCoreApplication.translate("RenameDialog", u"?", None))
     # retranslateUi
 
