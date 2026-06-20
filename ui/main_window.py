@@ -1,8 +1,10 @@
+import threading
+
 import PySide6
 from PySide6.QtWidgets import QTreeWidgetItem, QMenu
 from core.logic import FileScanner
 from PySide6.QtGui import QDesktopServices, QAction
-from PySide6.QtCore import QUrl
+from PySide6.QtCore import QTimer, QUrl
 
 import sys, os
 import keyring
@@ -17,7 +19,7 @@ from ui.settings_window import *
 from ui.ui_settings import *
 from ui.widgets import FilesTree
 from core.utils import PreferencesManager
-
+from ui.loading_dialog import LoadingDialog
 
 PATH_ROLE = 32
 
@@ -103,39 +105,14 @@ class MainWindow(QMainWindow):
         dialog = SettingsWindow(self)
 
         if dialog.exec():
-            db = SettingsDB()
-            db.set("anilist_token", dialog.ui.serviceAniList_lineEdit.text())
-            db.set("mal_token", dialog.ui.serviceMAL_lineEdit.text())
-            db.set("files_template", dialog.ui.files_template_lineEdit.text())
-            db.set("folder_template", dialog.ui.folder_template_lineEdit.text())
-            if dialog.ui.offline_mode_checkBox.isChecked():
-                db.set("offline_mode", "True")
-            else:
-                db.set("offline_mode", "False")
-            title_lang_priority = f'{dialog.ui.lang_priority_1_comboBox.currentText()},{dialog.ui.lang_priority_2_comboBox.currentText()},{dialog.ui.lang_priority_3_comboBox.currentText()}'
-            db.set("title_lang_priority", title_lang_priority)
-            if dialog.ui.qbit_checkBox.isChecked():
-                db.set("qbit", "True")
-            else:
-                db.set("qbit", "False")
-            db.set("qbit_ip", dialog.ui.ip_lineEdit.text())
-            try:
-                port_value = str(int(dialog.ui.port_doubleSpinBox.value()))
-                db.set("qbit_port", port_value)
-            except TypeError:
-                pass
-            db.set("qbit_port", port_value)
-            db.set("qbit_username", dialog.ui.username_lineEdit.text())
-            password = dialog.ui.password_lineEdit.text()
-            if password:
-                keyring.set_password("series-library-manager", dialog.ui.username_lineEdit.text(), password)
-
             self.refresh_library()
             print("Changed settings")
         else:
             print("Canceled changing settings")
 
-    def populate_tree(self, folder_path):
+    def populate_tree(self, folder_path = None):
+        if not folder_path:
+            folder_path = self.ui.path_lineEdit.text()
         items = FileScanner.get_items(folder_path)
         
         self.ui.files_treeWidget.clear()
@@ -264,12 +241,9 @@ class MainWindow(QMainWindow):
         print(f"{title_data['title_romaji']} -> {folder_path}")
 
         dialog = RenameWindow(self, title_data=title_data, folder_path=folder_path)
-        
         if dialog.exec(): 
-            print(f"Rename dialog OK")
-            dialog.rename()
+            time.sleep(0.2)
+            self.populate_tree()
+            print("Title renamed, tree refreshed")
         else:
             print("Rename dialog Cancel")
-
-
-

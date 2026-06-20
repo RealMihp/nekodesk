@@ -4,10 +4,11 @@ import anitopy
 import keyring
 from core.logic import FileScanner, qbit
 from PySide6.QtGui import QDesktopServices
-from PySide6.QtCore import QUrl, QTimer
+from PySide6.QtCore import QThread, QUrl, QTimer, Signal
 
 import sys, os, shutil, re
 
+from ui.loading_dialog import LoadingDialog
 from ui.ui_rename_dialog import *
 from core.db import *
 from core.utils import *
@@ -24,6 +25,7 @@ class RenameWindow(QDialog):
         super().__init__(parent)
         self.ui = Ui_RenameDialog()
         self.ui.setupUi(self)
+        self.parent=parent
         self.imgmClient = ImageManager()
         self.filemClient = FileManager()
         self.settings_db = SettingsDB()
@@ -73,8 +75,9 @@ class RenameWindow(QDialog):
         # get from settings
         self.template = self.settings_db.get("files_template")
         self.folder_name = self.settings_db.get("folder_template")
-        self.save_poster_file_name = 'poster'
-        self.save_banner_file_name = 'banner'   
+        self.poster_template = self.settings_db.get("poster_template")
+        self.banner_template = self.settings_db.get("poster_template")
+        self.torrent_template = self.settings_db.get("torrent_template") 
 
         self.populate_tree(folder_path)
         self.insert_data()
@@ -100,8 +103,82 @@ class RenameWindow(QDialog):
         
         self.handle_checkboxes()
 
-        self.ui.buttonBox.accepted.connect(self.accept)
-        self.ui.buttonBox.rejected.connect(self.reject)
+
+    def accept(self):
+        print(f"Rename dialog OK")
+        
+        if not self.handle_errors():
+            return
+
+        title = self.parent.ui.library_treeWidget.selectedItems()[0].text(0) if self.parent.ui.library_treeWidget.selectedItems() else 'Unknown'
+        self.loading_window = LoadingDialog(f'Renaming files for {title}...', self)
+        self.loading_window.show()
+        self.worker = RenameWorker(self)
+        self.worker.finished.connect(self.finish_rename)
+        self.worker.start()
+
+        super().accept()
+
+    def handle_errors(self):
+        file_template = self.ui.template_lineEdit.text()
+        folder_template = self.ui.folder_name_lineEdit.text()
+        poster_name = self.generate_name(self.ui.save_poster_lineEdit.text())
+        banner_name = self.generate_name(self.ui.save_banner_lineEdit.text())
+        torrent_template = self.ui.torrent_name_lineEdit.text()
+        poster_checkbox = self.ui.save_poster_checkBox.isChecked()
+        banner_checkbox = self.ui.save_banner_checkBox.isChecked()
+        
+        header = None
+        text = None
+    
+        if not file_template:
+            header = 'Template is empty'
+            text = "Template can't be empty!"
+        elif self.ui.rename_folder_checkBox.isChecked() and not folder_template:
+            header = 'Folder name is empty'
+            text = "Folder name can't be empty!"
+        elif poster_checkbox and not poster_name:
+            header = 'Poster file name is empty'
+            text = "Poster file name can't be empty!"
+        elif banner_checkbox and not banner_name:
+            header = 'Banner file name is empty'
+            text = "Banner file name can't be empty!"
+        elif poster_checkbox and banner_checkbox and poster_name == banner_name:
+            header = 'Assets file names conflict'
+            text = "Poster and banner file names can't be the same!"
+        elif self.qbit and self.ui.rename_torrent_checkBox.isChecked() and not torrent_template:
+            header = 'Torrent name is empty'
+            text = "Torrent name can't be empty!"
+        
+        if header and text:
+            QMessageBox.warning(self, header, text)
+            return False
+
+
+        names = []
+        has_verified_template = False 
+        root_count = self.ui.preview_treeWidget.topLevelItemCount()
+        
+        for i in range(root_count):
+            item = self.ui.preview_treeWidget.topLevelItem(i)
+            if item:
+                name = item.text(0)
+                
+                if name in names:
+                    QMessageBox.warning(self, 'File name conflict', "Found multiple files with the same name. Please check your template fields.")
+                    return False
+                names.append(name)
+                
+                if not has_verified_template:
+                    clean_name, ext = os.path.splitext(name)
+                    if ext and ext.lower() in ['.mkv', '.mp4', '.avi']: 
+                        has_verified_template = True
+                        template_result = self.generate_name(clean_name)
+                        if not template_result:
+                            QMessageBox.warning(self, 'Invalid template result', "Could not generate name from the current template! Please check the input fields.")
+                            return False
+        
+        return True # No errors found
 
 
     def insert_data(self):
@@ -150,8 +227,9 @@ class RenameWindow(QDialog):
 
         self.ui.template_lineEdit.setText(self.template)
         self.ui.folder_name_lineEdit.setText(self.folder_name)
-        self.ui.save_poster_lineEdit.setText(self.save_poster_file_name)
-        self.ui.save_banner_lineEdit.setText(self.save_banner_file_name)
+        self.ui.save_poster_lineEdit.setText(self.poster_template)
+        self.ui.save_banner_lineEdit.setText(self.banner_template)
+        self.ui.torrent_name_lineEdit.setText(self.torrent_template)
 
         poster_link = data.get('poster_large_link')
         poster_color = data.get('poster_color')
@@ -547,8 +625,7 @@ class RenameWindow(QDialog):
             # Finding torrent
             t = self.qbitClient.find_torrent_by_content_path(self.folder_path)
             if not t:
-                print('Failed to find torrent')
-                return
+                raise ValueError('Failed to find torrent in qBittorrent')
 
         # Files
         for old_path, new_path in rename_queue:
@@ -561,7 +638,7 @@ class RenameWindow(QDialog):
 
         # Folder
         if self.ui.rename_folder_checkBox.isChecked():
-            # Generating new folder name
+            old_folder = self.folder_path
             new_folder_name = self.generate_name(self.ui.folder_name_lineEdit.text())
             parent_dir = os.path.dirname(self.folder_path)
             new_folder_path = os.path.join(parent_dir, new_folder_name).replace('\\', '/')
@@ -569,13 +646,28 @@ class RenameWindow(QDialog):
             if self.qbit:
                 renamed = self.qbitClient.rename_torrent_folder(t, self.folder_path, new_folder_path)
                 if renamed:
+                    time.sleep(0.5) 
+                    
+                    # Move left-over files
+                    if os.path.exists(old_folder) and os.path.exists(new_folder_path):
+                        for item in os.listdir(old_folder):
+                            old_item_path = os.path.join(old_folder, item)
+                            new_item_path = os.path.join(new_folder_path, item)
+                            try:
+                                shutil.move(old_item_path, new_item_path)
+                            except Exception as e:
+                                print(f"Couldn't move file {item}:\n{e}")
+                        
+                        # Delete old folder
+                        try:
+                            os.rmdir(old_folder)
+                            print("Old folder was deleted")
+                        except Exception as e:
+                            print(f"Couldn't delete old folder: {e}")
+
                     self.folder_path = new_folder_path
                 else:
                     print("qBit couldn't rename folder :(")
-            else:
-                new_folder_path = self.filemClient.rename_folder(self.folder_path, new_folder_name)
-                if new_folder_path:
-                    self.folder_path = new_folder_path
 
         # Torrent name
         if self.qbit and self.ui.rename_torrent_checkBox.isChecked():
@@ -584,6 +676,10 @@ class RenameWindow(QDialog):
 
         self.save_pictures()
 
+    def finish_rename(self):
+        if hasattr(self, 'loading_window') and self.loading_window:
+            self.loading_window.close()
+            self.loading_window = None
 
     def generate_name(self, template: str = '', episode: int = 0) -> str:
         ui = self.ui
@@ -664,3 +760,18 @@ class RenameWindow(QDialog):
         
 
         QMessageBox.information(self, "Template info", text)
+
+class RenameWorker(QThread):
+    finished = Signal()
+
+    def __init__(self, dialog):
+        super().__init__()
+        self.dialog = dialog
+
+    def run(self):
+        try:
+            self.dialog.rename()
+        except Exception as e:
+            print(f"Worker Error: {e}")
+        finally:
+            self.finished.emit()

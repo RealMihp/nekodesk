@@ -89,8 +89,6 @@ class AddSeriesWindow(QDialog):
                     "english": result.get('title', {}).get('english'),
                     "native": result.get('title', {}).get('native')
                 }
-                print(self.title_lang_priority)
-                print(title_langs)
 
                 for lang in self.title_lang_priority:
                     lang_key = lang.lower()
@@ -274,8 +272,6 @@ class LibraryScanWorker(QThread):
         found_titles = []
         if titles:
             unique_titles = FileScanner.clean_and_deduplicate_titles(titles)
-            print('unique_titles')
-            print(unique_titles)
             for title in unique_titles:
                 self.progress.emit(title)
                 title_lower = title.lower()
