@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>650</width>
-    <height>500</height>
+    <height>748</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <item>
     <widget class="QTabWidget" name="settings_tabWidget">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="general_tab">
       <attribute name="title">
@@ -25,31 +25,35 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_9">
        <item>
-        <layout class="QHBoxLayout" name="offline_mode_horizontalLayout">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,2">
          <item>
-          <widget class="QCheckBox" name="offline_mode_checkBox">
-           <property name="font">
-            <font>
-             <bold>false</bold>
-            </font>
-           </property>
+          <widget class="QLabel" name="label">
            <property name="text">
-            <string>Offline mode</string>
+            <string>Language :</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="offline_mode_pushButton">
-           <property name="maximumSize">
+          <widget class="QComboBox" name="comboBox">
+           <item>
+            <property name="text">
+             <string>English</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
             <size>
-             <width>30</width>
-             <height>30</height>
+             <width>40</width>
+             <height>20</height>
             </size>
            </property>
-           <property name="text">
-            <string>?</string>
-           </property>
-          </widget>
+          </spacer>
          </item>
         </layout>
        </item>
@@ -423,104 +427,116 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="services_tab">
+     <widget class="QWidget" name="network_tab">
       <attribute name="title">
-       <string>Services</string>
+       <string>Network &amp;&amp; Account</string>
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QFrame" name="serviceAniList_frame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <layout class="QVBoxLayout" name="serviceAniList_verticalLayout">
-            <item>
-             <widget class="QLabel" name="serviceAniList_label">
-              <property name="text">
-               <string>AniList</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="serviceAniList_horizontalLayout">
-              <item>
-               <widget class="QLineEdit" name="serviceAniList_lineEdit">
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="echoMode">
-                 <enum>QLineEdit::EchoMode::Password</enum>
-                </property>
-                <property name="clearButtonEnabled">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="serviceAniLis_Auth_pushButton">
-                <property name="text">
-                 <string>Auth</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
+        <layout class="QHBoxLayout" name="offline_mode_horizontalLayout">
+         <item>
+          <widget class="QCheckBox" name="offline_mode_checkBox">
+           <property name="font">
+            <font>
+             <bold>false</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Offline mode</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="offline_mode_pushButton">
+           <property name="maximumSize">
+            <size>
+             <width>30</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>?</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
-        <widget class="QFrame" name="serviceMAL_frame">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_6">
-          <item>
-           <layout class="QVBoxLayout" name="serviceMAL_verticalLayout">
+        <layout class="QVBoxLayout" name="anilist_verticalLayout" stretch="0,0,0,0">
+         <item>
+          <widget class="QLabel" name="anilist_label">
+           <property name="text">
+            <string>AniList</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="logged_in_as_label">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="al_widget" native="true">
+           <layout class="QHBoxLayout" name="al_horizontalLayout" stretch="1,0">
             <item>
-             <widget class="QLabel" name="serviceMAL_label">
+             <widget class="QLabel" name="avatar_label">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>150</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>150</width>
+                <height>150</height>
+               </size>
+              </property>
               <property name="text">
-               <string>MyAnimeList (MAL)</string>
+               <string/>
               </property>
              </widget>
             </item>
             <item>
-             <layout class="QHBoxLayout" name="serviceMAL_horizontalLayout">
-              <item>
-               <widget class="QLineEdit" name="serviceMAL_lineEdit">
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="echoMode">
-                 <enum>QLineEdit::EchoMode::Password</enum>
-                </property>
-                <property name="clearButtonEnabled">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="serviceMAL_Auth_pushButton">
-                <property name="text">
-                 <string>Auth</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
+             <widget class="QWidget" name="al_widget_2" native="true">
+              <layout class="QVBoxLayout" name="al_verticalLayout">
+               <item>
+                <widget class="QLabel" name="al_username_label">
+                 <property name="text">
+                  <string>Username :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="al_createdAt_label">
+                 <property name="text">
+                  <string>Account created :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="al_anime_count_label">
+                 <property name="text">
+                  <string>Anime count :</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="anilist_auth_pushButton">
+           <property name="text">
+            <string>Log In</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <spacer name="verticalSpacer_2">

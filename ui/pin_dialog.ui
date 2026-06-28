@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PIN Dialog</string>
+   <string>Auth</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -26,7 +26,7 @@
       <item>
        <widget class="QLabel" name="AniList_Auth_label">
         <property name="text">
-         <string>Enter your PIN from the browser:</string>
+         <string>Enter your token from the browser:</string>
         </property>
        </widget>
       </item>
@@ -42,7 +42,7 @@
       <enum>Qt::Orientation::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Save</set>
+      <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
      </property>
     </widget>
    </item>

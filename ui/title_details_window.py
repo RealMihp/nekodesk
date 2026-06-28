@@ -34,6 +34,10 @@ class Title_detailsWindow(QWidget):
         title_romaji = d.get('title_romaji')
         title_native = d.get('title_native')
         title_english = d.get('title_english')
+        s_val = d.get('season') or ''
+        y_val = d.get('season_year') or ''
+        
+        genres_list = d.get('genres')
 
         title = self.prefManager.get_title_title(d.get('anilist_id')) or 'Unknown'
         syn_list = set([title_romaji, title_native, title_english, d.get('synonyms')])
@@ -44,11 +48,11 @@ class Title_detailsWindow(QWidget):
         elif format == 'TV_SHORT':
             format = 'TV Short'
         format = f'Type: {format}'
-        eps = f"Episodes: {d.get('episodes', 'N/A')}"
+        eps = f"Episodes: {d.get('episodes')}" if d.get('episodes') else 'Episodes: N/A'
         status = f"Status: {d.get('status', 'N/A')}".replace('_', ' ')
-        score = f"Avg. Score: {d.get('score', 'N/A')}%" if d.get('score') != 'None' else 'N/A'
-        season = f"Season: {d.get('season') or ''} {d.get('season_year') or ''}".strip() or 'Season: N/A'
-        genres = f"Genres: {d.get('genres', 'N/A')}"
+        score = f"Avg. Score: {d.get('score', 'N/A')}%" if d.get('score') is not None else 'Avg. Score: N/A'
+        season = f"Season: {s_val} {y_val}".strip() if (s_val or y_val) else 'Season: N/A'
+        genres = f"Genres: {genres_list}" if genres_list else "Genres: N/A"
         studio = f"Studio: {d.get('studio', 'N/A')}"
         desc = d.get('desc', 'No description :(')
         poster_link = d.get('poster_large_link')
@@ -80,7 +84,7 @@ class Title_detailsWindow(QWidget):
                 
         
         self.ui.title_label.setText(title)
-        self.ui.synonyms_label.setText(synonyms)
+        self.ui.synonyms_label.setText(f"\u200E{synonyms}") # \u200E is a LtR unicode symbol
         self.ui.type_label.setText(format)
         self.ui.episodes_label.setText(eps)
         self.ui.status_label.setText(status)

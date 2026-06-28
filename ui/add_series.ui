@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>750</width>
-    <height>900</height>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,38 +23,6 @@
       <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QFrame" name="engine_select_frame">
-        <property name="frameShape">
-         <enum>QFrame::Shape::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Shadow::Raised</enum>
-        </property>
-        <layout class="QHBoxLayout" name="horizontalLayout">
-         <item>
-          <widget class="QRadioButton" name="AniList_radioButton">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>AniList</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="MAL_radioButton">
-           <property name="enabled">
-            <bool>true</bool>
-           </property>
-           <property name="text">
-            <string>MAL</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </widget>
-      </item>
       <item>
        <widget class="QTabWidget" name="tabWidget">
         <property name="currentIndex">

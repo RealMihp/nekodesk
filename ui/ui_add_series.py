@@ -17,15 +17,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QAbstractItemView, QApplication, QDialog,
     QDialogButtonBox, QFrame, QHBoxLayout, QHeaderView,
-    QLabel, QLineEdit, QPushButton, QRadioButton,
-    QSizePolicy, QTabWidget, QTreeWidget, QTreeWidgetItem,
-    QVBoxLayout, QWidget)
+    QLabel, QLineEdit, QPushButton, QSizePolicy,
+    QTabWidget, QTreeWidget, QTreeWidgetItem, QVBoxLayout,
+    QWidget)
 
 class Ui_AddSeriesWindow(object):
     def setupUi(self, AddSeriesWindow):
         if not AddSeriesWindow.objectName():
             AddSeriesWindow.setObjectName(u"AddSeriesWindow")
-        AddSeriesWindow.resize(750, 900)
+        AddSeriesWindow.resize(750, 800)
         self.verticalLayout_3 = QVBoxLayout(AddSeriesWindow)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.frame = QFrame(AddSeriesWindow)
@@ -34,27 +34,6 @@ class Ui_AddSeriesWindow(object):
         self.frame.setFrameShadow(QFrame.Shadow.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.engine_select_frame = QFrame(self.frame)
-        self.engine_select_frame.setObjectName(u"engine_select_frame")
-        self.engine_select_frame.setFrameShape(QFrame.Shape.StyledPanel)
-        self.engine_select_frame.setFrameShadow(QFrame.Shadow.Raised)
-        self.horizontalLayout = QHBoxLayout(self.engine_select_frame)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.AniList_radioButton = QRadioButton(self.engine_select_frame)
-        self.AniList_radioButton.setObjectName(u"AniList_radioButton")
-        self.AniList_radioButton.setEnabled(True)
-
-        self.horizontalLayout.addWidget(self.AniList_radioButton)
-
-        self.MAL_radioButton = QRadioButton(self.engine_select_frame)
-        self.MAL_radioButton.setObjectName(u"MAL_radioButton")
-        self.MAL_radioButton.setEnabled(True)
-
-        self.horizontalLayout.addWidget(self.MAL_radioButton)
-
-
-        self.verticalLayout_2.addWidget(self.engine_select_frame)
-
         self.tabWidget = QTabWidget(self.frame)
         self.tabWidget.setObjectName(u"tabWidget")
         self.search_tab = QWidget()
@@ -214,8 +193,6 @@ class Ui_AddSeriesWindow(object):
 
     def retranslateUi(self, AddSeriesWindow):
         AddSeriesWindow.setWindowTitle(QCoreApplication.translate("AddSeriesWindow", u"Add series", None))
-        self.AniList_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"AniList", None))
-        self.MAL_radioButton.setText(QCoreApplication.translate("AddSeriesWindow", u"MAL", None))
         self.search_label.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
         self.search_pushButton.setText(QCoreApplication.translate("AddSeriesWindow", u"Search", None))
         ___qtreewidgetitem = self.search_treeWidget.headerItem()

@@ -2,6 +2,7 @@ import os
 import shutil
 import requests
 from PySide6.QtGui import QColor, QIcon, QPixmap
+import winreg
 
 
 class ImageManager:
@@ -19,15 +20,14 @@ class ImageManager:
         os.makedirs(self.temp_posters_path, exist_ok=True)
         return True
 
-    def get_poster(self, link: str, return_pixmap: bool = False, is_temp: bool = False) -> str | QPixmap | None:
+    def get_poster(self, link: str, file_name: str = None, return_pixmap: bool = False, is_temp: bool = False) -> str | QPixmap | None:
         """
         Load a poster from a local file or download it if it doesn't exist.
-        :param link: Direct URL to the image
-        :param return_pixmap: If True returns QPixmap else returns link (string)
         """
         try:
             parts = link.split("/")
-            file_name = f"{parts[-2]}_{parts[-1]}" 
+            if not file_name:
+                file_name = f"{parts[-2]}_{parts[-1]}" 
             def_folder_path=os.path.join("data/posters")
             
             if not is_temp:
@@ -188,5 +188,12 @@ class PreferencesManager:
                 
         return title_langs["romaji"] or title_langs["english"] or title_langs["native"] or ""
 
-
-        
+class otherUtils():
+    def is_dark_theme():
+        try:
+            registry = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)
+            key = winreg.OpenKey(registry, r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize")
+            value, _ = winreg.QueryValueEx(key, "AppsUseLightTheme")
+            return value == 0
+        except Exception:
+            return True

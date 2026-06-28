@@ -275,6 +275,7 @@ class Ui_details_widget(object):
         self.desc_label.setTextFormat(Qt.TextFormat.RichText)
         self.desc_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.desc_label.setWordWrap(True)
+        self.desc_label.setTextInteractionFlags(Qt.TextInteractionFlag.LinksAccessibleByMouse|Qt.TextInteractionFlag.TextSelectableByMouse)
 
         self.verticalLayout.addWidget(self.desc_label)
 

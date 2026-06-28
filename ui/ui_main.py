@@ -160,7 +160,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Series Library Manager", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"NekoDesk", None))
         self.action1.setText(QCoreApplication.translate("MainWindow", u"1.", None))
         self.actionAdd_new_folder.setText(QCoreApplication.translate("MainWindow", u"Add new folder...", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))

@@ -20,5 +20,5 @@ class AboutWindow(QWidget):
         self.ui.setupUi(self)
         
         self.ui.about_text_label.setText('Icon')
-        self.ui.app_name_label.setText('Series Library Manager')
+        self.ui.app_name_label.setText('NekoDesk')
         self.ui.about_text_label.setText('')

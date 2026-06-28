@@ -39,7 +39,7 @@ class RenameWindow(QDialog):
             "host": self.settings_db.get('qbit_ip'),
             "port": int(self.settings_db.get("qbit_port")),
             "username": self.settings_db.get("qbit_username"),
-            "password": keyring.get_password("series-library-manager", self.settings_db.get("qbit_username", "admin"))
+            "password": keyring.get_password("nekodesk", self.settings_db.get("qbit_username", "admin"))
             }
             
             self.qbitClient = qbit(**creds)

@@ -48,7 +48,7 @@ class Ui_PIN_Dialog(object):
         self.AniList_Auth_buttonBox = QDialogButtonBox(PIN_Dialog)
         self.AniList_Auth_buttonBox.setObjectName(u"AniList_Auth_buttonBox")
         self.AniList_Auth_buttonBox.setOrientation(Qt.Orientation.Horizontal)
-        self.AniList_Auth_buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Save)
+        self.AniList_Auth_buttonBox.setStandardButtons(QDialogButtonBox.StandardButton.Cancel|QDialogButtonBox.StandardButton.Ok)
 
         self.verticalLayout_2.addWidget(self.AniList_Auth_buttonBox)
 
@@ -61,7 +61,7 @@ class Ui_PIN_Dialog(object):
     # setupUi
 
     def retranslateUi(self, PIN_Dialog):
-        PIN_Dialog.setWindowTitle(QCoreApplication.translate("PIN_Dialog", u"PIN Dialog", None))
-        self.AniList_Auth_label.setText(QCoreApplication.translate("PIN_Dialog", u"Enter your PIN from the browser:", None))
+        PIN_Dialog.setWindowTitle(QCoreApplication.translate("PIN_Dialog", u"Auth", None))
+        self.AniList_Auth_label.setText(QCoreApplication.translate("PIN_Dialog", u"Enter your token from the browser:", None))
     # retranslateUi
 

@@ -204,8 +204,10 @@ class MainWindow(QMainWindow):
         for title in titles:
             name = self.prefManager.get_title_title(title.get("anilist_id")) or 'Unknown'
             status = title.get('status', 'N/A')
-            year = str(title.get('season_year', 'N/A'))
-            episodes = str(title.get('episodes')).zfill(2) or "?"
+            raw_year = title.get('season_year')
+            year = str(raw_year) if raw_year else 'N/A'
+            raw_episodes = title.get('episodes')
+            episodes = str(raw_episodes).zfill(2) if raw_episodes else 'N/A'
             format = str(title.get('format', 'N/A'))
             if format == 'MOVIE' or format == 'SPECIAL':
                 format = format.capitalize()
