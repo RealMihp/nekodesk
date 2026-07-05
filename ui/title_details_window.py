@@ -15,39 +15,63 @@ from core.utils import *
 
 
 class Title_detailsWindow(QWidget):
-    def __init__(self, parent=None, anilist_id: str = None):
+    def __init__(self, parent=None, widget: QTreeWidget = None, anilist_id: str = None):
         super().__init__(parent, Qt.WindowType.Window)
         self.ui = Ui_details_widget()
         self.ui.setupUi(self)
+        self.parent = parent
+        if not widget:
+            return
         self.anilist_id = anilist_id
-        self.ldbClient = LibraryDB()
+        self.ldbClient = self.select_db(widget)
         self.imgmClient = ImageManager()
-        self.prefManager = PreferencesManager()
+        self.prefManager = PreferencesManager(self.ldbClient)
         self.ui.buttonBox.accepted.connect(self.close)
         self.ui.buttonBox.rejected.connect(self.close)
         self.render_details()
+
+    def select_db(self, widget = None):
+        if widget == self.parent.ui.library_treeWidget:
+            db = LibraryDB('data/local_library.db')
+            return db
+        
+        anilist_widgets = {
+            'CURRENT': self.parent.ui.anilist_current_library_treeWidget,
+            'REPEATING': self.parent.ui.anilist_repeating_library_treeWidget,
+            'PLANNING': self.parent.ui.anilist_planning_library_treeWidget,
+            'COMPLETED': self.parent.ui.anilist_completed_library_treeWidget,
+            'DROPPED': self.parent.ui.anilist_dropped_library_treeWidget,
+            'PAUSED': self.parent.ui.anilist_paused_library_treeWidget
+        }
+        for list, al_widget in anilist_widgets.items():
+            if widget == al_widget:
+                db = LibraryDB(f'data/anilist/{list.lower()}.db')
+                return db
+        
 
     def render_details(self):
         if not self.anilist_id: return
         d = self.ldbClient.get_title(self.anilist_id)
         if not d: return
+        
         title_romaji = d.get('title_romaji')
         title_native = d.get('title_native')
         title_english = d.get('title_english')
         s_val = d.get('season') or ''
         y_val = d.get('season_year') or ''
-        
         genres_list = d.get('genres')
 
         title = self.prefManager.get_title_title(d.get('anilist_id')) or 'Unknown'
         syn_list = set([title_romaji, title_native, title_english, d.get('synonyms')])
         synonyms = ", ".join([s for s in syn_list if s != title and s]) or 'N/A'
+        
         format = d.get('format', 'N/A')
         if format == 'MOVIE':
             format = 'Movie'
         elif format == 'TV_SHORT':
             format = 'TV Short'
         format = f'Type: {format}'
+        
         eps = f"Episodes: {d.get('episodes')}" if d.get('episodes') else 'Episodes: N/A'
         status = f"Status: {d.get('status', 'N/A')}".replace('_', ' ')
         score = f"Avg. Score: {d.get('score', 'N/A')}%" if d.get('score') is not None else 'Avg. Score: N/A'
@@ -55,36 +79,23 @@ class Title_detailsWindow(QWidget):
         genres = f"Genres: {genres_list}" if genres_list else "Genres: N/A"
         studio = f"Studio: {d.get('studio', 'N/A')}"
         desc = d.get('desc', 'No description :(')
-        poster_link = d.get('poster_large_link')
-        poster_color = d.get('poster_color')
-        poster = self.imgmClient.get_poster(poster_link, return_pixmap=True) if poster_link else self.imgmClient.get_color_icon(poster_color)
-        placeholder_poster = self.imgmClient.get_color_pixmap(poster_color, 460, 690)
-        banner_link = d.get('banner_link')
-        placeholder_banner = self.imgmClient.get_color_pixmap(poster_color, 1900, 400)
-        banner = self.imgmClient.get_poster(banner_link, return_pixmap=True) if banner_link else placeholder_banner
-
-        if not banner.isNull():
-            banner = banner.scaledToWidth(800, Qt.TransformationMode.SmoothTransformation)
-            self.ui.banner_label.setPixmap(banner)
-            
-
-        if not poster.isNull():
-            poster = poster.scaledToWidth(210, Qt.TransformationMode.SmoothTransformation)
-            self.ui.poster_label.setPixmap(poster)
-            self.ui.poster_label.setFixedWidth(210)
-
-        # poster = poster.scaled(
-        #     200, 300, 
-        #     Qt.AspectRatioMode.KeepAspectRatio, 
-        #     Qt.TransformationMode.SmoothTransformation
-        # )
-
-                
-                
-                
         
+        self.poster_link = d.get('poster_large_link')
+        self.banner_link = d.get('banner_link')
+        poster_color = d.get('poster_color')
+        
+        self.placeholder_poster = self.imgmClient.get_color_pixmap(poster_color, 460, 690)
+        self.placeholder_banner = self.imgmClient.get_color_pixmap(poster_color, 1900, 400)
+        
+        self.poster = self.placeholder_poster.scaledToWidth(210, Qt.TransformationMode.SmoothTransformation)
+        self.banner = self.placeholder_banner.scaledToWidth(800, Qt.TransformationMode.SmoothTransformation)
+        
+        self.ui.poster_label.setPixmap(self.poster)
+        self.ui.poster_label.setFixedSize(self.poster.size())
+        self.ui.banner_label.setPixmap(self.banner)
+
         self.ui.title_label.setText(title)
-        self.ui.synonyms_label.setText(f"\u200E{synonyms}") # \u200E is a LtR unicode symbol
+        self.ui.synonyms_label.setText(f"\u200E{synonyms}")
         self.ui.type_label.setText(format)
         self.ui.episodes_label.setText(eps)
         self.ui.status_label.setText(status)
@@ -93,16 +104,33 @@ class Title_detailsWindow(QWidget):
         self.ui.genres_label.setText(genres)
         self.ui.studio_label.setText(studio)
         self.ui.desc_label.setText(desc)
-        self.ui.poster_label.setPixmap(poster)
-        self.ui.banner_label.setPixmap(banner)
 
-        self.ui.poster_label.setFixedSize(poster.size())
+        links = [self.poster_link, self.banner_link]
+        img_manager = ImageManager()
+        worker = DownloadPostersWorker(links, img_manager.posters_path)
+        worker.signals.finished.connect(self.on_posters_ready)
+
+        self.parent.thread_pool.start(worker)
+
+    def on_posters_ready(self, posters_data: dict):
+        poster_path = posters_data.get(self.poster_link) if self.poster_link else None
+        banner_path = posters_data.get(self.banner_link) if self.banner_link else None
         
+        if poster_path and os.path.exists(poster_path):
+            real_poster = QPixmap(poster_path)
+        else:
+            real_poster = self.placeholder_poster
+            
+        if banner_path and os.path.exists(banner_path):
+            real_banner = QPixmap(banner_path)
+        else:
+            real_banner = self.placeholder_banner
 
+        if not real_banner.isNull():
+            self.banner = real_banner.scaledToWidth(800, Qt.TransformationMode.SmoothTransformation)
+            self.ui.banner_label.setPixmap(self.banner)
 
-
-
-
-        
-        
-        
+        if not real_poster.isNull():
+            self.poster = real_poster.scaledToWidth(210, Qt.TransformationMode.SmoothTransformation)
+            self.ui.poster_label.setPixmap(self.poster)
+            self.ui.poster_label.setFixedSize(self.poster.size())

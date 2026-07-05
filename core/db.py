@@ -37,7 +37,7 @@ class SettingsDB:
             return row[0] if row else default
         
 class LibraryDB:
-    def __init__(self, db_path='data/library.db'):
+    def __init__(self, db_path='data/local_library.db'):
         self.db_path = db_path
         self._create_tables()
         self.imgmClient = ImageManager()
@@ -47,7 +47,6 @@ class LibraryDB:
             conn.execute('''
                 CREATE TABLE IF NOT EXISTS library (
                     anilist_id TEXT PRIMARY KEY UNIQUE,
-                    mal_id TEXT UNIQUE,
                     title_romaji TEXT,
                     title_english TEXT,
                     title_native TEXT,
@@ -76,27 +75,30 @@ class LibraryDB:
             ''')
             
     
-    def add_title(self, results: list, title_id: int | str, client = None):
+    def add_title(self, title: list, title_id: int | str) -> int | None:
         """
         Saves metadata to the library table.
-        results: A list containing results from API.
+        title: Title info from API.
         title_id: Title ID to be added.
         client: API client.
         """
         d = None
 
-        for title in results:
-            if str(title.get('id', '')) == str(title_id):
-                d = title
+
+        if str(title.get('id', '')) == str(title_id):
+            d = title
+        elif str(title.get('media', {}).get('id', '')) == str(title_id):
+            d = title.get('media', {})
+        
         if not d:
             return
 
         with sqlite3.connect(self.db_path) as conn:
             query = '''
-                INSERT OR REPLACE INTO library (anilist_id, mal_id, title_romaji, title_english, title_native, desc, format, status, origin_country,season_num, season,
+                INSERT OR REPLACE INTO library (anilist_id, title_romaji, title_english, title_native, desc, format, status, origin_country,season_num, season,
                 season_year, episodes, duration, genres, synonyms, score, is_adult, poster_color, poster_small_link, poster_large_link, poster_small_path, poster_large_path,
                 banner_link, banner_path, studio
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             '''
             
             medium = d.get('coverImage', {}).get('medium')
@@ -104,16 +106,19 @@ class LibraryDB:
             banner = d.get('bannerImage')
             links = [medium, extraLarge, banner]
 
-            paths = self.imgmClient.get_posters(links)
-            path_small = paths.get(medium, (None, None))[1]
-            path_extraLarge = paths.get(extraLarge, (None, None))[1]
-            path_banner = paths.get(banner, (None, None))[1]
+            #paths = self.imgmClient.get_posters(links)
+            # path_small = paths.get(medium, (None, None))[1]
+            # path_extraLarge = paths.get(extraLarge, (None, None))[1]
+            # path_banner = paths.get(banner, (None, None))[1]
+            path_small = None
+            path_extraLarge = None
+            path_banner = None
             
-            season_num = self.get_season_num(d, client)
+            #season_num = self.get_season_num(d, client)
+            season_num = None
             
             values = (
                 d.get('id'),
-                d.get('idMal'),
                 d.get('title', {}).get('romaji'),
                 d.get('title', {}).get('english'),
                 d.get('title', {}).get('native'),
@@ -126,8 +131,8 @@ class LibraryDB:
                 d.get('seasonYear'),
                 d.get('episodes'),
                 d.get('duration'),
-                ', '.join(d.get('genres')),
-                ', '.join(d.get('synonyms')),
+                ', '.join(d.get('genres') or []),
+                ', '.join(d.get('synonyms') or []),
                 d.get('averageScore'),
                 d.get('isAdult'),
                 d.get('coverImage', {}).get('color'),
@@ -224,5 +229,25 @@ class LibraryDB:
         with sqlite3.connect(self.db_path) as conn:
             c = conn.execute(query, (anilist_id,))
             return c.rowcount > 0
+        
+    def copy_title(self, title_data: dict) -> int | None:
+        data_copy = title_data.copy()
+        
+        if 'id' in data_copy:
+            del data_copy['id']
             
+        columns = ', '.join(data_copy.keys())
+        placeholders = ', '.join(['?'] * len(data_copy))
+        
+        sql = f"REPLACE INTO library ({columns}) VALUES ({placeholders})"
+        
+        conn = sqlite3.connect(self.db_path)
+        try:
+            with conn:
+                cursor = conn.cursor()
+                cursor.execute(sql, tuple(data_copy.values()))
+                row_id = cursor.lastrowid
+            return row_id
+        finally:
+            conn.close()
             

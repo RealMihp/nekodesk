@@ -471,7 +471,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="logged_in_as_label">
+          <widget class="QLabel" name="anilist_logged_in_as_label">
            <property name="text">
             <string/>
            </property>
@@ -481,7 +481,7 @@
           <widget class="QWidget" name="al_widget" native="true">
            <layout class="QHBoxLayout" name="al_horizontalLayout" stretch="1,0">
             <item>
-             <widget class="QLabel" name="avatar_label">
+             <widget class="QLabel" name="anilist_avatar_label">
               <property name="minimumSize">
                <size>
                 <width>150</width>
@@ -531,6 +531,83 @@
          </item>
          <item>
           <widget class="QPushButton" name="anilist_auth_pushButton">
+           <property name="text">
+            <string>Log In</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="shikimori_verticalLayout" stretch="0,0,0,0">
+         <item>
+          <widget class="QLabel" name="shikimori_label">
+           <property name="text">
+            <string>Shikimori</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="shikimori_logged_in_as_label">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QWidget" name="shikimori_widget" native="true">
+           <layout class="QHBoxLayout" name="al_horizontalLayout_2" stretch="1,0">
+            <item>
+             <widget class="QLabel" name="shikimori_avatar_label">
+              <property name="minimumSize">
+               <size>
+                <width>150</width>
+                <height>150</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>150</width>
+                <height>150</height>
+               </size>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="shikimori_widget_2" native="true">
+              <layout class="QVBoxLayout" name="al_verticalLayout_2">
+               <item>
+                <widget class="QLabel" name="shikimori_username_label">
+                 <property name="text">
+                  <string>Username :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="shikimori_createdAt_label">
+                 <property name="text">
+                  <string>Account created :</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="shikimori_anime_count_label">
+                 <property name="text">
+                  <string>Anime count :</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="shikimori_auth_pushButton">
            <property name="text">
             <string>Log In</string>
            </property>

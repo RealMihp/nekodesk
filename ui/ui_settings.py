@@ -330,21 +330,21 @@ class Ui_SettingsWindow(object):
 
         self.anilist_verticalLayout.addWidget(self.anilist_label)
 
-        self.logged_in_as_label = QLabel(self.network_tab)
-        self.logged_in_as_label.setObjectName(u"logged_in_as_label")
+        self.anilist_logged_in_as_label = QLabel(self.network_tab)
+        self.anilist_logged_in_as_label.setObjectName(u"anilist_logged_in_as_label")
 
-        self.anilist_verticalLayout.addWidget(self.logged_in_as_label)
+        self.anilist_verticalLayout.addWidget(self.anilist_logged_in_as_label)
 
         self.al_widget = QWidget(self.network_tab)
         self.al_widget.setObjectName(u"al_widget")
         self.al_horizontalLayout = QHBoxLayout(self.al_widget)
         self.al_horizontalLayout.setObjectName(u"al_horizontalLayout")
-        self.avatar_label = QLabel(self.al_widget)
-        self.avatar_label.setObjectName(u"avatar_label")
-        self.avatar_label.setMinimumSize(QSize(150, 150))
-        self.avatar_label.setMaximumSize(QSize(150, 150))
+        self.anilist_avatar_label = QLabel(self.al_widget)
+        self.anilist_avatar_label.setObjectName(u"anilist_avatar_label")
+        self.anilist_avatar_label.setMinimumSize(QSize(150, 150))
+        self.anilist_avatar_label.setMaximumSize(QSize(150, 150))
 
-        self.al_horizontalLayout.addWidget(self.avatar_label)
+        self.al_horizontalLayout.addWidget(self.anilist_avatar_label)
 
         self.al_widget_2 = QWidget(self.al_widget)
         self.al_widget_2.setObjectName(u"al_widget_2")
@@ -379,6 +379,63 @@ class Ui_SettingsWindow(object):
 
 
         self.verticalLayout_4.addLayout(self.anilist_verticalLayout)
+
+        self.shikimori_verticalLayout = QVBoxLayout()
+        self.shikimori_verticalLayout.setObjectName(u"shikimori_verticalLayout")
+        self.shikimori_label = QLabel(self.network_tab)
+        self.shikimori_label.setObjectName(u"shikimori_label")
+
+        self.shikimori_verticalLayout.addWidget(self.shikimori_label)
+
+        self.shikimori_logged_in_as_label = QLabel(self.network_tab)
+        self.shikimori_logged_in_as_label.setObjectName(u"shikimori_logged_in_as_label")
+
+        self.shikimori_verticalLayout.addWidget(self.shikimori_logged_in_as_label)
+
+        self.shikimori_widget = QWidget(self.network_tab)
+        self.shikimori_widget.setObjectName(u"shikimori_widget")
+        self.al_horizontalLayout_2 = QHBoxLayout(self.shikimori_widget)
+        self.al_horizontalLayout_2.setObjectName(u"al_horizontalLayout_2")
+        self.shikimori_avatar_label = QLabel(self.shikimori_widget)
+        self.shikimori_avatar_label.setObjectName(u"shikimori_avatar_label")
+        self.shikimori_avatar_label.setMinimumSize(QSize(150, 150))
+        self.shikimori_avatar_label.setMaximumSize(QSize(150, 150))
+
+        self.al_horizontalLayout_2.addWidget(self.shikimori_avatar_label)
+
+        self.shikimori_widget_2 = QWidget(self.shikimori_widget)
+        self.shikimori_widget_2.setObjectName(u"shikimori_widget_2")
+        self.al_verticalLayout_2 = QVBoxLayout(self.shikimori_widget_2)
+        self.al_verticalLayout_2.setObjectName(u"al_verticalLayout_2")
+        self.shikimori_username_label = QLabel(self.shikimori_widget_2)
+        self.shikimori_username_label.setObjectName(u"shikimori_username_label")
+
+        self.al_verticalLayout_2.addWidget(self.shikimori_username_label)
+
+        self.shikimori_createdAt_label = QLabel(self.shikimori_widget_2)
+        self.shikimori_createdAt_label.setObjectName(u"shikimori_createdAt_label")
+
+        self.al_verticalLayout_2.addWidget(self.shikimori_createdAt_label)
+
+        self.shikimori_anime_count_label = QLabel(self.shikimori_widget_2)
+        self.shikimori_anime_count_label.setObjectName(u"shikimori_anime_count_label")
+
+        self.al_verticalLayout_2.addWidget(self.shikimori_anime_count_label)
+
+
+        self.al_horizontalLayout_2.addWidget(self.shikimori_widget_2)
+
+        self.al_horizontalLayout_2.setStretch(0, 1)
+
+        self.shikimori_verticalLayout.addWidget(self.shikimori_widget)
+
+        self.shikimori_auth_pushButton = QPushButton(self.network_tab)
+        self.shikimori_auth_pushButton.setObjectName(u"shikimori_auth_pushButton")
+
+        self.shikimori_verticalLayout.addWidget(self.shikimori_auth_pushButton)
+
+
+        self.verticalLayout_4.addLayout(self.shikimori_verticalLayout)
 
         self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -546,12 +603,19 @@ class Ui_SettingsWindow(object):
         self.offline_mode_checkBox.setText(QCoreApplication.translate("SettingsWindow", u"Offline mode", None))
         self.offline_mode_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
         self.anilist_label.setText(QCoreApplication.translate("SettingsWindow", u"AniList", None))
-        self.logged_in_as_label.setText("")
-        self.avatar_label.setText("")
+        self.anilist_logged_in_as_label.setText("")
+        self.anilist_avatar_label.setText("")
         self.al_username_label.setText(QCoreApplication.translate("SettingsWindow", u"Username :", None))
         self.al_createdAt_label.setText(QCoreApplication.translate("SettingsWindow", u"Account created :", None))
         self.al_anime_count_label.setText(QCoreApplication.translate("SettingsWindow", u"Anime count :", None))
         self.anilist_auth_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"Log In", None))
+        self.shikimori_label.setText(QCoreApplication.translate("SettingsWindow", u"Shikimori", None))
+        self.shikimori_logged_in_as_label.setText("")
+        self.shikimori_avatar_label.setText("")
+        self.shikimori_username_label.setText(QCoreApplication.translate("SettingsWindow", u"Username :", None))
+        self.shikimori_createdAt_label.setText(QCoreApplication.translate("SettingsWindow", u"Account created :", None))
+        self.shikimori_anime_count_label.setText(QCoreApplication.translate("SettingsWindow", u"Anime count :", None))
+        self.shikimori_auth_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"Log In", None))
         self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.network_tab), QCoreApplication.translate("SettingsWindow", u"Network && Account", None))
         self.qbit_checkBox.setText(QCoreApplication.translate("SettingsWindow", u"Enable qBittorrent integration", None))
         self.qbit_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))

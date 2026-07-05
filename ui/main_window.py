@@ -4,7 +4,7 @@ import PySide6
 from PySide6.QtWidgets import QTreeWidgetItem, QMenu
 from core.logic import FileScanner
 from PySide6.QtGui import QDesktopServices, QAction
-from PySide6.QtCore import QTimer, QUrl
+from PySide6.QtCore import QTimer, QUrl, QThreadPool
 
 import sys, os
 import keyring
@@ -32,16 +32,32 @@ class MainWindow(QMainWindow):
         self.history = []
         self.forward_stack = []
         self.ldbclient = LibraryDB()
-        self.prefManager = PreferencesManager()
+        self.al_client = AniListClient()
+        self.prefManager = PreferencesManager(self.ldbclient)
+        
+        self.thread_pool = QThreadPool()
+        self.thread_pool.setMaxThreadCount(3)
 
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.library_treeWidget.header().setSectionResizeMode(0, QHeaderView.Stretch)
-        self.ui.library_treeWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
-        self.ui.library_treeWidget.sortByColumn(0, Qt.AscendingOrder)
+        self.anilist_widgets = {
+            'CURRENT': self.ui.anilist_current_library_treeWidget,
+            'REPEATING': self.ui.anilist_repeating_library_treeWidget,
+            'PLANNING': self.ui.anilist_planning_library_treeWidget,
+            'COMPLETED': self.ui.anilist_completed_library_treeWidget,
+            'DROPPED': self.ui.anilist_dropped_library_treeWidget,
+            'PAUSED': self.ui.anilist_paused_library_treeWidget
+        }
 
-        self.ui.library_treeWidget.customContextMenuRequested.connect(self.show_library_context_menu)
+        self.current_library_widget = self.ui.library_treeWidget # Default
+        self.current_library_db = LibraryDB() # Default
+
+        self.setup_treewidgets()
+        self.setup_connections()
+
+    def setup_connections(self):
+        """Sets up all connections"""
         self.ui.actionSelect_folder.triggered.connect(self.select_folder)
         self.ui.actionClose_folder.triggered.connect(self.close_folder)
         self.ui.files_treeWidget.itemDoubleClicked.connect(self.open_item)
@@ -51,16 +67,63 @@ class MainWindow(QMainWindow):
         self.ui.addSeries_pushButton.pressed.connect(self.show_addseries)
         self.ui.actionSettings.triggered.connect(self.show_settings)
         self.ui.actionAbout.triggered.connect(self.show_about)
+        self.ui.anilist_library_refresh_pushButton.pressed.connect(self.refresh_anilist)
+        self.ui.right_tabWidget.currentChanged.connect(self.on_library_tab_changed)
+        self.ui.anilist_library_tabWidget.currentChanged.connect(self.on_anilist_library_tab_changed)
 
-        self.ui.files_treeWidget.setDragDropOverwriteMode(False)
-        self.ui.library_treeWidget.setDragEnabled(True)
-        self.ui.library_treeWidget.setDragDropMode(QAbstractItemView.DragOnly)
-        self.ui.files_treeWidget.setDropIndicatorShown(True)
+    def setup_treewidgets(self):
+        widgets = [
+            self.ui.library_treeWidget,
+            self.ui.anilist_current_library_treeWidget,
+            self.ui.anilist_repeating_library_treeWidget,
+            self.ui.anilist_planning_library_treeWidget,
+            self.ui.anilist_completed_library_treeWidget,
+            self.ui.anilist_dropped_library_treeWidget,
+            self.ui.anilist_paused_library_treeWidget
+        ]
 
-        self.refresh_library()
+        for widget in widgets:
+            widget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+            widget.customContextMenuRequested.connect(self.show_library_context_menu)
+            widget.header().setSectionResizeMode(0, QHeaderView.Stretch)
+            widget.sortByColumn(0, Qt.AscendingOrder)
 
-    def show_details(self, anilist_id: str):
-        self.details_window = Title_detailsWindow(self, anilist_id)
+            widget.setDragDropOverwriteMode(False)
+            widget.setDragEnabled(True)
+            widget.setDragDropMode(QAbstractItemView.DragOnly)
+            widget.setDropIndicatorShown(True)
+
+        self.refresh_library(self.ui.library_treeWidget, self.ldbclient)
+        self.refresh_anilist(update=False)
+
+    def on_library_tab_changed(self, index):
+        if index == 0:
+            self.current_library_widget = self.ui.library_treeWidget
+            self.current_library_db = LibraryDB()
+        elif index == 1:
+            current_anilist_index = self.ui.anilist_library_tabWidget.currentIndex()
+            self.on_anilist_library_tab_changed(current_anilist_index)
+        
+
+    def on_anilist_library_tab_changed(self, index):
+        tab_mapping = {
+            0: self.ui.anilist_current_library_treeWidget,
+            1: self.ui.anilist_repeating_library_treeWidget,
+            2: self.ui.anilist_completed_library_treeWidget,
+            3: self.ui.anilist_paused_library_treeWidget,
+            4: self.ui.anilist_planning_library_treeWidget,
+            5: self.ui.anilist_dropped_library_treeWidget
+        }
+
+        self.current_library_widget = tab_mapping.get(index, self.ui.anilist_current_library_treeWidget)
+        for list, widget in self.anilist_widgets.items():
+            if widget == self.current_library_widget:
+                self.current_library_db = LibraryDB(f'data/anilist/{list.lower()}.db')
+
+                
+
+    def show_details(self, widget: QTreeWidget, anilist_id: str):
+        self.details_window = Title_detailsWindow(self, widget, anilist_id)
         
         self.details_window.show()
 
@@ -70,22 +133,47 @@ class MainWindow(QMainWindow):
         self.about_window.show()
         
     def show_library_context_menu(self, pos):
-        item = self.ui.library_treeWidget.itemAt(pos)
+        widget = self.current_library_widget
+        item = widget.itemAt(pos)
         if not item: return
 
         menu = QMenu(self)
         open_action = QAction('Details', self)
         remove_action = QAction('Remove from library', self)
+        add_to_local_library_action = QAction('Add to local library', self)
 
         anilist_id = item.data(0, Qt.ItemDataRole.UserRole)
-        open_action.triggered.connect(lambda: self.show_details(anilist_id))
+        open_action.triggered.connect(lambda: self.show_details(widget, anilist_id))
         remove_action.triggered.connect(lambda: self.remove_title(anilist_id))
+        add_to_local_library_action.triggered.connect(lambda: self.add_to_local_library(anilist_id, widget))
 
         menu.addAction(open_action)
-        menu.addSeparator()
-        menu.addAction(remove_action)
+        if widget == self.ui.library_treeWidget:
+            menu.addSeparator()
+            menu.addAction(remove_action)
+        if widget in self.anilist_widgets.values():
+            menu.addSeparator()
+            menu.addAction(add_to_local_library_action)
 
-        menu.exec(self.ui.library_treeWidget.mapToGlobal(pos))
+        menu.exec(widget.mapToGlobal(pos))
+
+    def add_to_local_library(self, title_id: int | str, widget: QTreeWidget):
+        if not title_id:
+            return
+        if not widget:
+            widget = self.current_library_widget
+
+        source_db = self.current_library_db
+        target_db = self.ldbclient
+
+        d = source_db.get_title(title_id)
+        copy = target_db.copy_title(d)
+
+        if copy:
+            self.refresh_library(self.ui.library_treeWidget, target_db)
+
+
+
 
     def remove_title(self, anilist_id: str):
         self.ldbclient.remove_title_by_id(anilist_id)
@@ -194,15 +282,23 @@ class MainWindow(QMainWindow):
             next_folder = self.forward_stack.pop()
             self.populate_tree(next_folder)
 
-    def refresh_library(self):
-        widget = self.ui.library_treeWidget
+    def refresh_library(self, widget: QTreeWidget = None, db: LibraryDB= None):
+        if not widget:
+            widget = self.current_library_widget
+        if not db:
+            db = self.current_library_db
+
         widget.clear()
         widget.setIconSize(QSize(64, 96))
 
-        titles = self.ldbclient.get_all_titles()
+        titles = db.get_all_titles()
+        imgmClient = ImageManager()
+        
+        links_to_download = []
 
         for title in titles:
-            name = self.prefManager.get_title_title(title.get("anilist_id")) or 'Unknown'
+            prefManager = PreferencesManager(db)
+            name = prefManager.get_title_title(title.get("anilist_id")) or 'Unknown'
             status = title.get('status', 'N/A')
             raw_year = title.get('season_year')
             year = str(raw_year) if raw_year else 'N/A'
@@ -214,18 +310,23 @@ class MainWindow(QMainWindow):
             elif format == 'TV_SHORT':
                 format = 'TV Short'
             
-            
             item = QTreeWidgetItem([name, year, format, episodes])
 
             path = title.get('poster_small_path')
+            
+            # If poster already in files
             if path and os.path.exists(path):
                 item.setIcon(0, QIcon(path))
+            # Else add to links_to_download
             else:
+                poster_url = title.get('poster_small_link')
+                
+                if poster_url:
+                    item.setData(0, Qt.ItemDataRole.UserRole + 1, poster_url)
+                    links_to_download.append(poster_url)
+
                 color = title.get('poster_color')
-                if color:
-                    pix = QPixmap(40, 60)
-                    pix.fill(QColor(color))
-                    item.setIcon(0, QIcon(pix))
+                item.setIcon(0, imgmClient.get_color_icon(color))
 
             item.setData(0, Qt.ItemDataRole.UserRole, title.get('anilist_id'))
 
@@ -234,18 +335,98 @@ class MainWindow(QMainWindow):
             header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
 
             widget.addTopLevelItem(item)
-        imgmClient = ImageManager()
+            
         imgmClient.clear_temp_folder()
 
+        if links_to_download:
+            self.start_posters_download(links_to_download)
+
+    def start_posters_download(self, links: list):
+        img_manager = ImageManager()
+        worker = DownloadPostersWorker(links, img_manager.posters_path)
+        worker.signals.finished.connect(self.on_posters_ready)
+        
+        self.thread_pool.start(worker)
+
+    def on_posters_ready(self, posters_data: dict):
+        widgets = [
+            self.ui.library_treeWidget,
+            self.ui.anilist_current_library_treeWidget,
+            self.ui.anilist_repeating_library_treeWidget,
+            self.ui.anilist_planning_library_treeWidget,
+            self.ui.anilist_completed_library_treeWidget,
+            self.ui.anilist_dropped_library_treeWidget,
+            self.ui.anilist_paused_library_treeWidget
+        ]
+
+        for widget in widgets:
+            iterator = QTreeWidgetItemIterator(widget)
+            while iterator.value():
+                item = iterator.value()
+                
+                item_url = item.data(0, Qt.ItemDataRole.UserRole + 1)
+                
+                if item_url and item_url in posters_data:
+                    file_path = posters_data[item_url]
+                    if file_path and os.path.exists(file_path):
+                        item.setIcon(0, QIcon(file_path))
+                        
+                iterator += 1
+
     def open_rename_dialog(self, title_id: str, folder_path: str):
-        title_data = self.ldbclient.get_title(title_id) # dict
+        title_data = self.current_library_db.get_title(title_id) # dict
+        print(f"{title_data.get('title_romaji')} -> {folder_path}")
 
-        print(f"{title_data['title_romaji']} -> {folder_path}")
-
-        dialog = RenameWindow(self, title_data=title_data, folder_path=folder_path)
+        dialog = RenameWindow(self, title_data=title_data, folder_path=folder_path, db=self.current_library_db)
         if dialog.exec(): 
             time.sleep(0.2)
             self.populate_tree()
             print("Title renamed, tree refreshed")
         else:
             print("Rename dialog Cancel")
+
+    def update_anilist_db(self):
+        self.al_db = SettingsDB('data/anilist/anilist.db')
+        user_id = self.al_db.get('id')
+        if user_id:
+            data = self.al_client.get_user_media_list(user_id)
+        else:
+            return
+        lists = data.get('data', {}).get('MediaListCollection', {}).get('lists', [])
+        if not lists:
+            return
+
+        anime_lists = {
+            'CURRENT': [],
+            'REPEATING': [],
+            'PLANNING': [],
+            'COMPLETED': [],
+            'DROPPED': [],
+            'PAUSED': []
+        }
+
+        for anime_list in lists:
+            status = anime_list.get('status', '').upper()
+            if status in anime_lists:
+                anime_lists[status] = anime_list.get('entries', [])
+
+        for list, entries in anime_lists.items():
+            db = LibraryDB(f'data/anilist/{list.lower()}.db')
+            for title in entries:
+                title_id = title.get('media', {}).get('id')
+                if title_id:
+                    db.add_title(title, title_id)
+        
+    def refresh_anilist(self, update: bool = True):
+        if update:
+            self.update_anilist_db()
+
+        for list, widget in self.anilist_widgets.items():
+            db = LibraryDB(f'data/anilist/{list.lower()}.db')
+            self.refresh_library(widget, db)
+            widget.sortByColumn(0, Qt.AscendingOrder)
+            widget.header().setSectionResizeMode(0, QHeaderView.Stretch)
+            
+            
+            
+

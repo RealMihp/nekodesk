@@ -16,6 +16,7 @@ class SettingsWindow(QDialog):
         super().__init__(parent)
         self.ui = Ui_SettingsWindow()
         self.ui.setupUi(self)
+        self.parent = parent
 
         # DB
         self.db = SettingsDB()
@@ -76,7 +77,7 @@ class SettingsWindow(QDialog):
         self.logged_in = bool(username)
 
         if self.logged_in:
-            self.ui.logged_in_as_label.setText(f'Logged in as {username}')
+            self.ui.anilist_logged_in_as_label.setText(f'Logged in as {username}')
             self.ui.anilist_auth_pushButton.setText('Log out')
             self.ui.al_username_label.setText(f'Username : {username}')
             
@@ -96,16 +97,17 @@ class SettingsWindow(QDialog):
             avatar_path = self.al_db.get('avatar_path')
             if avatar_path and os.path.exists(avatar_path):
                 pixmap = QPixmap(avatar_path).scaledToWidth(150, Qt.TransformationMode.SmoothTransformation)
-                self.ui.avatar_label.setPixmap(pixmap)
-                self.ui.avatar_label.setFixedWidth(150)
-                
+                self.ui.anilist_avatar_label.setPixmap(pixmap)
+                self.ui.anilist_avatar_label.setFixedWidth(150)
+
             self.ui.al_widget.show()
+
         else:
             # Default
-            self.ui.logged_in_as_label.setText('Not logged in')
+            self.ui.anilist_logged_in_as_label.setText('Not logged in')
             self.ui.anilist_auth_pushButton.setText('Log in')
             self.ui.al_widget.hide()
-            self.ui.avatar_label.setPixmap(QPixmap())
+            self.ui.anilist_avatar_label.setPixmap(QPixmap())
             self.ui.al_username_label.setText('Username : ')
             self.ui.al_createdAt_label.setText('Account created : ')
             self.ui.al_anime_count_label.setText('Anime count : ')
@@ -157,20 +159,46 @@ class SettingsWindow(QDialog):
             anime_count = user_data.get('statistics', {}).get('anime', {}).get('count', 0)
 
             # Assets
-            avatar_path = self.al_imgManager.get_poster(avatar_link, f"avatar.{avatar_link.split('.')[-1]}", return_pixmap=False)
-            banner_path = self.al_imgManager.get_poster(banner_link, f"banner.{banner_link.split('.')[-1]}", return_pixmap=False)
+            # avatar_path = self.al_imgManager.get_poster(avatar_link, f"avatar.{avatar_link.split('.')[-1]}", return_pixmap=False)
+            # banner_path = self.al_imgManager.get_poster(banner_link, f"banner.{banner_link.split('.')[-1]}", return_pixmap=False)
+
+            self.avatar_link = avatar_link
+            self.profile_banner_link = banner_link
+
+            avatar_ext = avatar_link.split('.')[-1] if avatar_link else 'png'
+            banner_ext = banner_link.split('.')[-1] if banner_link else 'png'
+            
+            self.ui.avatar_label.setPixmap(QPixmap())
+
+            profile_links = [self.avatar_link, self.profile_banner_link]
+            
+            worker = DownloadPostersWorker(profile_links, 'data/anilist')
+            
+            worker.signals.finished.connect(self.on_profile_media_ready)
+            self.parent.thread_pool.start(worker)
 
             # Save
             self.al_db.set('id', user_id)
             self.al_db.set('username', username)
             self.al_db.set('avatar_link', avatar_link)
             self.al_db.set('banner_link', banner_link)
-            self.al_db.set('avatar_path', avatar_path)
-            self.al_db.set('banner_path', banner_path)
             self.al_db.set('created_at', str(created_at))
             self.al_db.set('anime_count', str(anime_count))
 
+            self.logged_in = True
             self.update_anilist_ui()
+
+    def on_profile_media_ready(self, posters_data: dict):
+        avatar_path = posters_data.get(self.avatar_link) if self.avatar_link else None
+        banner_path = posters_data.get(self.profile_banner_link) if self.profile_banner_link else None
+
+        if avatar_path and os.path.exists(avatar_path):
+            self.al_db.set('avatar_path', avatar_path)
+
+        if banner_path and os.path.exists(banner_path):
+            self.al_db.set('banner_path', banner_path)
+
+        self.update_anilist_ui()
 
     def accept(self):
         """Save settings"""

@@ -219,7 +219,7 @@ class AddSeriesWindow(QDialog):
         for item in selected_items:
             title_id = item.data(0, ID_ROLE)
 
-            self.ldbClient.add_title(cache, title_id, self.ALclient)
+            self.ldbClient.add_title(cache, title_id)
 
     def start_scan_library(self):
         folder = self.ui.scan_folder_lineEdit.text()
@@ -229,7 +229,7 @@ class AddSeriesWindow(QDialog):
         self.ui.scan_start_pushButton.setEnabled(False)
         self.ui.statusbar_label.setText("Scanning folder...")
 
-        self.scan_worker = LibraryScanWorker(folder, self.ALclient)
+        self.scan_worker = LibraryScanWorker(folder)
         
         self.scan_worker.progress.connect(
             lambda title: self.ui.statusbar_label.setText(f"Searching: {title}...")
@@ -256,10 +256,9 @@ class LibraryScanWorker(QThread):
     finished = Signal(list)
     progress = Signal(str)
 
-    def __init__(self, folder_path, client):
+    def __init__(self, folder_path):
         super().__init__()
         self.folder_path = folder_path
-        self.client = client
         self.ldbClient = LibraryDB()
 
     def run(self):

@@ -21,15 +21,18 @@ DUB_EXTS = ('.mka', '.mp3', '.aac', '.ac3', '.flac')
 PATH_ROLE = 32
 
 class RenameWindow(QDialog):
-    def __init__(self, parent=None, title_data: dict = {}, folder_path: str = ""):
+    def __init__(self, parent=None, title_data: dict = {}, folder_path: str = "", db = LibraryDB):
         super().__init__(parent)
         self.ui = Ui_RenameDialog()
         self.ui.setupUi(self)
         self.parent=parent
+        if not db:
+            db = self.parent.ldbclient
         self.imgmClient = ImageManager()
         self.filemClient = FileManager()
         self.settings_db = SettingsDB()
-        self.prefManager = PreferencesManager()
+        self.prefManager = PreferencesManager(db)
+        
         
 
         self.qbit = self.settings_db.get('qbit', 'False')
@@ -110,7 +113,7 @@ class RenameWindow(QDialog):
         if not self.handle_errors():
             return
 
-        title = self.parent.ui.library_treeWidget.selectedItems()[0].text(0) if self.parent.ui.library_treeWidget.selectedItems() else 'Unknown'
+        title = self.parent.current_library_widget.selectedItems()[0].text(0) if self.parent.current_library_widget.selectedItems() else 'Unknown'
         self.loading_window = LoadingDialog(f'Renaming files for {title}...', self)
         self.loading_window.show()
         self.worker = RenameWorker(self)
@@ -231,26 +234,46 @@ class RenameWindow(QDialog):
         self.ui.save_banner_lineEdit.setText(self.banner_template)
         self.ui.torrent_name_lineEdit.setText(self.torrent_template)
 
-        poster_link = data.get('poster_large_link')
+        self.poster_link = data.get('poster_large_link')
+        self.banner_link = data.get('banner_link')
         poster_color = data.get('poster_color')
-        poster = self.imgmClient.get_poster(poster_link, return_pixmap=True) if poster_link else self.imgmClient.get_color_icon(poster_color)
-        placeholder_poster = self.imgmClient.get_color_pixmap(poster_color, 460, 690)
-        banner_link = data.get('banner_link')
-        placeholder_banner = self.imgmClient.get_color_pixmap(poster_color, 1900, 400)
-        banner = self.imgmClient.get_poster(banner_link, return_pixmap=True) if banner_link else placeholder_banner
 
-        if not banner.isNull():
-            banner = banner.scaledToWidth(998, Qt.TransformationMode.SmoothTransformation)
-            self.ui.banner_label.setPixmap(banner)
+        self.placeholder_poster = self.imgmClient.get_color_pixmap(poster_color, 191, 300).scaledToWidth(191, Qt.TransformationMode.SmoothTransformation)
+        self.placeholder_banner = self.imgmClient.get_color_pixmap(poster_color, 998, 300).scaledToWidth(998, Qt.TransformationMode.SmoothTransformation)
+
+        self.ui.poster_label.setPixmap(self.placeholder_poster)
+        self.ui.poster_label.setFixedSize(self.placeholder_poster.size())
+        self.ui.banner_label.setPixmap(self.placeholder_banner)
+
+        links = [self.poster_link, self.banner_link]
+        img_manager = ImageManager()
+        worker = DownloadPostersWorker(links, img_manager.posters_path)
+        worker.signals.finished.connect(self.on_posters_ready)
+
+        self.parent.thread_pool.start(worker)
+
+    def on_posters_ready(self, posters_data: dict):
+        poster_path = posters_data.get(self.poster_link) if self.poster_link else None
+        banner_path = posters_data.get(self.banner_link) if self.banner_link else None
+        
+        if poster_path and os.path.exists(poster_path):
+            real_poster = QPixmap(poster_path)
+        else:
+            real_poster = self.placeholder_poster
             
+        if banner_path and os.path.exists(banner_path):
+            real_banner = QPixmap(banner_path)
+        else:
+            real_banner = self.placeholder_banner
 
-        if not poster.isNull():
-            poster = poster.scaledToWidth(191, Qt.TransformationMode.SmoothTransformation)
-            self.ui.poster_label.setPixmap(poster)
-            self.ui.poster_label.setFixedSize(poster.size())
+        if not real_banner.isNull():
+            self.banner = real_banner.scaledToWidth(998, Qt.TransformationMode.SmoothTransformation)
+            self.ui.banner_label.setPixmap(self.banner)
 
-        self.ui.banner_label.setPixmap(banner)
-        self.ui.poster_label.setPixmap(poster)
+        if not real_poster.isNull():
+            self.poster = real_poster.scaledToWidth(191, Qt.TransformationMode.SmoothTransformation)
+            self.ui.poster_label.setPixmap(self.poster)
+            self.ui.poster_label.setFixedSize(self.poster.size())
 
 
     def extract_season(self, text: str) -> int:
