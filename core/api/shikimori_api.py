@@ -1,0 +1,205 @@
+import time
+import webbrowser
+import requests
+import keyring
+
+CLIENT_ID = 2121
+
+ANIME_FIELDS_FRAGMENT = '''
+fragment animeFields on anime {
+    id
+    malId
+    name
+    english
+    japanese
+    russian
+    licenseNameRu
+    descriptionHtml
+    kind
+    status
+    origin
+    season
+    releasedOn { year month day date }
+    episodes
+    duration
+    genres { name russian kind }
+    synonyms
+    score
+    rating
+    isCensored
+    poster { originalUrl mainUrl }
+    studios { name }
+    externalLinks { kind url }
+    related {
+        anime {
+            id
+            name
+            english
+            japanese
+            russian
+            licenseNameRu
+            kind
+        }
+    }
+}
+'''
+
+class ShikimoriClient:
+    def __init__(self):
+        self.url = 'https://shikimori.io/api/graphql'
+        self.session = requests.Session()
+        
+        self.search_query_string = '''
+            query ($search: String, $page: Int, $limit: Int) {
+                animes(search: $search, page: $page, limit: $limit) {
+                    ...animeFields
+                }
+            }
+        ''' + ANIME_FIELDS_FRAGMENT
+
+        self.single_title_query_string = '''
+            query ($ids: String) {
+                animes(ids: $ids) {
+                    ...animeFields
+                }
+            }
+        ''' + ANIME_FIELDS_FRAGMENT
+        
+
+        self.media_list_collection_query = '''
+            query($userId: Int, $page: Int, $limit: Int) {
+                userRates(
+                    userId: $userId
+                    page: $page
+                    limit: $limit
+                    targetType: Anime
+                    order: { field: updated_at, order: desc }
+                ) 
+                {
+                    id
+                    createdAt
+                    status
+                    anime {
+                        ...animeFields
+                    }
+                }
+                }
+            }
+        ''' + ANIME_FIELDS_FRAGMENT
+
+        self.viewer_info_query = """
+            query($username: String) {
+                users(search: $username) {
+                    id
+                    avatarUrl
+                }
+            }
+        """
+
+    def _post(self, query: str = '', variables: dict = None, headers: dict = None) -> dict:
+        """Internal basic post function."""
+        if variables is None:
+            variables = {}
+
+        while True:
+            try:
+                response = self.session.post(self.url, 
+                json={'query': query, 'variables': variables},
+                headers=headers
+                )
+                resp_headers = response.headers
+
+                # 429
+                if response.status_code == 429:
+                    retry_after = int(resp_headers.get('Retry-After', 60))
+                    print(f"[Shikimori API] 429 Rate Limit! Sleeping for {retry_after} sec...")
+                    time.sleep(retry_after)
+                    continue
+
+                # 500, 502, 503, 504
+                if response.status_code in [500, 502, 503, 504]:
+                    print(f"[Shikimori API] {response.status_code} Server Error. Waiting for 15 sec...")
+                    time.sleep(15)
+                    continue
+
+                if response.status_code == 200:
+                    remaining = resp_headers.get('X-RateLimit-Remaining')
+                    if remaining is not None and int(remaining) < 8:
+                        print(f"[Shikimori API] Close to limit ({remaining}). Slowing down...")
+                        time.sleep(2)
+                        
+                    return response.json()
+                
+                print(f"API error: {response.status_code}")
+                response.raise_for_status()
+
+            except Exception as e:
+                print(f"Network error: {e}")
+                raise e
+
+    def search_title(self, search_query: str, page: int = 1, per_page: int = 15) -> list:
+        """Searches for titles by query."""
+        variables = {
+            'search': search_query,
+            'page': page,
+            'limit': per_page
+        }
+        res_json = self._post(self.search_query_string, variables)
+        return res_json.get('data', {}).get('animes', res_json)
+
+    def get_title(self, shikimori_id: int | str) -> dict | None:
+        """Gets one title by Shikimori ID."""
+        variables = {
+            'ids': str(shikimori_id)
+        }
+        res_json = self._post(self.single_title_query_string, variables)
+        return res_json.get('data', {}).get('animes', res_json)
+    
+    # def open_auth_url(self):
+    #     webbrowser.open(f'https://anilist.co/api/v2/oauth/authorize?client_id={CLIENT_ID}&response_type=token')
+
+    # def save_token(self, token) -> dict | None:
+    #     headers = {
+    #         "Authorization": f"Bearer {token}",
+    #         "Content-Type": "application/json",
+    #         "Accept": "application/json"
+    #     }
+
+    #     res_json = self._post(self.viewer_info_query, headers=headers)
+
+    #     if res_json:
+    #         user_id = res_json.get('data', {}).get('Viewer', {}).get('id')
+    #     else:
+    #         user_id = ''
+
+    #     if user_id and token:
+    #         keyring.set_password('AniList_Token', str(user_id), token)
+    #         return res_json
+    #     else:
+    #         return
+
+    def get_user_media_list(self, user_id: int | str, page: int = 1) -> dict | None:
+        if not user_id:
+            return
+
+        variables = {
+            'userId': int(user_id),
+            'page': page,
+            'limit': 50
+        }
+
+        res_json = self._post(self.media_list_collection_query, variables)
+        
+        return res_json if res_json else None
+    
+    def get_user_data(self, username: str) -> dict:
+        if not username:
+            return
+
+        variables = {
+            'username': str(username)
+        }
+
+        res_json = self._post(self.media_list_collection_query, variables)
+        
+        return res_json.get('data', {}).get('users', [])[0] if res_json else {}

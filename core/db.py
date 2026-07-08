@@ -47,6 +47,7 @@ class LibraryDB:
             conn.execute('''
                 CREATE TABLE IF NOT EXISTS library (
                     anilist_id TEXT PRIMARY KEY UNIQUE,
+                    mal_id TEXT UNIQUE,
                     title_romaji TEXT,
                     title_english TEXT,
                     title_native TEXT,
@@ -95,10 +96,10 @@ class LibraryDB:
 
         with sqlite3.connect(self.db_path) as conn:
             query = '''
-                INSERT OR REPLACE INTO library (anilist_id, title_romaji, title_english, title_native, desc, format, status, origin_country,season_num, season,
+                INSERT OR REPLACE INTO library (anilist_id, mal_id, title_romaji, title_english, title_native, desc, format, status, origin_country,season_num, season,
                 season_year, episodes, duration, genres, synonyms, score, is_adult, poster_color, poster_small_link, poster_large_link, poster_small_path, poster_large_path,
                 banner_link, banner_path, studio
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             '''
             
             medium = d.get('coverImage', {}).get('medium')
@@ -119,6 +120,7 @@ class LibraryDB:
             
             values = (
                 d.get('id'),
+                d.get('idMal'),
                 d.get('title', {}).get('romaji'),
                 d.get('title', {}).get('english'),
                 d.get('title', {}).get('native'),
