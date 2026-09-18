@@ -58,9 +58,12 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer_3">
+        <spacer name="verticalSpacer_4">
          <property name="orientation">
           <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Policy::Preferred</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -69,85 +72,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="templates_tab">
-      <attribute name="title">
-       <string>Templates</string>
-      </attribute>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <layout class="QVBoxLayout" name="files_template_verticalLayout">
-         <item>
-          <layout class="QHBoxLayout" name="files_template_horizontalLayout">
-           <item>
-            <widget class="QLabel" name="files_template_label">
-             <property name="font">
-              <font>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Files Template :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="files_template_pushButton">
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>?</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="files_template_lineEdit"/>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="folder_template_verticalLayout">
-         <item>
-          <layout class="QHBoxLayout" name="folder_template_horizontalLayout">
-           <item>
-            <widget class="QLabel" name="folder_template_label">
-             <property name="font">
-              <font>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="text">
-              <string>Folder Template :</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="folder_template_pushButton">
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>?</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <widget class="QLineEdit" name="folder_template_lineEdit"/>
-         </item>
-        </layout>
        </item>
        <item>
         <layout class="QHBoxLayout" name="poster_banner_templates_horizontalLayout">
@@ -226,6 +150,42 @@
             </layout>
            </item>
           </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="folder_template_verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="folder_template_horizontalLayout">
+           <item>
+            <widget class="QLabel" name="folder_template_label">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Folder Template :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="folder_template_pushButton">
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>?</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="folder_template_lineEdit"/>
          </item>
         </layout>
        </item>
@@ -413,7 +373,43 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer_4">
+        <layout class="QVBoxLayout" name="files_template_verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="files_template_horizontalLayout">
+           <item>
+            <widget class="QLabel" name="files_template_label">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Files Template :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="files_template_pushButton">
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="text">
+              <string>?</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="files_template_lineEdit"/>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_3">
          <property name="orientation">
           <enum>Qt::Orientation::Vertical</enum>
          </property>
@@ -433,42 +429,49 @@
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <layout class="QHBoxLayout" name="offline_mode_horizontalLayout">
-         <item>
-          <widget class="QCheckBox" name="offline_mode_checkBox">
-           <property name="font">
-            <font>
-             <bold>false</bold>
-            </font>
-           </property>
-           <property name="text">
-            <string>Offline mode</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="offline_mode_pushButton">
-           <property name="maximumSize">
-            <size>
-             <width>30</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>?</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
         <layout class="QVBoxLayout" name="anilist_verticalLayout" stretch="0,0,0,0">
          <item>
-          <widget class="QLabel" name="anilist_label">
-           <property name="text">
-            <string>AniList</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <item>
+            <widget class="QLabel" name="anilist_label">
+             <property name="text">
+              <string>AniList</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="anilist_avatar_label">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>120</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>120</width>
+               <height>120</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QLabel" name="anilist_logged_in_as_label">
@@ -479,36 +482,16 @@
          </item>
          <item>
           <widget class="QWidget" name="al_widget" native="true">
-           <layout class="QHBoxLayout" name="al_horizontalLayout" stretch="1,0">
-            <item>
-             <widget class="QLabel" name="anilist_avatar_label">
-              <property name="minimumSize">
-               <size>
-                <width>150</width>
-                <height>150</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>150</width>
-                <height>150</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
+           <layout class="QHBoxLayout" name="al_horizontalLayout" stretch="0">
             <item>
              <widget class="QWidget" name="al_widget_2" native="true">
               <layout class="QVBoxLayout" name="al_verticalLayout">
-               <item>
-                <widget class="QLabel" name="al_username_label">
-                 <property name="text">
-                  <string>Username :</string>
-                 </property>
-                </widget>
-               </item>
+               <property name="leftMargin">
+                <number>9</number>
+               </property>
+               <property name="rightMargin">
+                <number>9</number>
+               </property>
                <item>
                 <widget class="QLabel" name="al_createdAt_label">
                  <property name="text">
@@ -539,13 +522,59 @@
         </layout>
        </item>
        <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <layout class="QVBoxLayout" name="shikimori_verticalLayout" stretch="0,0,0,0">
          <item>
-          <widget class="QLabel" name="shikimori_label">
-           <property name="text">
-            <string>Shikimori</string>
-           </property>
-          </widget>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLabel" name="shikimori_label">
+             <property name="text">
+              <string>Shikimori</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QLabel" name="shikimori_avatar_label">
+             <property name="minimumSize">
+              <size>
+               <width>120</width>
+               <height>120</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>120</width>
+               <height>120</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignVCenter</set>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="QLabel" name="shikimori_logged_in_as_label">
@@ -555,61 +584,28 @@
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="shikimori_widget" native="true">
-           <layout class="QHBoxLayout" name="al_horizontalLayout_2" stretch="1,0">
-            <item>
-             <widget class="QLabel" name="shikimori_avatar_label">
-              <property name="minimumSize">
-               <size>
-                <width>150</width>
-                <height>150</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>150</width>
-                <height>150</height>
-               </size>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QWidget" name="shikimori_widget_2" native="true">
-              <layout class="QVBoxLayout" name="al_verticalLayout_2">
-               <item>
-                <widget class="QLabel" name="shikimori_username_label">
-                 <property name="text">
-                  <string>Username :</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="shikimori_createdAt_label">
-                 <property name="text">
-                  <string>Account created :</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLabel" name="shikimori_anime_count_label">
-                 <property name="text">
-                  <string>Anime count :</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
-            </item>
-           </layout>
-          </widget>
+          <layout class="QHBoxLayout" name="shikimori_username_link_horizontalLayout">
+           <item>
+            <widget class="QLabel" name="shikimori_username_link_label">
+             <property name="font">
+              <font>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="text">
+              <string>Username :</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="shikimori_username_link_lineEdit"/>
+           </item>
+          </layout>
          </item>
          <item>
-          <widget class="QPushButton" name="shikimori_auth_pushButton">
+          <widget class="QPushButton" name="shikimori_link_pushButton">
            <property name="text">
-            <string>Log In</string>
+            <string>Link</string>
            </property>
           </widget>
          </item>

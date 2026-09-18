@@ -8,7 +8,7 @@ from core.db import *
 
 VIDEO_EXTS = ('.mp4', '.mkv', '.avi')
 BLACKLIST = {'SP', 'OVA', 'NC', 'OP', 'ED', 'NCED', 'NCOP'}
-SOURCES = ('BDRIP', 'BDREMUX', 'REMUX', 'BDMV', 'WEB-DL', 'WEBRIP', 'HDTVRIP', 'DVDRIP', 'HDRIP')
+SOURCES = ('BDRIP', 'BDREMUX', 'REMUX', 'BDMV', 'WEB-DL', 'WEBRIP', 'HDTVRIP', 'DVDRIP', 'HDRIP', 'BD')
 
 STRICT_GARBAGE = {"sub", "subs", "sound", "font", "fonts", "nadpisi", "bonus", "extra", 
                             "scans", "scan", "artbook", "artwork", "metadata", "subtitles", "ost",
@@ -149,8 +149,7 @@ class FileScanner:
     @staticmethod
     def scan_folder(folder) -> list:
         if not os.path.isdir(folder):
-                return
-            
+            return []
         clean_titles = set()
 
         for root, dirs, files in os.walk(folder):
@@ -259,25 +258,44 @@ class qbit:
         t_list = self.get_all_torrents()
         for t in t_list:
             if t.get('save_path').lower().replace('\\', '/') == path:
-                print('ЯЙЦА')
                 return dict(t)
             
     def find_torrent_by_content_path(self, path: str) -> dict:
         if not path:
-            return
-        path = path.lower().replace('\\', '/')
+            return None
+        
+        target_path = os.path.normpath(path).lower().replace('\\', '/')
+        
         t_list = self.get_all_torrents()
         for t in t_list:
-            if t.get('content_path').lower().replace('\\', '/') == path:
-                return dict(t)
+            content_path = t.get('content_path')
+            save_path = t.get('save_path')
+            name = t.get('name')
+
+            if content_path:
+                norm_content_path = os.path.normpath(content_path).lower().replace('\\', '/')
+                if norm_content_path == target_path:
+                    return dict(t)
+
+            if save_path and name:
+                joined_path = os.path.normpath(os.path.join(save_path, name)).lower().replace('\\', '/')
+                if joined_path == target_path:
+                    return dict(t)
+                
+                norm_save_path = os.path.normpath(save_path).lower().replace('\\', '/')
+                if norm_save_path == target_path:
+                    return dict(t)
+
+        return None
 
     def rename_torrent(self, t: dict, new_name: str) -> bool:
         hash = t.get('infohash_v1')
         try:
             self.qbt_client.torrents_rename(hash, new_name)
             print('Successfully renamed torrent')
-        except FileNotFoundError:
-            print('Failed to rename torrent')
+            return True
+        except Exception as e:
+            print(f'Failed to rename torrent: {e}')
             return False
         
     def rename_torrent_file(self, t: dict, old_path: str, new_path: str) -> bool:
@@ -333,8 +351,4 @@ class qbit:
             self.qbt_client.torrents_set_location(location, t_hash)
             print('Successfully set location: ' + location)
         except Exception as e:
-            print('Failed to set location: ' + location + ':\n' + e)
-
-
-
-    
+            print('Failed to set location: ' + location + ':\n' + str(e))

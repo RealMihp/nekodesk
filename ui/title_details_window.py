@@ -1,3 +1,5 @@
+import webbrowser
+
 import PySide6
 from PySide6.QtWidgets import QTreeWidgetItem
 from core.logic import FileScanner
@@ -28,6 +30,7 @@ class Title_detailsWindow(QWidget):
         self.prefManager = PreferencesManager(self.ldbClient)
         self.ui.buttonBox.accepted.connect(self.close)
         self.ui.buttonBox.rejected.connect(self.close)
+        self.ui.poster_label.mousePressEvent = lambda event: self.open_link()
         self.render_details()
 
     def select_db(self, widget = None):
@@ -43,9 +46,21 @@ class Title_detailsWindow(QWidget):
             'DROPPED': self.parent.ui.anilist_dropped_library_treeWidget,
             'PAUSED': self.parent.ui.anilist_paused_library_treeWidget
         }
+        shikimori_widgets = {
+            'CURRENT': self.parent.ui.shikimori_watching_library_treeWidget,
+            'REPEATING': self.parent.ui.shikimori_rewatching_library_treeWidget,
+            'PLANNING': self.parent.ui.shikimori_planned_library_treeWidget,
+            'COMPLETED': self.parent.ui.shikimori_completed_library_treeWidget,
+            'DROPPED': self.parent.ui.shikimori_dropped_library_treeWidget,
+            'PAUSED': self.parent.ui.shikimori_on_hold_library_treeWidget
+        }
         for list, al_widget in anilist_widgets.items():
             if widget == al_widget:
                 db = LibraryDB(f'data/anilist/{list.lower()}.db')
+                return db
+        for list, sh_widget in shikimori_widgets.items():
+            if widget == sh_widget:
+                db = LibraryDB(f'data/shikimori/{list.lower()}.db')
                 return db
         
 
@@ -70,6 +85,8 @@ class Title_detailsWindow(QWidget):
             format = 'Movie'
         elif format == 'TV_SHORT':
             format = 'TV Short'
+        elif format == 'SPECIAL':
+            format = 'Special'
         format = f'Type: {format}'
         
         eps = f"Episodes: {d.get('episodes')}" if d.get('episodes') else 'Episodes: N/A'
@@ -81,6 +98,7 @@ class Title_detailsWindow(QWidget):
         desc = d.get('desc', 'No description :(')
         
         self.poster_link = d.get('poster_large_link')
+        self.poster_small_link = d.get('poster_small_link')
         self.banner_link = d.get('banner_link')
         poster_color = d.get('poster_color')
         
@@ -105,7 +123,7 @@ class Title_detailsWindow(QWidget):
         self.ui.studio_label.setText(studio)
         self.ui.desc_label.setText(desc)
 
-        links = [self.poster_link, self.banner_link]
+        links = [self.poster_link, self.poster_small_link, self.banner_link]
         img_manager = ImageManager()
         worker = DownloadPostersWorker(links, img_manager.posters_path)
         worker.signals.finished.connect(self.on_posters_ready)
@@ -113,7 +131,7 @@ class Title_detailsWindow(QWidget):
         self.parent.thread_pool.start(worker)
 
     def on_posters_ready(self, posters_data: dict):
-        poster_path = posters_data.get(self.poster_link) if self.poster_link else None
+        poster_path = posters_data.get(self.poster_link) or posters_data.get(self.poster_small_link) if self.poster_link else None
         banner_path = posters_data.get(self.banner_link) if self.banner_link else None
         
         if poster_path and os.path.exists(poster_path):
@@ -134,3 +152,18 @@ class Title_detailsWindow(QWidget):
             self.poster = real_poster.scaledToWidth(210, Qt.TransformationMode.SmoothTransformation)
             self.ui.poster_label.setPixmap(self.poster)
             self.ui.poster_label.setFixedSize(self.poster.size())
+
+    def open_link(self):
+        if not self.anilist_id: return
+        d = self.ldbClient.get_title(self.anilist_id)
+        if not d: return
+        title_id = self.anilist_id
+
+        if 'anilist' in self.ldbClient.db_path:
+            link = f'https://anilist.co/anime/{title_id}'
+        elif 'shikimori' in self.ldbClient.db_path:
+            link = f'https://shikimori.io/animes/{title_id}'
+        else:
+            return
+
+        QDesktopServices.openUrl(QUrl(link))

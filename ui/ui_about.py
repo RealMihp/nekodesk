@@ -49,7 +49,9 @@ class Ui_about_widget(object):
 
         self.about_text_label = QLabel(about_widget)
         self.about_text_label.setObjectName(u"about_text_label")
-        self.about_text_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
+        self.about_text_label.setTextFormat(Qt.TextFormat.RichText)
+        self.about_text_label.setAlignment(Qt.AlignmentFlag.AlignBottom|Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft)
+        self.about_text_label.setOpenExternalLinks(True)
 
         self.verticalLayout.addWidget(self.about_text_label)
 

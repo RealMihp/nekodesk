@@ -94,6 +94,7 @@ class Ui_MainWindow(object):
 
         self.files_treeWidget = FilesTree(self.left_frame)
         self.files_treeWidget.setObjectName(u"files_treeWidget")
+        self.files_treeWidget.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         self.files_treeWidget.setAcceptDrops(True)
         self.files_treeWidget.setLineWidth(1)
 
@@ -363,7 +364,6 @@ class Ui_MainWindow(object):
         self.menuTools.addAction(self.actionSettings)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addSeparator()
-        self.menuHelp.addAction(self.actionCheck_for_updates)
 
         self.retranslateUi(MainWindow)
 
@@ -381,6 +381,9 @@ class Ui_MainWindow(object):
         self.actionAdd_new_folder.setText(QCoreApplication.translate("MainWindow", u"Add new folder...", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.actionSettings.setText(QCoreApplication.translate("MainWindow", u"Settings", None))
+#if QT_CONFIG(shortcut)
+        self.actionSettings.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+I", None))
+#endif // QT_CONFIG(shortcut)
         self.actionSelect_folder.setText(QCoreApplication.translate("MainWindow", u"Select folder", None))
 #if QT_CONFIG(shortcut)
         self.actionSelect_folder.setShortcut(QCoreApplication.translate("MainWindow", u"Ctrl+O", None))

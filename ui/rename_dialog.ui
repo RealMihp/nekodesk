@@ -126,7 +126,7 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="type_horizontalLayout">
+            <layout class="QHBoxLayout" name="type_horizontalLayout" stretch="0,1">
              <item>
               <widget class="QLabel" name="type_label">
                <property name="text">
@@ -135,7 +135,54 @@
               </widget>
              </item>
              <item>
-              <widget class="QLineEdit" name="type_lineEdit"/>
+              <widget class="QComboBox" name="type_comboBox">
+               <property name="editable">
+                <bool>true</bool>
+               </property>
+               <property name="currentText">
+                <string/>
+               </property>
+               <item>
+                <property name="text">
+                 <string>TV</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>TV Short</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Movie</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>ONA</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>OVA</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Special</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>PV</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Music</string>
+                </property>
+               </item>
+              </widget>
              </item>
             </layout>
            </item>

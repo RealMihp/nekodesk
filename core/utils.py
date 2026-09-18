@@ -5,6 +5,8 @@ from PySide6.QtGui import QColor, QIcon, QPixmap
 from PySide6.QtCore import QRunnable, Slot, QObject, Signal
 import winreg
 
+import urllib
+
 
 class ImageManager:
     def __init__(self, posters_path="data\\posters", temp_posters_path = "data\\temp\\posters"):
@@ -17,6 +19,7 @@ class ImageManager:
 
 
     def clear_temp_folder(self):
+        os.makedirs(self.temp_posters_path, exist_ok=True)
         shutil.rmtree(self.temp_posters_path)
         os.makedirs(self.temp_posters_path, exist_ok=True)
         return True
@@ -41,7 +44,7 @@ class ImageManager:
         return pixmap
     
 class PostersSignals(QObject):
-    # {link: path}
+    # dict[link, path]
     finished = Signal(dict)
 
 class DownloadPostersWorker(QRunnable):
@@ -61,9 +64,11 @@ class DownloadPostersWorker(QRunnable):
                 if not link: 
                     continue
 
-                parts = link.split("/")
-                file_name = f"{parts[-2]}_{parts[-1]}" 
+                clean_link = urllib.parse.urlparse(link).path
+                parts = clean_link.split("/")
+                file_name = f"{parts[-2]}_{parts[-1]}"
                 file_path = os.path.join(self.posters_path, file_name).replace('\\', '/')
+                
 
                 try:
                     if os.path.exists(file_path):
@@ -137,6 +142,7 @@ class PreferencesManager:
         return title_langs["romaji"] or title_langs["english"] or title_langs["native"] or ""
 
 class otherUtils():
+    @staticmethod
     def is_dark_theme():
         try:
             registry = winreg.ConnectRegistry(None, winreg.HKEY_CURRENT_USER)

@@ -15,11 +15,11 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QDialog,
-    QDialogButtonBox, QFrame, QHBoxLayout, QHeaderView,
-    QLabel, QLayout, QLineEdit, QPushButton,
-    QSizePolicy, QSpacerItem, QTreeWidget, QTreeWidgetItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QComboBox,
+    QDialog, QDialogButtonBox, QFrame, QHBoxLayout,
+    QHeaderView, QLabel, QLayout, QLineEdit,
+    QPushButton, QSizePolicy, QSpacerItem, QTreeWidget,
+    QTreeWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_RenameDialog(object):
     def setupUi(self, RenameDialog):
@@ -122,11 +122,21 @@ class Ui_RenameDialog(object):
 
         self.type_horizontalLayout.addWidget(self.type_label)
 
-        self.type_lineEdit = QLineEdit(RenameDialog)
-        self.type_lineEdit.setObjectName(u"type_lineEdit")
+        self.type_comboBox = QComboBox(RenameDialog)
+        self.type_comboBox.addItem("")
+        self.type_comboBox.addItem("")
+        self.type_comboBox.addItem("")
+        self.type_comboBox.addItem("")
+        self.type_comboBox.addItem("")
+        self.type_comboBox.addItem("")
+        self.type_comboBox.addItem("")
+        self.type_comboBox.addItem("")
+        self.type_comboBox.setObjectName(u"type_comboBox")
+        self.type_comboBox.setEditable(True)
 
-        self.type_horizontalLayout.addWidget(self.type_lineEdit)
+        self.type_horizontalLayout.addWidget(self.type_comboBox)
 
+        self.type_horizontalLayout.setStretch(1, 1)
 
         self.verticalLayout.addLayout(self.type_horizontalLayout)
 
@@ -614,6 +624,16 @@ class Ui_RenameDialog(object):
         self.season_label.setText(QCoreApplication.translate("RenameDialog", u"Season :", None))
         self.season_year_label.setText(QCoreApplication.translate("RenameDialog", u"Year :", None))
         self.type_label.setText(QCoreApplication.translate("RenameDialog", u"Type :", None))
+        self.type_comboBox.setItemText(0, QCoreApplication.translate("RenameDialog", u"TV", None))
+        self.type_comboBox.setItemText(1, QCoreApplication.translate("RenameDialog", u"TV Short", None))
+        self.type_comboBox.setItemText(2, QCoreApplication.translate("RenameDialog", u"Movie", None))
+        self.type_comboBox.setItemText(3, QCoreApplication.translate("RenameDialog", u"ONA", None))
+        self.type_comboBox.setItemText(4, QCoreApplication.translate("RenameDialog", u"OVA", None))
+        self.type_comboBox.setItemText(5, QCoreApplication.translate("RenameDialog", u"Special", None))
+        self.type_comboBox.setItemText(6, QCoreApplication.translate("RenameDialog", u"PV", None))
+        self.type_comboBox.setItemText(7, QCoreApplication.translate("RenameDialog", u"Music", None))
+
+        self.type_comboBox.setCurrentText("")
         self.studio_label.setText(QCoreApplication.translate("RenameDialog", u"Studio :", None))
         self.duration_label.setText(QCoreApplication.translate("RenameDialog", u"Duration :", None))
         self.source_label.setText(QCoreApplication.translate("RenameDialog", u"Source :", None))

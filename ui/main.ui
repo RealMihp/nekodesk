@@ -84,6 +84,9 @@
        </item>
        <item>
         <widget class="FilesTree" name="files_treeWidget">
+         <property name="contextMenuPolicy">
+          <enum>Qt::ContextMenuPolicy::CustomContextMenu</enum>
+         </property>
          <property name="acceptDrops">
           <bool>true</bool>
          </property>
@@ -897,7 +900,6 @@
     </property>
     <addaction name="actionAbout"/>
     <addaction name="separator"/>
-    <addaction name="actionCheck_for_updates"/>
    </widget>
    <addaction name="menuLibrary"/>
    <addaction name="menuTools"/>
@@ -922,6 +924,9 @@
   <action name="actionSettings">
    <property name="text">
     <string>Settings</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
   <action name="actionSelect_folder">

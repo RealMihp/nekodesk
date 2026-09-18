@@ -2,7 +2,6 @@ from PySide6.QtWidgets import QTreeWidget, QTreeWidgetItem
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import *
 
-
 PATH_ROLE = 32
 
 class FilesTree(QTreeWidget):

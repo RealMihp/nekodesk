@@ -6,7 +6,7 @@ import keyring
 CLIENT_ID = 2121
 
 ANIME_FIELDS_FRAGMENT = '''
-fragment animeFields on anime {
+fragment animeFields on Anime {
     id
     malId
     name
@@ -33,6 +33,7 @@ fragment animeFields on anime {
     related {
         anime {
             id
+            malId
             name
             english
             japanese
@@ -48,6 +49,11 @@ class ShikimoriClient:
     def __init__(self):
         self.url = 'https://shikimori.io/api/graphql'
         self.session = requests.Session()
+
+        self.session.headers.update({
+            'User-Agent': 'NekoDesk (Python/Requests)',
+            'Content-Type': 'application/json'
+        })
         
         self.search_query_string = '''
             query ($search: String, $page: Int, $limit: Int) {
@@ -67,13 +73,12 @@ class ShikimoriClient:
         
 
         self.media_list_collection_query = '''
-            query($userId: Int, $page: Int, $limit: Int) {
+            query($userId: ID, $page: Int, $limit: Int) {
                 userRates(
                     userId: $userId
                     page: $page
                     limit: $limit
                     targetType: Anime
-                    order: { field: updated_at, order: desc }
                 ) 
                 {
                     id
@@ -82,7 +87,6 @@ class ShikimoriClient:
                     anime {
                         ...animeFields
                     }
-                }
                 }
             }
         ''' + ANIME_FIELDS_FRAGMENT
@@ -155,42 +159,57 @@ class ShikimoriClient:
         res_json = self._post(self.single_title_query_string, variables)
         return res_json.get('data', {}).get('animes', res_json)
     
-    # def open_auth_url(self):
-    #     webbrowser.open(f'https://anilist.co/api/v2/oauth/authorize?client_id={CLIENT_ID}&response_type=token')
-
-    # def save_token(self, token) -> dict | None:
-    #     headers = {
-    #         "Authorization": f"Bearer {token}",
-    #         "Content-Type": "application/json",
-    #         "Accept": "application/json"
-    #     }
-
-    #     res_json = self._post(self.viewer_info_query, headers=headers)
-
-    #     if res_json:
-    #         user_id = res_json.get('data', {}).get('Viewer', {}).get('id')
-    #     else:
-    #         user_id = ''
-
-    #     if user_id and token:
-    #         keyring.set_password('AniList_Token', str(user_id), token)
-    #         return res_json
-    #     else:
-    #         return
-
-    def get_user_media_list(self, user_id: int | str, page: int = 1) -> dict | None:
+    def get_user_media_list(self, user_id: int | str) -> dict | None:
         if not user_id:
-            return
+            return None
 
-        variables = {
-            'userId': int(user_id),
-            'page': page,
-            'limit': 50
-        }
+        page = 1
+        limit = 50
+        all_user_rates = []
+        seen_ids = set()
+        base_response = None
 
-        res_json = self._post(self.media_list_collection_query, variables)
-        
-        return res_json if res_json else None
+        while True:
+            variables = {
+                'userId': int(user_id),
+                'page': page,
+                'limit': limit
+            }
+
+            res_json = self._post(self.media_list_collection_query, variables)
+            
+            if not res_json or 'data' not in res_json:
+                break
+
+            user_rates = res_json.get('data', {}).get('userRates', [])
+            if not user_rates:
+                break
+
+            # Duplicate check
+            first_id = user_rates[0].get('id') if isinstance(user_rates[0], dict) else None
+            if first_id in seen_ids:
+                print('[Shikimori API] Duplication found')
+                break
+            
+            for rate in user_rates:
+                if isinstance(rate, dict) and 'id' in rate:
+                    seen_ids.add(rate['id'])
+
+            if base_response is None:
+                base_response = res_json
+
+            all_user_rates.extend(user_rates)
+
+            if len(user_rates) < limit:
+                break
+
+            page += 1
+
+        if base_response:
+            base_response['data']['userRates'] = all_user_rates
+            return base_response
+
+        return None
     
     def get_user_data(self, username: str) -> dict:
         if not username:
@@ -200,6 +219,5 @@ class ShikimoriClient:
             'username': str(username)
         }
 
-        res_json = self._post(self.media_list_collection_query, variables)
-        
+        res_json = self._post(self.viewer_info_query, variables)
         return res_json.get('data', {}).get('users', [])[0] if res_json else {}

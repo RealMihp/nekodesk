@@ -39,6 +39,7 @@ class SettingsDB:
 class LibraryDB:
     def __init__(self, db_path='data/local_library.db'):
         self.db_path = db_path
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
         self._create_tables()
         self.imgmClient = ImageManager()
     
@@ -252,4 +253,10 @@ class LibraryDB:
             return row_id
         finally:
             conn.close()
-            
+
+    def set_poster_path(self, anime_id, poster_path):
+        query = "UPDATE library SET poster_small_path = ? WHERE anilist_id = ?"
+        with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute(query, (poster_path, str(anime_id)))
+                conn.commit()

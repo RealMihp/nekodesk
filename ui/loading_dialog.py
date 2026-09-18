@@ -2,11 +2,12 @@ from PySide6.QtWidgets import QDialog, QVBoxLayout, QLabel, QProgressBar
 from PySide6.QtCore import Qt
 
 class LoadingDialog(QDialog):
-    def __init__(self, text="", parent=None):
+    def __init__(self, text="", title="Processing...",parent=None):
         super().__init__(parent)
-        self.setWindowTitle("Processing...")
+        self.setWindowTitle(title)
         self.setFixedSize(300, 90)
         
+        self.setWindowModality(Qt.WindowModal)
         self.setWindowFlags(self.windowFlags() | Qt.CustomizeWindowHint)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
         

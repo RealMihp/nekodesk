@@ -67,6 +67,7 @@ class Ui_details_widget(object):
         self.poster_label.setSizePolicy(sizePolicy1)
         self.poster_label.setMinimumSize(QSize(0, 0))
         self.poster_label.setMaximumSize(QSize(16777215, 16777215))
+        self.poster_label.setCursor(QCursor(Qt.CursorShape.PointingHandCursor))
         self.poster_label.setFrameShape(QFrame.Shape.StyledPanel)
         self.poster_label.setScaledContents(False)
         self.poster_label.setAlignment(Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignTop)
@@ -275,6 +276,7 @@ class Ui_details_widget(object):
         self.desc_label.setTextFormat(Qt.TextFormat.RichText)
         self.desc_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.desc_label.setWordWrap(True)
+        self.desc_label.setOpenExternalLinks(True)
         self.desc_label.setTextInteractionFlags(Qt.TextInteractionFlag.LinksAccessibleByMouse|Qt.TextInteractionFlag.TextSelectableByMouse)
 
         self.verticalLayout.addWidget(self.desc_label)

@@ -21,4 +21,4 @@ class AboutWindow(QWidget):
         
         self.ui.about_text_label.setText('Icon')
         self.ui.app_name_label.setText('NekoDesk')
-        self.ui.about_text_label.setText('')
+        self.ui.about_text_label.setText('Ver 1.0 | RealMihp 2026 | <a href="https://github.com/RealMihp/nekodesk">GitHub Repo</a>')

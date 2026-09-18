@@ -16,9 +16,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QComboBox,
-    QDialog, QDialogButtonBox, QDoubleSpinBox, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
-    QSpacerItem, QTabWidget, QVBoxLayout, QWidget)
+    QDialog, QDialogButtonBox, QDoubleSpinBox, QFrame,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QSpacerItem, QTabWidget, QVBoxLayout,
+    QWidget)
 
 class Ui_SettingsWindow(object):
     def setupUi(self, SettingsWindow):
@@ -55,70 +56,9 @@ class Ui_SettingsWindow(object):
 
         self.verticalLayout_9.addLayout(self.horizontalLayout)
 
-        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
 
-        self.verticalLayout_9.addItem(self.verticalSpacer_3)
-
-        self.settings_tabWidget.addTab(self.general_tab, "")
-        self.templates_tab = QWidget()
-        self.templates_tab.setObjectName(u"templates_tab")
-        self.verticalLayout_3 = QVBoxLayout(self.templates_tab)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.files_template_verticalLayout = QVBoxLayout()
-        self.files_template_verticalLayout.setObjectName(u"files_template_verticalLayout")
-        self.files_template_horizontalLayout = QHBoxLayout()
-        self.files_template_horizontalLayout.setObjectName(u"files_template_horizontalLayout")
-        self.files_template_label = QLabel(self.templates_tab)
-        self.files_template_label.setObjectName(u"files_template_label")
-        font = QFont()
-        font.setBold(True)
-        self.files_template_label.setFont(font)
-
-        self.files_template_horizontalLayout.addWidget(self.files_template_label)
-
-        self.files_template_pushButton = QPushButton(self.templates_tab)
-        self.files_template_pushButton.setObjectName(u"files_template_pushButton")
-        self.files_template_pushButton.setMaximumSize(QSize(30, 30))
-
-        self.files_template_horizontalLayout.addWidget(self.files_template_pushButton)
-
-
-        self.files_template_verticalLayout.addLayout(self.files_template_horizontalLayout)
-
-        self.files_template_lineEdit = QLineEdit(self.templates_tab)
-        self.files_template_lineEdit.setObjectName(u"files_template_lineEdit")
-
-        self.files_template_verticalLayout.addWidget(self.files_template_lineEdit)
-
-
-        self.verticalLayout_3.addLayout(self.files_template_verticalLayout)
-
-        self.folder_template_verticalLayout = QVBoxLayout()
-        self.folder_template_verticalLayout.setObjectName(u"folder_template_verticalLayout")
-        self.folder_template_horizontalLayout = QHBoxLayout()
-        self.folder_template_horizontalLayout.setObjectName(u"folder_template_horizontalLayout")
-        self.folder_template_label = QLabel(self.templates_tab)
-        self.folder_template_label.setObjectName(u"folder_template_label")
-        self.folder_template_label.setFont(font)
-
-        self.folder_template_horizontalLayout.addWidget(self.folder_template_label)
-
-        self.folder_template_pushButton = QPushButton(self.templates_tab)
-        self.folder_template_pushButton.setObjectName(u"folder_template_pushButton")
-        self.folder_template_pushButton.setMaximumSize(QSize(30, 30))
-
-        self.folder_template_horizontalLayout.addWidget(self.folder_template_pushButton)
-
-
-        self.folder_template_verticalLayout.addLayout(self.folder_template_horizontalLayout)
-
-        self.folder_template_lineEdit = QLineEdit(self.templates_tab)
-        self.folder_template_lineEdit.setObjectName(u"folder_template_lineEdit")
-
-        self.folder_template_verticalLayout.addWidget(self.folder_template_lineEdit)
-
-
-        self.verticalLayout_3.addLayout(self.folder_template_verticalLayout)
+        self.verticalLayout_9.addItem(self.verticalSpacer_4)
 
         self.poster_banner_templates_horizontalLayout = QHBoxLayout()
         self.poster_banner_templates_horizontalLayout.setObjectName(u"poster_banner_templates_horizontalLayout")
@@ -126,13 +66,15 @@ class Ui_SettingsWindow(object):
         self.poster_template_verticalLayout.setObjectName(u"poster_template_verticalLayout")
         self.poster_template_horizontalLayout = QHBoxLayout()
         self.poster_template_horizontalLayout.setObjectName(u"poster_template_horizontalLayout")
-        self.poster_template_label = QLabel(self.templates_tab)
+        self.poster_template_label = QLabel(self.general_tab)
         self.poster_template_label.setObjectName(u"poster_template_label")
+        font = QFont()
+        font.setBold(True)
         self.poster_template_label.setFont(font)
 
         self.poster_template_horizontalLayout.addWidget(self.poster_template_label)
 
-        self.poster_template_pushButton = QPushButton(self.templates_tab)
+        self.poster_template_pushButton = QPushButton(self.general_tab)
         self.poster_template_pushButton.setObjectName(u"poster_template_pushButton")
         self.poster_template_pushButton.setMaximumSize(QSize(30, 30))
 
@@ -141,7 +83,7 @@ class Ui_SettingsWindow(object):
 
         self.poster_template_verticalLayout.addLayout(self.poster_template_horizontalLayout)
 
-        self.poster_template_lineEdit = QLineEdit(self.templates_tab)
+        self.poster_template_lineEdit = QLineEdit(self.general_tab)
         self.poster_template_lineEdit.setObjectName(u"poster_template_lineEdit")
 
         self.poster_template_verticalLayout.addWidget(self.poster_template_lineEdit)
@@ -155,13 +97,13 @@ class Ui_SettingsWindow(object):
         self.banner_template_verticalLayout.setObjectName(u"banner_template_verticalLayout")
         self.banner_template_horizontalLayout = QHBoxLayout()
         self.banner_template_horizontalLayout.setObjectName(u"banner_template_horizontalLayout")
-        self.banner_template_label = QLabel(self.templates_tab)
+        self.banner_template_label = QLabel(self.general_tab)
         self.banner_template_label.setObjectName(u"banner_template_label")
         self.banner_template_label.setFont(font)
 
         self.banner_template_horizontalLayout.addWidget(self.banner_template_label)
 
-        self.banner_template_pushButton = QPushButton(self.templates_tab)
+        self.banner_template_pushButton = QPushButton(self.general_tab)
         self.banner_template_pushButton.setObjectName(u"banner_template_pushButton")
         self.banner_template_pushButton.setMaximumSize(QSize(30, 30))
 
@@ -170,7 +112,7 @@ class Ui_SettingsWindow(object):
 
         self.banner_template_verticalLayout.addLayout(self.banner_template_horizontalLayout)
 
-        self.banner_template_lineEdit = QLineEdit(self.templates_tab)
+        self.banner_template_lineEdit = QLineEdit(self.general_tab)
         self.banner_template_lineEdit.setObjectName(u"banner_template_lineEdit")
 
         self.banner_template_verticalLayout.addWidget(self.banner_template_lineEdit)
@@ -182,9 +124,36 @@ class Ui_SettingsWindow(object):
         self.poster_banner_templates_horizontalLayout.addLayout(self.banner_horizontalLayout)
 
 
-        self.verticalLayout_3.addLayout(self.poster_banner_templates_horizontalLayout)
+        self.verticalLayout_9.addLayout(self.poster_banner_templates_horizontalLayout)
 
-        self.torrent_template_widget = QWidget(self.templates_tab)
+        self.folder_template_verticalLayout = QVBoxLayout()
+        self.folder_template_verticalLayout.setObjectName(u"folder_template_verticalLayout")
+        self.folder_template_horizontalLayout = QHBoxLayout()
+        self.folder_template_horizontalLayout.setObjectName(u"folder_template_horizontalLayout")
+        self.folder_template_label = QLabel(self.general_tab)
+        self.folder_template_label.setObjectName(u"folder_template_label")
+        self.folder_template_label.setFont(font)
+
+        self.folder_template_horizontalLayout.addWidget(self.folder_template_label)
+
+        self.folder_template_pushButton = QPushButton(self.general_tab)
+        self.folder_template_pushButton.setObjectName(u"folder_template_pushButton")
+        self.folder_template_pushButton.setMaximumSize(QSize(30, 30))
+
+        self.folder_template_horizontalLayout.addWidget(self.folder_template_pushButton)
+
+
+        self.folder_template_verticalLayout.addLayout(self.folder_template_horizontalLayout)
+
+        self.folder_template_lineEdit = QLineEdit(self.general_tab)
+        self.folder_template_lineEdit.setObjectName(u"folder_template_lineEdit")
+
+        self.folder_template_verticalLayout.addWidget(self.folder_template_lineEdit)
+
+
+        self.verticalLayout_9.addLayout(self.folder_template_verticalLayout)
+
+        self.torrent_template_widget = QWidget(self.general_tab)
         self.torrent_template_widget.setObjectName(u"torrent_template_widget")
         self.torrent_template_verticalLayout = QVBoxLayout(self.torrent_template_widget)
         self.torrent_template_verticalLayout.setObjectName(u"torrent_template_verticalLayout")
@@ -212,19 +181,19 @@ class Ui_SettingsWindow(object):
         self.torrent_template_verticalLayout.addWidget(self.torrent_template_lineEdit)
 
 
-        self.verticalLayout_3.addWidget(self.torrent_template_widget)
+        self.verticalLayout_9.addWidget(self.torrent_template_widget)
 
         self.lang_priority_verticalLayout = QVBoxLayout()
         self.lang_priority_verticalLayout.setObjectName(u"lang_priority_verticalLayout")
         self.lang_priority_label_horizontalLayout = QHBoxLayout()
         self.lang_priority_label_horizontalLayout.setObjectName(u"lang_priority_label_horizontalLayout")
-        self.lang_priority_label = QLabel(self.templates_tab)
+        self.lang_priority_label = QLabel(self.general_tab)
         self.lang_priority_label.setObjectName(u"lang_priority_label")
         self.lang_priority_label.setFont(font)
 
         self.lang_priority_label_horizontalLayout.addWidget(self.lang_priority_label)
 
-        self.lang_priority_pushButton = QPushButton(self.templates_tab)
+        self.lang_priority_pushButton = QPushButton(self.general_tab)
         self.lang_priority_pushButton.setObjectName(u"lang_priority_pushButton")
         self.lang_priority_pushButton.setMaximumSize(QSize(30, 30))
 
@@ -237,12 +206,12 @@ class Ui_SettingsWindow(object):
         self.lang_priority_horizontalLayout.setObjectName(u"lang_priority_horizontalLayout")
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.lang_priority_1_label = QLabel(self.templates_tab)
+        self.lang_priority_1_label = QLabel(self.general_tab)
         self.lang_priority_1_label.setObjectName(u"lang_priority_1_label")
 
         self.verticalLayout_2.addWidget(self.lang_priority_1_label)
 
-        self.lang_priority_1_comboBox = QComboBox(self.templates_tab)
+        self.lang_priority_1_comboBox = QComboBox(self.general_tab)
         self.lang_priority_1_comboBox.addItem("")
         self.lang_priority_1_comboBox.addItem("")
         self.lang_priority_1_comboBox.addItem("")
@@ -255,12 +224,12 @@ class Ui_SettingsWindow(object):
 
         self.verticalLayout_7 = QVBoxLayout()
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
-        self.lang_priority_2_label = QLabel(self.templates_tab)
+        self.lang_priority_2_label = QLabel(self.general_tab)
         self.lang_priority_2_label.setObjectName(u"lang_priority_2_label")
 
         self.verticalLayout_7.addWidget(self.lang_priority_2_label)
 
-        self.lang_priority_2_comboBox = QComboBox(self.templates_tab)
+        self.lang_priority_2_comboBox = QComboBox(self.general_tab)
         self.lang_priority_2_comboBox.addItem("")
         self.lang_priority_2_comboBox.addItem("")
         self.lang_priority_2_comboBox.addItem("")
@@ -273,12 +242,12 @@ class Ui_SettingsWindow(object):
 
         self.verticalLayout_8 = QVBoxLayout()
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
-        self.lang_priority_3_label = QLabel(self.templates_tab)
+        self.lang_priority_3_label = QLabel(self.general_tab)
         self.lang_priority_3_label.setObjectName(u"lang_priority_3_label")
 
         self.verticalLayout_8.addWidget(self.lang_priority_3_label)
 
-        self.lang_priority_3_comboBox = QComboBox(self.templates_tab)
+        self.lang_priority_3_comboBox = QComboBox(self.general_tab)
         self.lang_priority_3_comboBox.addItem("")
         self.lang_priority_3_comboBox.addItem("")
         self.lang_priority_3_comboBox.addItem("")
@@ -293,42 +262,66 @@ class Ui_SettingsWindow(object):
         self.lang_priority_verticalLayout.addLayout(self.lang_priority_horizontalLayout)
 
 
-        self.verticalLayout_3.addLayout(self.lang_priority_verticalLayout)
+        self.verticalLayout_9.addLayout(self.lang_priority_verticalLayout)
 
-        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.files_template_verticalLayout = QVBoxLayout()
+        self.files_template_verticalLayout.setObjectName(u"files_template_verticalLayout")
+        self.files_template_horizontalLayout = QHBoxLayout()
+        self.files_template_horizontalLayout.setObjectName(u"files_template_horizontalLayout")
+        self.files_template_label = QLabel(self.general_tab)
+        self.files_template_label.setObjectName(u"files_template_label")
+        self.files_template_label.setFont(font)
 
-        self.verticalLayout_3.addItem(self.verticalSpacer_4)
+        self.files_template_horizontalLayout.addWidget(self.files_template_label)
 
-        self.settings_tabWidget.addTab(self.templates_tab, "")
+        self.files_template_pushButton = QPushButton(self.general_tab)
+        self.files_template_pushButton.setObjectName(u"files_template_pushButton")
+        self.files_template_pushButton.setMaximumSize(QSize(30, 30))
+
+        self.files_template_horizontalLayout.addWidget(self.files_template_pushButton)
+
+
+        self.files_template_verticalLayout.addLayout(self.files_template_horizontalLayout)
+
+        self.files_template_lineEdit = QLineEdit(self.general_tab)
+        self.files_template_lineEdit.setObjectName(u"files_template_lineEdit")
+
+        self.files_template_verticalLayout.addWidget(self.files_template_lineEdit)
+
+
+        self.verticalLayout_9.addLayout(self.files_template_verticalLayout)
+
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout_9.addItem(self.verticalSpacer_3)
+
+        self.settings_tabWidget.addTab(self.general_tab, "")
         self.network_tab = QWidget()
         self.network_tab.setObjectName(u"network_tab")
         self.verticalLayout_4 = QVBoxLayout(self.network_tab)
         self.verticalLayout_4.setObjectName(u"verticalLayout_4")
-        self.offline_mode_horizontalLayout = QHBoxLayout()
-        self.offline_mode_horizontalLayout.setObjectName(u"offline_mode_horizontalLayout")
-        self.offline_mode_checkBox = QCheckBox(self.network_tab)
-        self.offline_mode_checkBox.setObjectName(u"offline_mode_checkBox")
-        font1 = QFont()
-        font1.setBold(False)
-        self.offline_mode_checkBox.setFont(font1)
-
-        self.offline_mode_horizontalLayout.addWidget(self.offline_mode_checkBox)
-
-        self.offline_mode_pushButton = QPushButton(self.network_tab)
-        self.offline_mode_pushButton.setObjectName(u"offline_mode_pushButton")
-        self.offline_mode_pushButton.setMaximumSize(QSize(30, 30))
-
-        self.offline_mode_horizontalLayout.addWidget(self.offline_mode_pushButton)
-
-
-        self.verticalLayout_4.addLayout(self.offline_mode_horizontalLayout)
-
         self.anilist_verticalLayout = QVBoxLayout()
         self.anilist_verticalLayout.setObjectName(u"anilist_verticalLayout")
+        self.horizontalLayout_5 = QHBoxLayout()
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.anilist_label = QLabel(self.network_tab)
         self.anilist_label.setObjectName(u"anilist_label")
 
-        self.anilist_verticalLayout.addWidget(self.anilist_label)
+        self.horizontalLayout_5.addWidget(self.anilist_label)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_5.addItem(self.horizontalSpacer_3)
+
+        self.anilist_avatar_label = QLabel(self.network_tab)
+        self.anilist_avatar_label.setObjectName(u"anilist_avatar_label")
+        self.anilist_avatar_label.setMinimumSize(QSize(120, 120))
+        self.anilist_avatar_label.setMaximumSize(QSize(120, 120))
+
+        self.horizontalLayout_5.addWidget(self.anilist_avatar_label)
+
+
+        self.anilist_verticalLayout.addLayout(self.horizontalLayout_5)
 
         self.anilist_logged_in_as_label = QLabel(self.network_tab)
         self.anilist_logged_in_as_label.setObjectName(u"anilist_logged_in_as_label")
@@ -339,22 +332,11 @@ class Ui_SettingsWindow(object):
         self.al_widget.setObjectName(u"al_widget")
         self.al_horizontalLayout = QHBoxLayout(self.al_widget)
         self.al_horizontalLayout.setObjectName(u"al_horizontalLayout")
-        self.anilist_avatar_label = QLabel(self.al_widget)
-        self.anilist_avatar_label.setObjectName(u"anilist_avatar_label")
-        self.anilist_avatar_label.setMinimumSize(QSize(150, 150))
-        self.anilist_avatar_label.setMaximumSize(QSize(150, 150))
-
-        self.al_horizontalLayout.addWidget(self.anilist_avatar_label)
-
         self.al_widget_2 = QWidget(self.al_widget)
         self.al_widget_2.setObjectName(u"al_widget_2")
         self.al_verticalLayout = QVBoxLayout(self.al_widget_2)
         self.al_verticalLayout.setObjectName(u"al_verticalLayout")
-        self.al_username_label = QLabel(self.al_widget_2)
-        self.al_username_label.setObjectName(u"al_username_label")
-
-        self.al_verticalLayout.addWidget(self.al_username_label)
-
+        self.al_verticalLayout.setContentsMargins(9, -1, 9, -1)
         self.al_createdAt_label = QLabel(self.al_widget_2)
         self.al_createdAt_label.setObjectName(u"al_createdAt_label")
 
@@ -368,7 +350,6 @@ class Ui_SettingsWindow(object):
 
         self.al_horizontalLayout.addWidget(self.al_widget_2)
 
-        self.al_horizontalLayout.setStretch(0, 1)
 
         self.anilist_verticalLayout.addWidget(self.al_widget)
 
@@ -380,59 +361,62 @@ class Ui_SettingsWindow(object):
 
         self.verticalLayout_4.addLayout(self.anilist_verticalLayout)
 
+        self.line = QFrame(self.network_tab)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.Shape.HLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.verticalLayout_4.addWidget(self.line)
+
         self.shikimori_verticalLayout = QVBoxLayout()
         self.shikimori_verticalLayout.setObjectName(u"shikimori_verticalLayout")
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.shikimori_label = QLabel(self.network_tab)
         self.shikimori_label.setObjectName(u"shikimori_label")
 
-        self.shikimori_verticalLayout.addWidget(self.shikimori_label)
+        self.horizontalLayout_2.addWidget(self.shikimori_label)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer_2)
+
+        self.shikimori_avatar_label = QLabel(self.network_tab)
+        self.shikimori_avatar_label.setObjectName(u"shikimori_avatar_label")
+        self.shikimori_avatar_label.setMinimumSize(QSize(120, 120))
+        self.shikimori_avatar_label.setMaximumSize(QSize(120, 120))
+        self.shikimori_avatar_label.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignVCenter)
+
+        self.horizontalLayout_2.addWidget(self.shikimori_avatar_label)
+
+
+        self.shikimori_verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.shikimori_logged_in_as_label = QLabel(self.network_tab)
         self.shikimori_logged_in_as_label.setObjectName(u"shikimori_logged_in_as_label")
 
         self.shikimori_verticalLayout.addWidget(self.shikimori_logged_in_as_label)
 
-        self.shikimori_widget = QWidget(self.network_tab)
-        self.shikimori_widget.setObjectName(u"shikimori_widget")
-        self.al_horizontalLayout_2 = QHBoxLayout(self.shikimori_widget)
-        self.al_horizontalLayout_2.setObjectName(u"al_horizontalLayout_2")
-        self.shikimori_avatar_label = QLabel(self.shikimori_widget)
-        self.shikimori_avatar_label.setObjectName(u"shikimori_avatar_label")
-        self.shikimori_avatar_label.setMinimumSize(QSize(150, 150))
-        self.shikimori_avatar_label.setMaximumSize(QSize(150, 150))
+        self.shikimori_username_link_horizontalLayout = QHBoxLayout()
+        self.shikimori_username_link_horizontalLayout.setObjectName(u"shikimori_username_link_horizontalLayout")
+        self.shikimori_username_link_label = QLabel(self.network_tab)
+        self.shikimori_username_link_label.setObjectName(u"shikimori_username_link_label")
+        self.shikimori_username_link_label.setFont(font)
 
-        self.al_horizontalLayout_2.addWidget(self.shikimori_avatar_label)
+        self.shikimori_username_link_horizontalLayout.addWidget(self.shikimori_username_link_label)
 
-        self.shikimori_widget_2 = QWidget(self.shikimori_widget)
-        self.shikimori_widget_2.setObjectName(u"shikimori_widget_2")
-        self.al_verticalLayout_2 = QVBoxLayout(self.shikimori_widget_2)
-        self.al_verticalLayout_2.setObjectName(u"al_verticalLayout_2")
-        self.shikimori_username_label = QLabel(self.shikimori_widget_2)
-        self.shikimori_username_label.setObjectName(u"shikimori_username_label")
+        self.shikimori_username_link_lineEdit = QLineEdit(self.network_tab)
+        self.shikimori_username_link_lineEdit.setObjectName(u"shikimori_username_link_lineEdit")
 
-        self.al_verticalLayout_2.addWidget(self.shikimori_username_label)
-
-        self.shikimori_createdAt_label = QLabel(self.shikimori_widget_2)
-        self.shikimori_createdAt_label.setObjectName(u"shikimori_createdAt_label")
-
-        self.al_verticalLayout_2.addWidget(self.shikimori_createdAt_label)
-
-        self.shikimori_anime_count_label = QLabel(self.shikimori_widget_2)
-        self.shikimori_anime_count_label.setObjectName(u"shikimori_anime_count_label")
-
-        self.al_verticalLayout_2.addWidget(self.shikimori_anime_count_label)
+        self.shikimori_username_link_horizontalLayout.addWidget(self.shikimori_username_link_lineEdit)
 
 
-        self.al_horizontalLayout_2.addWidget(self.shikimori_widget_2)
+        self.shikimori_verticalLayout.addLayout(self.shikimori_username_link_horizontalLayout)
 
-        self.al_horizontalLayout_2.setStretch(0, 1)
+        self.shikimori_link_pushButton = QPushButton(self.network_tab)
+        self.shikimori_link_pushButton.setObjectName(u"shikimori_link_pushButton")
 
-        self.shikimori_verticalLayout.addWidget(self.shikimori_widget)
-
-        self.shikimori_auth_pushButton = QPushButton(self.network_tab)
-        self.shikimori_auth_pushButton.setObjectName(u"shikimori_auth_pushButton")
-
-        self.shikimori_verticalLayout.addWidget(self.shikimori_auth_pushButton)
+        self.shikimori_verticalLayout.addWidget(self.shikimori_link_pushButton)
 
 
         self.verticalLayout_4.addLayout(self.shikimori_verticalLayout)
@@ -569,15 +553,12 @@ class Ui_SettingsWindow(object):
         self.label.setText(QCoreApplication.translate("SettingsWindow", u"Language :", None))
         self.comboBox.setItemText(0, QCoreApplication.translate("SettingsWindow", u"English", None))
 
-        self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.general_tab), QCoreApplication.translate("SettingsWindow", u"General", None))
-        self.files_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Files Template :", None))
-        self.files_template_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
-        self.folder_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Folder Template :", None))
-        self.folder_template_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
         self.poster_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Poster Template :", None))
         self.poster_template_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
         self.banner_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Banner Template :", None))
         self.banner_template_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
+        self.folder_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Folder Template :", None))
+        self.folder_template_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
         self.torrent_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Torrent Template :", None))
         self.torrent_template_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
         self.lang_priority_label.setText(QCoreApplication.translate("SettingsWindow", u"Title language priority :", None))
@@ -599,23 +580,20 @@ class Ui_SettingsWindow(object):
         self.lang_priority_3_comboBox.setItemText(2, QCoreApplication.translate("SettingsWindow", u"Native", None))
 
         self.lang_priority_3_comboBox.setCurrentText(QCoreApplication.translate("SettingsWindow", u"Romaji", None))
-        self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.templates_tab), QCoreApplication.translate("SettingsWindow", u"Templates", None))
-        self.offline_mode_checkBox.setText(QCoreApplication.translate("SettingsWindow", u"Offline mode", None))
-        self.offline_mode_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
+        self.files_template_label.setText(QCoreApplication.translate("SettingsWindow", u"Files Template :", None))
+        self.files_template_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))
+        self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.general_tab), QCoreApplication.translate("SettingsWindow", u"General", None))
         self.anilist_label.setText(QCoreApplication.translate("SettingsWindow", u"AniList", None))
-        self.anilist_logged_in_as_label.setText("")
         self.anilist_avatar_label.setText("")
-        self.al_username_label.setText(QCoreApplication.translate("SettingsWindow", u"Username :", None))
+        self.anilist_logged_in_as_label.setText("")
         self.al_createdAt_label.setText(QCoreApplication.translate("SettingsWindow", u"Account created :", None))
         self.al_anime_count_label.setText(QCoreApplication.translate("SettingsWindow", u"Anime count :", None))
         self.anilist_auth_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"Log In", None))
         self.shikimori_label.setText(QCoreApplication.translate("SettingsWindow", u"Shikimori", None))
-        self.shikimori_logged_in_as_label.setText("")
         self.shikimori_avatar_label.setText("")
-        self.shikimori_username_label.setText(QCoreApplication.translate("SettingsWindow", u"Username :", None))
-        self.shikimori_createdAt_label.setText(QCoreApplication.translate("SettingsWindow", u"Account created :", None))
-        self.shikimori_anime_count_label.setText(QCoreApplication.translate("SettingsWindow", u"Anime count :", None))
-        self.shikimori_auth_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"Log In", None))
+        self.shikimori_logged_in_as_label.setText("")
+        self.shikimori_username_link_label.setText(QCoreApplication.translate("SettingsWindow", u"Username :", None))
+        self.shikimori_link_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"Link", None))
         self.settings_tabWidget.setTabText(self.settings_tabWidget.indexOf(self.network_tab), QCoreApplication.translate("SettingsWindow", u"Network && Account", None))
         self.qbit_checkBox.setText(QCoreApplication.translate("SettingsWindow", u"Enable qBittorrent integration", None))
         self.qbit_pushButton.setText(QCoreApplication.translate("SettingsWindow", u"?", None))

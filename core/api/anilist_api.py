@@ -189,6 +189,7 @@ class AniListClient:
     def save_token(self, token) -> dict | None:
         headers = {
             "Authorization": f"Bearer {token}",
+            'User-Agent': 'NekoDesk (Python/Requests)',
             "Content-Type": "application/json",
             "Accept": "application/json"
         }
@@ -214,6 +215,7 @@ class AniListClient:
         
         headers = {
         'Authorization': f'Bearer {token}',
+        'User-Agent': 'NekoDesk (Python/Requests)',
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         }
