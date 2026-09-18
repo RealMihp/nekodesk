@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddSeriesWindow</class>
+ <widget class="QDialog" name="AddSeriesWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>750</width>
+    <height>800</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add series</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="currentIndex">
+         <number>0</number>
+        </property>
+        <widget class="QWidget" name="search_tab">
+         <attribute name="title">
+          <string>Search</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <item>
+           <widget class="QFrame" name="frame_4">
+            <property name="frameShape">
+             <enum>QFrame::Shape::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <widget class="QLabel" name="search_label">
+               <property name="text">
+                <string>Search</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="search_frame">
+               <property name="frameShape">
+                <enum>QFrame::Shape::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <item>
+                 <widget class="QLineEdit" name="search_lineEdit"/>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="search_pushButton">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                  <property name="text">
+                   <string>Search</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTreeWidget" name="search_treeWidget">
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+               </property>
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+               <attribute name="headerShowSortIndicator" stdset="0">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="headerStretchLastSection">
+                <bool>false</bool>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string notr="true">Title</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Year</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Status</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="search_add_pushButton">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Add selected</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="scan_tab">
+         <attribute name="title">
+          <string>Scan</string>
+         </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="QFrame" name="scan_frame">
+            <property name="frameShape">
+             <enum>QFrame::Shape::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Shadow::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4">
+             <item>
+              <widget class="QLabel" name="scan_label">
+               <property name="text">
+                <string>Scan folder</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="select_folder_frame">
+               <property name="frameShape">
+                <enum>QFrame::Shape::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Shadow::Raised</enum>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
+                 <widget class="QLineEdit" name="scan_folder_lineEdit">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="scan_folder_browse_pushButton">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="text">
+                   <string>Browse</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="scan_start_pushButton">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Start scan</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="confirm_series_label">
+               <property name="text">
+                <string>Results</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTreeWidget" name="scan_results_treeWidget">
+               <property name="defaultDropAction">
+                <enum>Qt::DropAction::IgnoreAction</enum>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SelectionMode::ExtendedSelection</enum>
+               </property>
+               <property name="sortingEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="supportedDragActions">
+                <set>Qt::DropAction::IgnoreAction</set>
+               </property>
+               <attribute name="headerStretchLastSection">
+                <bool>false</bool>
+               </attribute>
+               <column>
+                <property name="text">
+                 <string>Title</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Year</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Status</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="scan_add_pushButton">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Add selected</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <widget class="QLabel" name="statusbar_label">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDialogButtonBox" name="buttonBox">
+          <property name="standardButtons">
+           <set>QDialogButtonBox::StandardButton::Cancel|QDialogButtonBox::StandardButton::Ok</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

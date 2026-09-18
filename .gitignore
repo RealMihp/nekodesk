@@ -1,0 +1,16 @@
+# Runtime data (базы, постеры, снимки для restore)
+data/
+ 
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+.vscode
+gen.bat
+ 
+# PyInstaller
+build/
+dist/
+*.spec
+ 
